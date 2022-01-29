@@ -1,0 +1,161 @@
+% 0. Preliminares. 
+% Esto es voluntario. 
+% Consiste en poner lo que ya sabías, porque lo has dado en el grado, y que te haga falta 
+% (por ejemplo, algebra lineal, cuerpos finitos, operaciones con polinómios, algoritmos genéticos, etc).
+
+% TODO
+\chapter{Preliminares}
+
+En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece 
+que precisa este trabajo. Se abordarán conceptos relacionados con el álgebra lineal, anillos, cuerpos finitos, polinomios, algoritmos genéticos, etc.
+
+\section{Anillos}
+
+En esta sección introduciremos el concepto de anillo para poder definir el concepto de cuerpo.
+
+\begin{definition}
+    Un \emph{anillo} $(A, +, \cdot )$ es un conjunto $A$ junto con dos operaciones binarias $A \times A \rightarrow A$ denotadas
+    por la suma (denotada por $+$) y producto (denotado por $\cdot$) que verifican los siguientes axiomas:
+
+    \begin{itemize}
+        \item Propiedad asociativa de la suma: 
+        $$  a + (b + c) = (a + b) + c \qquad \forall a,b,c \in A$$
+        \item Existencia del elemento neutro para la suma:
+        $$ 0 + a = a = a + 0 \qquad \forall a \in A$$
+        \item Existencia del elemento inverso para la suma:
+        $$ \forall a \in A \; \; \exists -a \in A \quad a + (-a) = 0 = (-a) + a $$
+        \item Propiedad conmutativa de la suma:
+        $$ a + b = b + a \qquad \forall a,b \in A $$
+        \item Propiedad asociativa del producto:
+        $$ a(bc) = (ab)c \qquad \forall a,b,c \in A $$
+        \item Propiedad distributiva del producto:
+        $$ a(b + c) = ab + ac, \quad (b + c)a = ba + ca \qquad \forall a,b,c \in A $$
+        \item Existencia del elemento neutro para el producto:
+        $$ 1a = a = a1 \qquad \forall a \in A $$
+        
+    \end{itemize}
+
+    Un anillo de llama \emph{conmutativo o abeliano} si se verifica la propiedad conmutativa del producto 
+    $$ ab = ba \qquad \forall a,b \in A $$
+\end{definition}
+
+%TODO
+Añadir algo de ideales.
+
+% No sé si hace falta
+%\section{Dominios de integridad}
+%Sea $A$ un anillo conmutativo.
+
+%\begin{definition}
+%    Un elemento $a \in A$ se llama \emph{divisor de cero} si existe un $b \in A$ con $b \neq 0$ tal que $ab = 0$.
+    
+%    Un \emph{dominio de integridad} es un anillo conmutativo $A$ no trivial sin divisores de cero no nulos, es decir, 
+%    si $1 \neq 0$ y si $ab = 0$, entonces $a = 0$ o $b = 0$.
+%\end{definition}
+
+%TODO
+%Añadir propiedades de los dominios de integridad.
+
+\section{Cuerpos finitos}
+
+Con estos conceptos previos podemos ya definir el de cuerpo.
+
+\begin{definition}
+    Un \emph{cuerpo} $(A, +, \cdot )$ es un anillo conmutativo no trivial en el que todo elemento no nulo tiene un inverso multiplicativo.
+    Se dice que un cuerpo es \emph{finito} si tiene un número finito de elementos.
+\end{definition}
+
+En los códigos lineales son comunes los siguientes cuerpos: \emph{cuerpo binario} con dos elementos, 
+\emph{cuerpo ternario} con tres elementos y \emph{cuerpo cuaternario} con cuatro elementos.
+
+Diremos que la \emph{característica} de un cuerpo es el número de elementos que tiene.
+
+Todos los cuerpos finitos tienen un número de elementos $q = p^n$, para algún número primo $p$ y algún entero positivo $n$.
+Denotaremos por $\mathbb{F}_q$ a los cuerpos finitos con característica $q$.
+
+
+\section{Polinomios}
+
+En esta sección vamos a introducir el concepto de polinomio junto con sus operaciones.
+
+\begin{definition}
+    Sea $A$ un anillo conmutativo. El \emph{conjunto de polinomios} en la indeterminada $X$ con coeficientes en $A$ es el conjunto de 
+    todas las sumas formales finitas
+    $$f = a_n X^n + a_{n-1} X^{n-1} + \cdots + a_1 X + a_0$$
+    Este conjunto de representa por $A[X]$.
+\end{definition}
+
+En el conjunto de polinomios definimos una suma y un producto. 
+
+Sean $f = a_n X^n + a_{n-1} X^{n-1} + \cdots + a_1 X + a_0$ y $g = b_m X^m + b_{m-1} X^{m-1} + \cdots + b_1 X + b_0$
+dos polinomios. Supongamos que $m \leq n$, tomando $b_i = 0$ para todo $n \geq i > m$, definimos las operaciones de suma y producto de polinomios
+$$f + g = (a_n + b_n)X^n + \cdots + (a_1 + b_1)X + (a_0 + b_0)$$
+$$f \cdot g = a_n b_m X^{n+m} + (a_n b_{m+1} + a_{n-1} b_m) X^{n+m-1} + \cdots + (a_1 b_0 + a_0 b_1)X + a_0 b_0$$
+
+De esta forma, diremos que el conjunto $A[X]$ con las operaciones anteriores es un \emph{anillo de polinomios en X con coeficientes en A}.
+
+\begin{definition}
+    Para un polinomio $f = a_n + a_{n-1} X^{n-1} + \cdots + a_1 X + a_0 \neq 0$ el mayor índice $n$ tal que $a_n \neq 0$ se llama \emph{grado de f}
+    y se representa por $gr(f)$. Si $f = 0$ definimos $gr(f) = - \infty$.
+
+    Llamaremos \emph{término (de grado i)} a cada uno de los sumandos $a_i X^i$ del polinomio $f$. El \emph{término líder}
+    es el término no nulo de mayor grado. El coeficiente $a_n \neq 0$ del término líder se llama \emph{coeficiente líder} 
+    y el término de grado cero $a_0$ se llama \emph{término constante}.
+\end{definition}
+
+A continuación tenemos algunas propiedades de los polinomios.
+
+\begin{proposition}
+    Sea $A$ un anillo conmutativo y sean $f,g \in A[X]$ dos polinomios, tenemos que 
+    $$gr(f + g) \leq \max{(gr(f), gr(g))},$$
+    $$gr(f \cdot g) \leq gr(f) + gr(g)$$
+    Si $gr(f) \neq gr(g)$, se verifica 
+    $$gr(f + g) = \max{(gr(f), gr(g))}$$
+    Si $A$ es un dominio de integridad, entonces
+    $$gr(f \cdot g) = gr(f) + gr(g)$$
+\end{proposition}
+
+% TODO: añadir teorema del resto?
+Añadir más propiedades
+
+
+\section{Algoritmos genéticos}
+
+%TODO
+Añadir introducción a la sección: qué es y para qué sirve (tratar problemas que no son P, o que no se sabe que sean P). Didáctica!!!!
+
+Los \emph{algoritmos genéticos} son algoritmos de optimización, búsqueda y aprendizaje inspirados en los procesos de evolución 
+natural y evolución genética.
+
+% TODO: esquema del ciclo de la evolución
+En general, los algoritmos genéticos siguen el siguiente procedimiento (explicarlo mejor).
+
+\begin{lstlisting}
+    t = 0
+    inicializar la poblacion P(t)
+    evaluar la poblacion P(t)
+    Mientras (no se cumpla la condicion de parada) hacer 
+        t = t + 1
+        seleccionar P' desde P(t-1)
+        recombinar P'
+        mutar P'
+        reemplazar P(t) a partir de P(t-1) y P'
+        evaluar P(t)
+\end{lstlisting}
+
+Existen dos modelos de algoritmos genéticos, el modelo generacional y el modelo estacionario.
+
+En el modelo generacional, durante cada iteración se crea una población completa con nuevos individuos.
+Así, la nueva población reemplaza directamente a la antigua.
+
+En el modelo estacionario, durante cada iteración se escogen dos padres de la población y se les aplican los operadores genéticos.
+De este modo, los descendientes reemplazan a los cromosomas de la población anterior.
+Este modelo es elitista y produce una convergencia rápida cuando se reemplazan los peores cromosomas de la población.
+
+%TODO
+Añadir más cosas
+
+
+\section{Clases de complejidad}
+
+Explicar que es un problema NP-completo y demás.

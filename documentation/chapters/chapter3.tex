@@ -1,0 +1,53 @@
+% 2. Códigos de Goppa.
+% Esto lo puedes encontrar en el capítulo 13 de Huffman y Pless. 
+% La decodificación  de estos códigos, es similar a la de los códigos BCH (capítulo 5) utilizando el algoritmo de Sugiyama. 
+% El artículo donde se definen y se decodifican es el de Goppa.pdf. 
+% Además, ahi se explica de forma elemental, sin utilizar geometría algebraica.
+
+\chapter{Códigos de Goppa}
+
+
+% TODO: introduccion
+
+
+\section{Espacio afín, espacio proyectivo y homogeneización}
+
+Los códigos de geometría algebraica se definen con respecto a curvas tanto en el espacio afín como en el espacio proyectivo.
+
+Sea $\mathbb{F}$ un cuerpo, posiblemente infinito. Se define el $\emph{espacio afín n-dimensional sobre } \mathbb{F}$, denotado por $\mathbb{A}^n (\mathbb{F})$, como el espacio vectorial n-dimensional ordinario $\mathbb{F}^n$. Los puntos en $\mathbb{A}^n (\mathbb{F})$ son $(x_1,...,x_n)$ donde $x_i \in \mathbb{F}$.
+
+% deberia definir el espacio proyecto y tal?? espero q no...
+
+
+
+\section{Algunos códigos clásicos}
+
+% TODO: codigos BCH
+
+\subsection{Códigos Reed-Solomon generalizados}
+
+Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Sea $n$ un número entero tal que $1 \leq n \leq q$, $\gamma = (\gamma _0,..., \gamma _{n-1})$ una n-tupla de elementos distintos de $\mathbb{F}_q$, y $\textbf{v} = (v_0,...,v_{n-1})$ una n-tupla de elementos no nulos de $\mathbb{F}_q$. Sea $k$ un número entero tal que $1 \leq k \leq n$. Entonces los códigos
+
+$$GRS_k (\gamma, \textbf{v}) = \left\{ \left( v_0 f(\gamma_0), ..., v_{n-1}f(\gamma_{n-1}) \right) : f \in \mathcal{P}_k \right\}$$
+
+son los códigos Reed-Solomon generalizados (códigos GRS).
+
+\subsection{Códigos clásicos de Goppa}
+
+Los códigos clásicos de Goppa se introdujeron por V. D. Goppa en 1970. Estos códigos son generalizaciones de códigos BCH y subcódigos de subcuerpos de ciertos códigos GRS.
+
+Para motivar la definición de los códigos Goppa, se introduce una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ la raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Se elige $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
+
+$$(x^n - 1) \sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \sum_{i=0}^{n-1} c_i \sum_{l=0}^{n-1} x^l (\beta ^{-i})^{n-1-l} = \sum_{l=0}^{n-1} x^l \sum_{i=0}^{n-1} c_i (\beta^{l+1})^i.$$
+
+Como $c(\beta^{l+1}) = 0$ para $0 \leq l \leq \delta - 2$, el lado derecho de la ecuación es un polinomio cuyo término de menor grado tiene grado al menos $\delta - 1$. Por lo tanto, el lado derecho se puede escribir como $x^{\delta - 1} p(x)$, donde $p(x)$ es un polinomio en $\mathbb{F}_{q^t}[x]$. Así, se puede decir que $c(x) \in \mathbb{F}_q[x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si 
+
+$$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \frac{x^{\delta - 1} p(x)}{x^n - 1}$$
+
+o equivalentemente
+
+$$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} \equiv 0 (mod x^{\delta - 1})$$
+
+La última equivalencia es la base para la definición de los códigos clásicos de Goppa.
+
+% continuar con la pagina 540, se fija un cuerpo de extension...

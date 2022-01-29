@@ -1,0 +1,72 @@
+%------------------------
+% Bibliotecas para matemáticas de latex
+%------------------------
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usetikzlibrary{shapes,fit}
+\usepackage{bussproofs}
+\EnableBpAbbreviations{}
+\usepackage{mathtools}
+\usepackage{scalerel}
+\usepackage{stmaryrd}
+
+
+%------------------------
+% Estilos para los teoremas
+%------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Teorema}
+\newtheorem{proposition}{Proposición}
+\newtheorem{lemma}{Lema}
+\newtheorem{corollary}{Corolario}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definición}
+
+% Change the proof style so it's in English and add \qed at the end.
+\renewenvironment{proof}{{\bfseries Demostración.}}{\qed}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Observación}
+\newtheorem{exampleth}{Ejemplo}
+
+% New style for postulates so they are tabulated
+\makeatletter
+\newtheoremstyle{indented}
+	{3pt}% space before
+	{3pt}% space after
+	{\addtolength{\@totalleftmargin}{3.5em}
+		\addtolength{\linewidth}{-3.5em}
+		\parshape 1 3.5em \linewidth}% body font
+	{}% indent
+	{\bfseries}% header font
+	{.}% punctuation
+	{.5em}% after theorem header
+	{}% header specification (empty for default)
+\makeatother
+
+% Apply the new style
+\theoremstyle{indented}
+\newtheorem{postulate}{Postulate}
+\newtheorem*{postulate 3'}{Postulate 3'}
+\newtheorem*{postulate 2'}{Projective Measurement}
+
+%------------------------
+% Macros
+% ------------------------
+
+\newcommand*{\B}{\mathbb{B}}
+\newcommand*{\C}{\mathds{C}}
+\newcommand*{\R}{\mathbb{R}}
+\newcommand*{\ra}{\rangle}
+\newcommand*{\la}{\langle}
+
+% Para poner sonrisa sobre puntos suspensivos. Uso: \overplace{n}{\dotsc}
+\newcommand{\overplace}[2]{%
+	\overset{\substack{#1\\\smile}}{#2}%
+}
+
+% Para añadir un salto de línea al nuevo párrafo. Use: \newparagraph
+\newcommand{\newparagraph}[1]{\paragraph{#1}\mbox{}\\}
