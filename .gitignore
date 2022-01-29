@@ -1,0 +1,11 @@
+*.log
+*.aux
+*.out
+*.toc
+*.fdb_latexmk
+*.fls
+*.bbl
+*.blg
+*.synctex(busy)
+_minted-main
+*.drawio
