@@ -6,15 +6,17 @@
 
 \chapter{Introducción a la teoría de códigos lineales}
 
-El inicio de la teoría de códigos surgió a partir de la publicación de Claude Shannon sobre ``Una teoría matemática sobre la comunicación"\ en 1948. En este artículo, Shannon explica que es posible transmitir mensajes fiables en un canal de comunicación que puede corromper la información enviada a través de él siempre y cuando no se supere la capacidad de dicho canal.
+% TODO: reescribir introducción
 
-Con la teoría de códigos, se pueden codificar datos antes de transmitirlos de tal forma que los datos alterados puedan ser decodificados al grado de precisión especificado. Así, el principal problema es determinar el mensaje que fue enviado a partir del recibido. El Teorema de Shannon garantiza que el mensaje recibido coincidirá con el que fue enviado un cierto porcentaje de las veces. Esto hace que el objetivo de la teoría de códigos sea crear códigos que cumplan las condiciones de este teorema.
+El inicio de la teoría de códigos surgió a partir de la publicación de Claude Shannon sobre ``Una teoría matemática sobre la comunicación"\ en 1948 \cite{Shannon_1948}. En este artículo, Shannon explica que es posible transmitir mensajes fiables en un canal de comunicación que puede corromper la información enviada a través de él siempre y cuando no se supere la capacidad de dicho canal.
 
-En esta sección se introducen los conceptos y resultados fundamentales sobre la teoría de códigos lineales.
+Con la teoría de códigos, podemos codificar datos antes de transmitirlos de tal forma que los datos alterados puedan ser decodificados al grado de precisión especificado. Así, el principal problema es determinar el mensaje que fue enviado a partir del recibido. El Teorema de Shannon nos garantiza que el mensaje recibido coincidirá con el que fue enviado un cierto porcentaje de las veces. Esto hace que el objetivo de la teoría de códigos sea crear códigos que cumplan las condiciones de este teorema.
+
+En esta sección introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales.
 
 \section{Introducción}
-Supongamos que se quiere enviar un mensaje, por lo que habrá un emisor y un receptor 
-que se comunican en una dirección. Este mensaje es enviado por un \emph{canal de comunicación}, cuyas características dependen de la naturaleza del mensaje a ser enviado. En general, hay que hacer una \emph{traducción} entre el mensaje original ( o \emph{palabra fuente}) $x$ y el tipo de mensaje $c$ que el canal está capacitado para enviar (\emph{palabras código}). Este proceso se llama \emph{codificación}. Una vez codificado el mensaje, se envía a través del canal, y el intermediario (el receptor) recibe un mensaje codificado (\emph{palabra recibida}) posiblemente erróneo, ya que en todo proceso de comunicación hay ruido e interferencias. Una vez recibido, empieza el proceso llamado \emph{corrección de errores}, que consiste en recuperar el mensaje original corrigiendo los errores que se hubieran producido. El mensaje recibido $c'$ es traducido nuevamente a términos originales $x'$, es decir, es \emph{decodificado}. La siguiente figura representa un esquema de este proceso.
+
+Supongamos que queremos enviar un mensaje, por lo que habrá un emisor y un receptor que se comunican en una dirección. Este mensaje es enviado por un \emph{canal de comunicación}, cuyas características dependen de la naturaleza del mensaje a ser enviado. En general, hay que hacer una \emph{traducción} entre el mensaje original (o \emph{palabra fuente}) $x$ y el tipo de mensaje $c$ que el canal está capacitado para enviar (\emph{palabras código}). Este proceso se llama \emph{codificación}. Una vez codificado el mensaje, lo enviamos a través del canal, y nuestro intermediario (el receptor) recibe un mensaje codificado (\emph{palabra recibida}) posiblemente erróneo, ya que en todo proceso de comunicación hay ruido e interferencias. Una vez recibido, empieza el proceso llamado \emph{corrección de errores}, que consiste en recuperar el mensaje original corrigiendo los errores que se hubieran producido. El mensaje recibido $c'$ es traducido nuevamente a términos originales $x'$, es decir, es \emph{decodificado}. La siguiente figura representa un esquema de este proceso.
 
 \begin{figure}[H]
 	\center
@@ -40,15 +42,14 @@ De esta forma, uno de los objetivos centrales de la teoría de códigos autocorr
 
 \section{Códigos lineales}
 
-Se considera $\mathbb{F}_q^n$, que denota al espacio vectorial de las n-tuplas sobre el 
-cuerpo finito $\mathbb{F}_q$. Generalmente los vectores $(a_1, ..., a_n)$ de $\mathbb{F}_q^n$ se denotarán por $a_1 \cdots a_n$.
+Consideramos $\mathbb{F}_q^n$, que denota al espacio vectorial de las n-tuplas sobre el cuerpo finito $\mathbb{F}_q$. Generalmente los vectores $(a_1, ..., a_n)$ de $\mathbb{F}_q^n$ se denotarán por $a_1 \cdots a_n$.
 
 \begin{definition}
     Un $(n, M)$ \emph{código} $\mathcal{C}$ sobre $\mathbb{F}_q$ es un subconjunto de 
     $\mathbb{F}_q^n$ de tamaño $M$. A los elementos de $\mathcal{C}$ los llamaremos \emph{palabras código}.
 \end{definition}
 
-Con el fin de aportar más utilidad a los códigos, se impone linealidad. Así, si $\mathcal{C}$ un subespacio k-dimensional de $\mathbb{F}_q^n$, entonces se dice que $\mathcal{C}$ es un $\left[ n, k \right]$ \emph{código lineal} sobre $\mathbb{F}_q$. De esta forma, los códigos lineales tendrán $q^k$ palabras código. Estos se pueden presentar con una matriz generadora o con una matriz de paridad.
+Con el fin de aportar más utilidad a los códigos, imponemos linealidad. Así, si $\mathcal{C}$ un subespacio k-dimensional de $\mathbb{F}_q^n$, entonces decimos que $\mathcal{C}$ es un $\left[ n, k \right]$ \emph{código lineal} sobre $\mathbb{F}_q$. De esta forma, los códigos lineales tendrán $q^k$ palabras código. Estos se pueden presentar con una matriz generadora o con una matriz de paridad.
 
 \begin{definition}
     Una \emph{matriz generadora} para un $\left[ n,k \right]$ código $\mathcal{C}$ es una matriz $k \times n$ donde sus filas forman una base de $\mathcal{C}$.
@@ -80,7 +81,7 @@ Al igual que con la matriz generadora, la matriz de paridad no es única. Con el
 
 \section{Código dual}
 
-Se sabe que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que podemos calcular un subespacio ortogonal a dicho subespacio y así obtener lo que se denomina \emph{espacio dual u ortogonal} de $\mathcal{C}$, denotado por $\mathcal{C} ^{\perp}$. Se define este concepto con la operación del producto escalar como sigue.
+Sabemos que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que podemos calcular un subespacio ortogonal a dicho subespacio y así obtener lo que se denomina \emph{espacio dual u ortogonal} de $\mathcal{C}$, denotado por $\mathcal{C} ^{\perp}$. Se define este concepto con la operación del producto escalar como sigue.
 
 \begin{definition}
     El \emph{espacio dual} de $\mathcal{C}$ viene dado por 
@@ -90,17 +91,17 @@ Se sabe que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que p
 
 Se observa que $\mathcal{C} ^{\perp}$ es un $[n,n-k]$ código.
 
-El siguiente resultado muestra cómo obtener las matrices generadora y de paridad de $\mathcal{C} ^{\perp}$ a partir de las de $\mathcal{C}$.
+El siguiente resultado nos muestra cómo obtener las matrices generadora y de paridad de $\mathcal{C} ^{\perp}$ a partir de las de $\mathcal{C}$.
 
 \begin{proposition}
     Si tenemos una matriz generadora $G$ y una matriz de paridad $H$ de un código $\mathcal{C}$, entonces $H$ y $G$ son matrices generadoras y de paridad, respectivamente, de $\mathcal{C} ^{\perp}$.
 \end{proposition}
 
-Se dice que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \subseteq \mathcal{C} ^{\perp}$ y \emph{auto-dual} cuando $\mathcal{C} = \mathcal{C} ^{\perp}$.
+Diremos que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \subseteq \mathcal{C} ^{\perp}$ y \emph{auto-dual} cuando $\mathcal{C} = \mathcal{C} ^{\perp}$.
 
 \section{Pesos y distancias}
 
-Es importante saber lo que difieren las palabras código. En este apartado se estudiará esta idea y cómo puede influir a la teoría de códigos.
+Es importante saber lo que difieren las palabras código. En este apartado estudiaremos esta idea y cómo puede influir a la teoría de códigos.
 
 \begin{definition}
     La \emph{distancia de Hamming} $\operatorname{d}(\mathbf{x},\mathbf{y})$ entre dos vectores $\mathbf{x}$, $\mathbf{y} \in \mathbb{F}_q^n$ se define como el número de coordenadas en las que $\mathbf{x}$ e $\mathbf{y}$ difieren.
@@ -119,14 +120,13 @@ Es importante saber lo que difieren las palabras código. En este apartado se es
 
 \begin{proof}
     Las tres primeras afirmaciones se obtienen directamente a partir de la definición.
-    La cuarta propiedad se obtiene a partir de la no negatividad. Esto es, sean 
-    $x,y,z \in \mathbb{F}_q^n$ distingamos dos casos. Si $x \neq z$
+    La cuarta propiedad se obtiene a partir de la no negatividad. Esto es, sean $x,y,z \in \mathbb{F}_q^n$ distingamos dos casos. Si $x \neq z$
     tenemos que $y \neq x$ o $y \neq z$, entonces por la no negatividad se cumple la afirmación.
     En el caso en el que $x = z$, tendríamos que $d(x,z) = 0$ y también se da la 
     afirmación.
 \end{proof}
 
-Se dice que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distancia más pequeña entre las distintas palabras código. Esta medida es fundamental a la hora de determinar la capacidad de corregir errores de $\mathcal{C}$.
+Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distancia más pequeña entre las distintas palabras código. Esta medida es fundamental a la hora de determinar la capacidad de corregir errores de $\mathcal{C}$.
 
 \begin{theorem}[Decodificación de máxima verosimilitud]
     Es posible corregir hasta
@@ -154,7 +154,7 @@ Se dice que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distan
     El \emph{peso Hamming} $\operatorname{wt}(\mathbf{x})$ de un vector $\mathbf{x} \in \mathbb{F}_q^n$ se define como el número de coordenadas no nulas en $\mathbf{x}$.
 \end{definition}
 
-El siguiente resultado muestra la relación entre la distancia y el peso.
+El siguiente resultado nos muestra la relación entre la distancia y el peso.
 
 \begin{theorem}
     Si $\mathbf{x}, \mathbf{y} \in \mathbb{F}_q^n$, entonces $\operatorname{d}(\mathbf{x},\mathbf{y}) = \operatorname{wt}(\mathbf{x}-\mathbf{y})$. Si $\mathcal{C}$ es un código lineal, entonces la distancia mínima $d$ coincide con el peso mínimo de las palabras código no nulas de $\mathcal{C}$.
@@ -169,15 +169,14 @@ Como consecuencia de este teorema, para códigos lineales, la distancia mínima 
 Se ha demostrado que el problema de calcular la distancia mínima de un código lineal binario es NP-difícil, y el problema de decisión correspondiente es NP-completo. Esto es, formalmente, dada una matriz binaria $H$ de dimensión $m \times n$ y un número entero $w > 0$, saber si existe un vector no nulo $x \in \mathbb{F}_2^n$ de peso menor que $w$ tal que $Hw^T = 0$ es un problema NP-completo. 
 
 \begin{proof}
-    Para ello, se hace uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
+    Para ello, haremos uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
 
     El problema de Decodicificación de Máxima Verosimilitud es NP-completo y consiste en dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
 
-    El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego se reformula este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se mapea el código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
+    El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se mapea el código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 \end{proof}
 
-
-Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar realmente duro. A continuación se presenta un algoritmo para el cálculo de la distancia.
+Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar realmente duro. A continuación presentaremos un algoritmo para el cálculo de la distancia.
 
 \textbf{Algoritmo de Brouwer-Zimmermann.} Cálculo de la distancia mínima de un $[n,k]$ código lineal $\mathcal{C}$.
 
@@ -212,7 +211,7 @@ Como hemos visto, la distancia mínima es importante en un código lineal. Sin e
 
 \section{Clasificación por isometría}
 
-Como se ha visto, las propiedades de codificación de un código dependen principalmente de las distancias de Hamming entre diferentes palabras codificadas y entre palabras codificadas y no codificadas. Además, puede ser que un código pueda mapearse sobre otro por medio de un mapa que conserve las distancias de Hamming. De esta forma, se puede definir una relación de equivalencia entre dos códigos que preservan la distancia de Hamming.
+Como hemos visto, las propiedades de codificación de un código dependen principalmente de las distancias de Hamming entre diferentes palabras codificadas y entre palabras codificadas y no codificadas. Además, puede ser que un código pueda relacionarse con otro por medio de una aplicación que conserve las distancias de Hamming. De esta forma, podemos definir una relación de equivalencia entre dos códigos que preservan la distancia de Hamming.
 
 Tenemos que dos $(n,k)$-códigos $C, C' \subseteq H(n,q)$ son de la misma cualidad si existe un mapeo
 

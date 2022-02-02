@@ -6,23 +6,14 @@
 
 \chapter{Códigos de Goppa}
 
-
 % TODO: introduccion
 
-
-\section{Espacio afín, espacio proyectivo y homogeneización}
-
-Los códigos de geometría algebraica se definen con respecto a curvas tanto en el espacio afín como en el espacio proyectivo.
-
-Sea $\mathbb{F}$ un cuerpo, posiblemente infinito. Se define el $\emph{espacio afín n-dimensional sobre } \mathbb{F}$, denotado por $\mathbb{A}^n (\mathbb{F})$, como el espacio vectorial n-dimensional ordinario $\mathbb{F}^n$. Los puntos en $\mathbb{A}^n (\mathbb{F})$ son $(x_1,...,x_n)$ donde $x_i \in \mathbb{F}$.
-
-% deberia definir el espacio proyecto y tal?? espero q no...
-
+Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
 
 
 \section{Algunos códigos clásicos}
 
-% TODO: codigos BCH
+Antes de estudiar los códigos de Goppa, introduciremos algunos códigos clásicos para motivar el objetivo de este capítulo.
 
 \subsection{Códigos Reed-Solomon generalizados}
 
@@ -36,9 +27,9 @@ son los códigos Reed-Solomon generalizados (códigos GRS).
 
 Los códigos clásicos de Goppa se introdujeron por V. D. Goppa en 1970. Estos códigos son generalizaciones de códigos BCH y subcódigos de subcuerpos de ciertos códigos GRS.
 
-Para motivar la definición de los códigos Goppa, se introduce una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ la raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Se elige $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
+Para motivar la definición de los códigos de Goppa, se introduce una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ la raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Se elige $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
 
-$$(x^n - 1) \sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \sum_{i=0}^{n-1} c_i \sum_{l=0}^{n-1} x^l (\beta ^{-i})^{n-1-l} = \sum_{l=0}^{n-1} x^l \sum_{i=0}^{n-1} c_i (\beta^{l+1})^i.$$
+$$(x^n - 1) \sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \sum_{i=0}^{n-1} c_i \sum_{l=0}^{n-1} x^l \left( \beta ^{-i} \right) ^{n-1-l} = \sum_{l=0}^{n-1} x^l \sum_{i=0}^{n-1} c_i \left( \beta^{l+1} \right) ^i.$$
 
 Como $c(\beta^{l+1}) = 0$ para $0 \leq l \leq \delta - 2$, el lado derecho de la ecuación es un polinomio cuyo término de menor grado tiene grado al menos $\delta - 1$. Por lo tanto, el lado derecho se puede escribir como $x^{\delta - 1} p(x)$, donde $p(x)$ es un polinomio en $\mathbb{F}_{q^t}[x]$. Así, se puede decir que $c(x) \in \mathbb{F}_q[x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si 
 
@@ -46,8 +37,67 @@ $$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \frac{x^{\delta - 1} p(x)}{x^n 
 
 o equivalentemente
 
-$$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} \equiv 0 (mod x^{\delta - 1})$$
+$$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} \equiv 0 \pmod{x^{\delta - 1}}$$
 
 La última equivalencia es la base para la definición de los códigos clásicos de Goppa.
 
-% continuar con la pagina 540, se fija un cuerpo de extension...
+Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $G(x) \in \mathbb{F}_{q^t}[x]$ con $G(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma (L,G)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
+
+\begin{equation}
+    \label{definicion_goppa}
+    \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{G(x)}
+\end{equation}
+
+De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $G(x)$. Además, trabajar con módulo $G(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(G(x))$, y la hipótesis $G(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $G(x)$ el \emph{polinomio de Goppa} de $\Gamma (L,G)$. Nótese que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma (L,G)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $G(x) = x^{\delta - 1}$.
+
+A continuación, se busca una matriz de paridad para $\Gamma (L,G)$. Para ello, se observa que
+
+$$\frac{1}{x - \gamma_i} \equiv - \frac{1}{G(\gamma_i)} \frac{G(x) - G(\gamma_i)}{x - \gamma_i} \pmod{ G(x)}$$
+
+ya que, comparando numeradores, $1 \equiv - G(\gamma_i)^{-1} \left( G(x) - G(\gamma_i) \right) \pmod{G(x)}$. Así que por \eqref{definicion_goppa} $\textbf{c} = c_0 \cdots c_{n-1} \in \Gamma (L,G)$ si y solo si
+
+\begin{equation}
+    \label{congruencia_goppa}
+    \sum_{i=0}^{n-1} c_i \frac{G(x) - G(\gamma_i)}{x - \gamma_i} G(\gamma_i)^{-1} \equiv 0 \pmod{G(x)}
+\end{equation}
+
+Supongamos que $G(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = \deg{(G(x))}$. Entonces
+
+$$\frac{G(x) - G(\gamma_i)}{x - \gamma_i} G(\gamma_i)^{-1} = G(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = G(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)$$
+
+Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $x^k$ iguales a $0$, en el orden $k = w - 1, w - 2, ..., 0$, tenemos que $\textbf{c} \in \Gamma (L,G)$ si y solo si $Hc^T = 0$, donde 
+
+\begin{equation}
+    H = \left(
+        \begin{array}{ccc} 
+            h_0 g_w & \cdots & h_{n-1} g_w  \\
+            h_0 (g_{w-1} + g_w \gamma_0) & \cdots & h_{n-1} (g_{w-1} + g_w \gamma_{n-1}) \\
+            & \vdots & \\
+            h_0 \sum_{j=1}^w \left( g_j + \gamma_0^{j-1} \right) & \cdots & h_{n-1} \sum_{j=1}^w \left( g_{j} + \gamma_{n-1}^{j-1} \right) \\
+        \end{array}
+        \right)
+\end{equation}
+
+con $h_i = G(\gamma_i)^{-1}$.
+
+\begin{proposition}
+    La matriz $H$ se puede reducir a una matriz $H'$ de dimensión $w \times n$, donde 
+
+    \begin{equation}
+        H = \left(
+            \begin{array}{ccc} 
+                G(\gamma_0)^{-1} & \cdots & G(\gamma_{n-1})^{-1}  \\
+                G(\gamma_0)^{-1} \gamma_0 & \cdots & G(\gamma_{n-1})^{-1} \gamma_{n-1} \\
+                & \vdots & \\
+                G(\gamma_0)^{-1} \gamma_0^{w-1} & \cdots & G(\gamma_{n-1})^{-1} \gamma_{n-1}^{w-1} \\
+            \end{array}
+            \right)
+    \end{equation}
+\end{proposition}
+
+\begin{proof}
+    % TODO
+\end{proof}
+
+\section{Decodificación de los códigos de Goppa}
+
