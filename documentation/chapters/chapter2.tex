@@ -8,11 +8,13 @@
 
 % TODO: reescribir introducción
 
+\textcolor{red}{Hay que reescribir este párrafo}
+
 El inicio de la teoría de códigos surgió a partir de la publicación de Claude Shannon sobre ``Una teoría matemática sobre la comunicación"\ en 1948 \cite{Shannon_1948}. En este artículo, Shannon explica que es posible transmitir mensajes fiables en un canal de comunicación que puede corromper la información enviada a través de él siempre y cuando no se supere la capacidad de dicho canal.
 
 Con la teoría de códigos, podemos codificar datos antes de transmitirlos de tal forma que los datos alterados puedan ser decodificados al grado de precisión especificado. Así, el principal problema es determinar el mensaje que fue enviado a partir del recibido. El Teorema de Shannon nos garantiza que el mensaje recibido coincidirá con el que fue enviado un cierto porcentaje de las veces. Esto hace que el objetivo de la teoría de códigos sea crear códigos que cumplan las condiciones de este teorema.
 
-En esta sección introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales.
+En esta sección introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010}, \cite{Vardy_1997}, \cite{Wassermann_2006} y \cite{Podesta_2006}.
 
 \section{Introducción}
 
@@ -49,6 +51,14 @@ Consideramos $\mathbb{F}_q^n$, que denota al espacio vectorial de las n-tuplas s
     $\mathbb{F}_q^n$ de tamaño $M$. A los elementos de $\mathcal{C}$ los llamaremos \emph{palabras código}.
 \end{definition}
 
+\begin{exampleth}
+    $ $
+    \begin{itemize}
+        \item Un código sobre $\mathbb{F}_2$ se llama \emph{código binario} y un ejemplo es $\mathcal{C} = \{00, 01, 10, 11\}$.
+        \item Un código sobre $\mathbb{F}_3$ se llama \emph{código ternario} y un ejemplo es $\mathcal{C} = \{21, 02, 10, 20\}$.
+    \end{itemize}
+\end{exampleth}
+
 Con el fin de aportar más utilidad a los códigos, imponemos linealidad. Así, si $\mathcal{C}$ un subespacio k-dimensional de $\mathbb{F}_q^n$, entonces decimos que $\mathcal{C}$ es un $\left[ n, k \right]$ \emph{código lineal} sobre $\mathbb{F}_q$. De esta forma, los códigos lineales tendrán $q^k$ palabras código. Estos se pueden presentar con una matriz generadora o con una matriz de paridad.
 
 \begin{definition}
@@ -72,12 +82,54 @@ Como un código lineal es un subespacio de un espacio vectorial, es el núcleo d
 Al igual que con la matriz generadora, la matriz de paridad no es única. Con el siguiente resultado podremos obtener una matriz de paridad cuando $\mathcal{C}$ tiene una matriz generadora en forma estándar.
 
 \begin{theorem}
+    \label{th:generadora-paridad}
     Si $G = \left( I_k | A \right)$ es una matriz generadora para el $\left[ n,k \right]$ código $\mathcal{C}$ en forma estándar, entonces $H = \left( -A^T | I_{n-k} \right)$ es una matriz de paridad de $\mathcal{C}$.
 \end{theorem}
 
 \begin{proof}
     Como $HG^T = -A^T + A^T = 0$, se tiene que $\mathcal{C}$ está contenido en el núcleo de la transformación lineal $x \mapsto Hx^T$. Esta transformación lineal tiene un núcleo de dimensión $k$, pues $H$ tiene rango $n-k$, que coincide con la dimensión de $\mathcal{C}$.
 \end{proof}
+
+\begin{exampleth}
+    \label{ex:generadora-paridad}
+    Sea la matriz $G = \left( I_4 | A \right)$, donde 
+    
+    \[
+        G = \left( 
+        \begin{array}{cccc|ccc}  
+            1 & 0 & 0 & 0 & 0 & 1 & 1 \\
+            0 & 1 & 0 & 0 & 1 & 0 & 1 \\
+            0 & 0 & 1 & 0 & 1 & 1 & 0 \\
+            0 & 0 & 0 & 1 & 1 & 1 & 1
+        \end{array} 
+        \right)
+    \]
+
+    es una matriz generadora en forma estándar para un $[7, 4]$ código binario que denotaremos por $\mathcal{H}_3$. Por el Teorema \ref{th:generadora-paridad}, una matriz de paridad de $\mathcal{H}_3$ es
+
+    \[ 
+        H = 
+        \left( 
+        \begin{array}{c|c}  
+            -A^T & I_{7-4}
+        \end{array} 
+        \right)
+        = 
+        \left( 
+        \begin{array}{c|c}  
+            -A^T & I_{3}
+        \end{array} 
+        \right)
+        =
+        \left( 
+        \begin{array}{cccc|ccc}  
+            0 & 1 & 1 & 1 & 1 & 0 & 0 \\
+            1 & 0 & 1 & 1 & 0 & 1 & 0 \\
+            1 & 1 & 0 & 1 & 0 & 0 & 1 \\
+        \end{array} 
+        \right)
+    \]
+\end{exampleth}
 
 \section{Código dual}
 
@@ -99,6 +151,38 @@ El siguiente resultado nos muestra cómo obtener las matrices generadora y de pa
 
 Diremos que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \subseteq \mathcal{C} ^{\perp}$ y \emph{auto-dual} cuando $\mathcal{C} = \mathcal{C} ^{\perp}$.
 
+\begin{exampleth}
+    Una matriz generadora para el $[7, 4]$ código de Hamming $\mathcal{H}_3$ se presenta en el Ejemplo \ref{ex:generadora-paridad}. Sea $\mathcal{H'}_3$ el código de longitud 8 y dimensión 4 obtenido de $\mathcal{H}_3$ añadiendo una coordenada de verificación de paridad general a cada vector de G y por lo tanto a cada palabra código de $\mathcal{H}_3$. Entonces 
+
+    \[
+        G' = \left( 
+        \begin{array}{cccc|cccc}  
+            1 & 0 & 0 & 0 & 0 & 1 & 1 & 1 \\
+            0 & 1 & 0 & 0 & 1 & 0 & 1 & 1\\
+            0 & 0 & 1 & 0 & 1 & 1 & 0 & 1\\
+            0 & 0 & 0 & 1 & 1 & 1 & 1 & 0
+        \end{array} 
+        \right)
+    \]
+
+    es una matriz generadora para $\mathcal{H'}_3$. Además, veamos que $\mathcal{H'}_3$ es un código auto-dual.
+
+    Tenemos que $G' = (I_4 | A')$, donde
+
+    \[
+        A' = \left( 
+        \begin{array}{cccc}  
+            0 & 1 & 1 & 1 \\
+            1 & 0 & 1 & 1\\
+            1 & 1 & 0 & 1\\
+            1 & 1 & 1 & 0
+        \end{array} 
+        \right) .
+    \]
+
+    Como $A' (A')^T = I_4$, entonces $\mathcal{H'}_3$ es auto-dual.
+\end{exampleth}
+
 \section{Pesos y distancias}
 
 Es importante saber lo que difieren las palabras código. En este apartado estudiaremos esta idea y cómo puede influir a la teoría de códigos.
@@ -106,6 +190,10 @@ Es importante saber lo que difieren las palabras código. En este apartado estud
 \begin{definition}
     La \emph{distancia de Hamming} $\operatorname{d}(\mathbf{x},\mathbf{y})$ entre dos vectores $\mathbf{x}$, $\mathbf{y} \in \mathbb{F}_q^n$ se define como el número de coordenadas en las que $\mathbf{x}$ e $\mathbf{y}$ difieren.
 \end{definition}
+
+\begin{exampleth}
+    Sean $\mathbf{x} = 012$, $\mathbf{y} = 210$ $\mathbf{x}, \mathbf{y} \in \mathbb{F}_3^4$. Entonces la distancia de Hamming entre los dos vectores es $d(\mathbf{x}, \mathbf{y}) = 2$.
+\end{exampleth}
 
 \begin{theorem}
     La función distancia $\operatorname{d}(\mathbf{x},\mathbf{y})$ satisface las siguientes propiedades.
@@ -127,6 +215,14 @@ Es importante saber lo que difieren las palabras código. En este apartado estud
 \end{proof}
 
 Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distancia más pequeña entre las distintas palabras código. Esta medida es fundamental a la hora de determinar la capacidad de corregir errores de $\mathcal{C}$.
+
+\begin{exampleth}
+    Sea $\mathcal{C} = {010101, 212121, 111000}$ un código ternario. Entonces
+
+    $$d(010101, 212121) = 3, \qquad d(010101, 111000) = 4, \qquad d(212121, 111000) = 5.$$
+
+    Por lo que la distancia mínima del código $\mathcal{C}$ es $d(\mathcal{C}) = 3$.
+\end{exampleth}
 
 \begin{theorem}[Decodificación de máxima verosimilitud]
     Es posible corregir hasta
@@ -154,6 +250,10 @@ Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distan
     El \emph{peso Hamming} $\operatorname{wt}(\mathbf{x})$ de un vector $\mathbf{x} \in \mathbb{F}_q^n$ se define como el número de coordenadas no nulas en $\mathbf{x}$.
 \end{definition}
 
+\begin{exampleth}
+    Sea $\mathbf{x} = 2001021 \in \mathbb{F}_3^7$ un vector, entonces su peso Hamming es $wt(\mathbf{x}) = 4$.
+\end{exampleth}
+
 El siguiente resultado nos muestra la relación entre la distancia y el peso.
 
 \begin{theorem}
@@ -173,37 +273,30 @@ Se ha demostrado que el problema de calcular la distancia mínima de un código 
 
     El problema de Decodicificación de Máxima Verosimilitud es NP-completo y consiste en dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
 
-    El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se mapea el código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
+    El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 \end{proof}
 
 Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar realmente duro. A continuación presentaremos un algoritmo para el cálculo de la distancia.
 
-\textbf{Algoritmo de Brouwer-Zimmermann.} Cálculo de la distancia mínima de un $[n,k]$ código lineal $\mathcal{C}$.
-
-\emph{Input}: una matriz generadora $G_1 = (I_k | A_1)$ de $\mathcal{C}$.
-
-\emph{Output}: la distancia mínima $d(\mathcal{C})$.
-
-\begin{tabular}{l l}
-    (1) & $m := 2$ \\
-    (2) & $k_1 := k$ \\
-    (3) & repeat \\
-    (4) & $\qquad$ Aplicar la eliminación Gaussiana y posibles permutaciones de las columnas de la\\
-        & $\qquad$ matriz $A_{m-1}$ desde \\
-        & $\qquad G_{m-1} = \left( \begin{array}{c|c} A_{m-1}' & \begin{array}{c|c} I_{k_{m-1}} & A_{m-1} \\ \hline  0 & 0 \end{array} \end{array} \right)$
-        para obtener la matriz generadora \\
-        & $\qquad G_{m} = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right)$\\
-    (5) & until rank $(A_m) = 0$ \\
-    (6) & $C_0 := \left\lbrace 0 \right\rbrace$\\
-    (7) & $i := 0$\\
-    (8) & repeat\\
-    (9) & $\qquad i := i + 1$\\
-    (10) & $\qquad C_i := C_{i-1} \cup \bigcup_{j=1}^m \left\lbrace v \cdot G_j : v \in \mathbb{F}(q)^k, \; wt(v) = i \right\rbrace$\\
-    (11) & $\qquad \bar{d}_i := min \lbrace wt(c) : c \in C_i, \; c \neq 0 \rbrace$\\
-    (12) & $\qquad d_i' := \sum_{j=1, k-k_j \leq i}^m (i+1)-(k-k_j)$\\
-    (13) & until $\bar{d}_i \leq d_i'$\\
-    (14) & return $\bar{d}_i$
-\end{tabular}
+\begin{Ualgorithm}[htbp]
+    \DontPrintSemicolon
+    \KwIn{matriz generadora $G_1 = (I_k | A_1)$ de $\mathcal{C}$}
+    \KwOut{distancia mínima $\bar{d}_i$}
+    $m \longleftarrow 2$\;
+    $k_1 \longleftarrow k$\;
+    \While{rank $(A_m) \neq 0$}{
+        Aplicar la eliminación Gaussiana y posibles permutaciones de las columnas de la matriz $A_{m-1}$ desde $G_{m-1} = \left( \begin{array}{c|c} A_{m-1}' & \begin{array}{c|c} I_{k_{m-1}} & A_{m-1} \\ \hline  0 & 0 \end{array} \end{array} \right)$ para obtener la matriz generadora $G_{m} = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right)$\;
+    }
+    $C_0 \longleftarrow \left\lbrace 0 \right\rbrace$\;
+    $i \longleftarrow 0$\;
+    \While{$\bar{d}_i > d_i'$}{
+        $i \longleftarrow i + 1$\;
+        $C_i \longleftarrow C_{i-1} \cup \bigcup_{j=1}^m \left\lbrace v \cdot G_j : v \in \mathbb{F}(q)^k, \; wt(v) = i \right\rbrace$\;
+        $\bar{d}_i \longleftarrow min \lbrace wt(c) : c \in C_i, \; c \neq 0 \rbrace$\;
+        $d_i' \longleftarrow \sum_{j=1, k-k_j \leq i}^m (i+1)-(k-k_j)$\;
+    }
+    \caption{Algoritmo de Brouwer-Zimmermann: cálculo de la distancia mínima de un $[n,k]$ código lineal $\mathcal{C}$.}
+\end{Ualgorithm}
 
 \begin{definition}
     Sea $A_i$, también denotada por $A_i(\mathcal{C})$, el número de palabras código con peso $i$ en $\mathcal{C}$. Se dice que la lista $A_i$ para $0 \leq i \leq n$ es la distribución del peso o espectro del peso de $\mathcal{C}$.
@@ -224,7 +317,7 @@ $$d(w,w') = d(\iota (w), \iota(w')), \qquad \forall w,w' \in H(n,q).$$
 Los mapeos con la propiedad anterior se llaman \emph{isometrías}.
 
 \begin{definition}
-    Dos códigos lineales $C, C' \subseteq H(n,q)$ se llaman \emph{isométricos} si existe una isometría de $H(n,q)$ que mapea $C$ sobre $C'$.
+    Dos códigos lineales $C, C' \subseteq H(n,q)$ se llaman \emph{isométricos} si existe una isometría de $H(n,q)$ que aplica $C$ sobre $C'$.
 \end{definition}
 
 Las permutaciones de las coordenadas son isometrías, que se denominan \emph{isometrías permutacionales}.

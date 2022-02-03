@@ -93,6 +93,32 @@ manychapters,pdfspacing]{classicthesis}
 \usepackage{wallpaper}
 \usepackage[main=spanish]{babel}
 
+
+% Algoritmos
+
+\usepackage[linesnumbered, onelanguage, ruled]{algorithm2e}
+\SetAlCapFnt{\sffamily}
+\SetAlCapNameFnt{\sffamily}
+\newcommand\mycommentfont[1]{\sffamily\textcolor{darkgray}{#1}}
+\SetCommentSty{mycommentfont}
+%\SetAlFnt{\sffamily}
+%\SetKwSty{sffamily}
+\SetAlCapSkip{.5em}
+\SetAlgoCaptionLayout{raggedright}
+\SetAlgorithmName{Algoritmo}{Algoritmo}{Lista de algoritmos}
+%\SetAlgoSkip{medskip}
+\SetAlgoInsideSkip{medskip}
+
+% Entorno algoritmo con líneas pero caption debajo
+\makeatletter
+\newenvironment{Ualgorithm}[1][htpb]{\def\@algocf@post@ruled{\color{gray}\hrule  height\algoheightrule\kern6pt\relax}%
+\def\@algocf@capt@ruled{under}%
+\setlength\algotitleheightrule{0pt}%
+\SetAlgoCaptionLayout{raggedright}%
+\begin{algorithm}[#1]}
+{\end{algorithm}}
+\makeatother
+
 \begin{document}
 
 \ThisULCornerWallPaper{1}{figures/ugrA4.pdf}

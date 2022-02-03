@@ -7,9 +7,12 @@
 \chapter{Códigos de Goppa}
 
 % TODO: introduccion
+\textcolor{red}{Hay que completar esta introducción}
 
 Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
 
+
+El desarrollo de este capítulo se ha basado en \cite{Goppa_codes_1973}.
 
 \section{Algunos códigos clásicos}
 
@@ -27,11 +30,11 @@ son los códigos Reed-Solomon generalizados (códigos GRS).
 
 Los códigos clásicos de Goppa se introdujeron por V. D. Goppa en 1970. Estos códigos son generalizaciones de códigos BCH y subcódigos de subcuerpos de ciertos códigos GRS.
 
-Para motivar la definición de los códigos de Goppa, se introduce una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ la raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Se elige $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
+Para motivar la definición de los códigos de Goppa, introduciremos una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ la raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Elegimos $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
 
 $$(x^n - 1) \sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \sum_{i=0}^{n-1} c_i \sum_{l=0}^{n-1} x^l \left( \beta ^{-i} \right) ^{n-1-l} = \sum_{l=0}^{n-1} x^l \sum_{i=0}^{n-1} c_i \left( \beta^{l+1} \right) ^i.$$
 
-Como $c(\beta^{l+1}) = 0$ para $0 \leq l \leq \delta - 2$, el lado derecho de la ecuación es un polinomio cuyo término de menor grado tiene grado al menos $\delta - 1$. Por lo tanto, el lado derecho se puede escribir como $x^{\delta - 1} p(x)$, donde $p(x)$ es un polinomio en $\mathbb{F}_{q^t}[x]$. Así, se puede decir que $c(x) \in \mathbb{F}_q[x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si 
+Como $c(\beta^{l+1}) = 0$ para $0 \leq l \leq \delta - 2$, el lado derecho de la ecuación es un polinomio cuyo término de menor grado tiene grado al menos $\delta - 1$. Por lo tanto, el lado derecho se puede escribir como $x^{\delta - 1} p(x)$, donde $p(x)$ es un polinomio en $\mathbb{F}_{q^t}[x]$. Así, podemos decir que $c(x) \in \mathbb{F}_q[x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si 
 
 $$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \frac{x^{\delta - 1} p(x)}{x^n - 1}$$
 
@@ -48,9 +51,9 @@ Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{
     \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{G(x)}
 \end{equation}
 
-De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $G(x)$. Además, trabajar con módulo $G(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(G(x))$, y la hipótesis $G(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $G(x)$ el \emph{polinomio de Goppa} de $\Gamma (L,G)$. Nótese que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma (L,G)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $G(x) = x^{\delta - 1}$.
+De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $G(x)$. Además, trabajar con módulo $G(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(G(x))$, y la hipótesis $G(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $G(x)$ el \emph{polinomio de Goppa} de $\Gamma (L,G)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma (L,G)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $G(x) = x^{\delta - 1}$.
 
-A continuación, se busca una matriz de paridad para $\Gamma (L,G)$. Para ello, se observa que
+A continuación, buscaremos una matriz de paridad para $\Gamma (L,G)$. Para ello, observamos que
 
 $$\frac{1}{x - \gamma_i} \equiv - \frac{1}{G(\gamma_i)} \frac{G(x) - G(\gamma_i)}{x - \gamma_i} \pmod{ G(x)}$$
 
@@ -95,9 +98,60 @@ con $h_i = G(\gamma_i)^{-1}$.
     \end{equation}
 \end{proposition}
 
-\begin{proof}
-    % TODO
-\end{proof}
-
 \section{Decodificación de los códigos de Goppa}
 
+Como hemos visto, al transmitir una palabra código a un receptor, éste podría recibir la palabra alterada. Para que el receptor pueda determinar el mensaje original, necesitaremos decodificar el mensaje recibido. Supongamos que $E$ es el vector de errores que se añade a la palabra código $C$ transmitida, entonces la palabra recibida $R$ está dada por
+
+$$R = C + E$$
+
+de donde 
+
+$$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{C_\gamma}{x - \gamma} + \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma}.$$
+
+Como $C$ es una palabra código, la primera sumatoria de la parte derecha desaparece al aplicar el módulo $G(x)$, y tenemos que
+
+$$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
+
+Definiremos su síndrome como el polinomio $S(z)$ de grado menos que $deg(g(x))$ tal que 
+
+$$S(x) = \sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} \pmod{G(x)}.$$
+
+Acabamos de ver que 
+
+$$S(x) = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
+
+Sea $M$ un subconjunto de $L$ tal que $E_{\gamma} \neq 0$ si y solo si $\gamma \in M$. Entonces
+
+$$S(x) = \sum_{\gamma \in M} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
+
+De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubicaciones de los errores,
+
+$$\sigma (x) = \prod_{\gamma \in M} (x - \gamma)$$
+
+Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma
+
+$$\eta (x) = \sum_{\gamma \in M} E_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)$$
+
+Observemos que de esta forma $\sigma(x)$ y $\eta(x)$ deben ser primos relativos.
+
+Diferenciando la expresión de $\sigma(x)$, tenemos que 
+
+$$\sigma'(x) = \sum_{\gamma \in M} \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)$$
+
+de donde, para cada $\gamma \in M$,
+
+$$\eta (\gamma) = E_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = E_\gamma \sigma'(\gamma)$$
+
+por lo que $E_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una vez que hemos calculado los polinomios $\sigma$ y $\eta$, las coordenadas del vector error vienen dadas por 
+
+\[
+    E_\gamma = \left\{ \begin{array}{lcc}
+    0 &   \text{si}  & \sigma(\gamma) \neq 0 \\
+    \\ \frac{\eta(\gamma)}{\sigma'(\gamma)} &  \text{si} & \sigma(\gamma) = 0
+    \end{array}
+    \right.
+\]
+
+donde $\sigma'(x)$ es la derivada de $\sigma(x)$.
+
+Lo esencial para decodificar los códigos de Goppa es determinar los coeficientes de los polinomios $\sigma$ y $\eta$.
