@@ -12,7 +12,7 @@
 Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
 
 
-El desarrollo de este capítulo se ha basado en \cite{Goppa_codes_1973}.
+El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cite{Goppa_codes_1973}.
 
 \section{Algunos códigos clásicos}
 
@@ -64,7 +64,7 @@ ya que, comparando numeradores, $1 \equiv - G(\gamma_i)^{-1} \left( G(x) - G(\ga
     \sum_{i=0}^{n-1} c_i \frac{G(x) - G(\gamma_i)}{x - \gamma_i} G(\gamma_i)^{-1} \equiv 0 \pmod{G(x)}
 \end{equation}
 
-Supongamos que $G(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = \deg{(G(x))}$. Entonces
+Supongamos que $G(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = gr(G(x))$. Entonces
 
 $$\frac{G(x) - G(\gamma_i)}{x - \gamma_i} G(\gamma_i)^{-1} = G(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = G(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)$$
 
@@ -112,7 +112,7 @@ Como $C$ es una palabra código, la primera sumatoria de la parte derecha desapa
 
 $$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
 
-Definiremos su síndrome como el polinomio $S(z)$ de grado menos que $deg(g(x))$ tal que 
+Definiremos su síndrome como el polinomio $S(x)$ de grado menos que $gr(g(x))$ tal que 
 
 $$S(x) = \sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} \pmod{G(x)}.$$
 
@@ -122,11 +122,17 @@ $$S(x) = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
 
 Sea $M$ un subconjunto de $L$ tal que $E_{\gamma} \neq 0$ si y solo si $\gamma \in M$. Entonces
 
-$$S(x) = \sum_{\gamma \in M} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
+\begin{equation}
+    \label{def:sindrome}
+    S(x) = \sum_{\gamma \in M} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.
+\end{equation}
 
 De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubicaciones de los errores,
 
-$$\sigma (x) = \prod_{\gamma \in M} (x - \gamma)$$
+\begin{equation}
+    \label{def:localizaciones}
+    \sigma (x) = \prod_{\gamma \in M} (x - \gamma)
+\end{equation}
 
 Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma
 
@@ -154,4 +160,37 @@ por lo que $E_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una
 
 donde $\sigma'(x)$ es la derivada de $\sigma(x)$.
 
-Lo esencial para decodificar los códigos de Goppa es determinar los coeficientes de los polinomios $\sigma$ y $\eta$.
+Lo esencial para decodificar los códigos de Goppa es determinar los coeficientes de los polinomios $\sigma$ y $\eta$. Para ello, tenemos que relacionar $\sigma$ y $\eta$ al síndrome de la ecuación \ref{def:sindrome}. Esto se consigue multiplicando las ecuaciones \ref{def:sindrome} y \ref{def:localizaciones}, obteniendo
+
+\begin{equation}
+    \label{prop:key_equation}
+    S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{G(x)}
+\end{equation}
+
+La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $G(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \ref{prop:key_equation}.
+
+Reduciendo cada potencia de $x \pmod{G(x)}$ e igualando coeficientes de $1, x, ..., x^{gr G - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $gr G$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
+
+Procederemos por reducción al absurdo, supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equation}:
+
+\begin{equation}
+    \label{prop:key_equation_1}
+    S(x) \sigma^{(1)}(x) \equiv \eta^{(1)}(x) \pmod{G(x)}
+\end{equation}
+
+\begin{equation}
+    \label{prop:key_equation_2}
+    S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{G(x)}
+\end{equation}
+
+donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $G(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \ref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
+
+$$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{G(x)}$$
+
+de la misma forma para \ref{prop:key_equation_2},
+
+$$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{G(x)}$$
+
+de donde,
+
+$$\sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{G(x)}$$
