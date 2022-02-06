@@ -136,13 +136,20 @@ De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubica
 
 Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma
 
-$$\eta (x) = \sum_{\gamma \in M} E_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)$$
+\begin{equation}
+    \label{def:eta}
+    \eta (x) = \sum_{\gamma \in M} E_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)
+\end{equation}
 
 Observemos que de esta forma $\sigma(x)$ y $\eta(x)$ deben ser primos relativos.
 
-Diferenciando la expresión de $\sigma(x)$, tenemos que 
+Derivando la expresión de $\sigma(x)$, tenemos que 
 
-$$\sigma'(x) = \sum_{\gamma \in M} \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)$$
+\begin{equation}
+    \label{def:localizaciones_derivada}
+    \sigma'(x) = \sum_{\gamma \in M} \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)
+\end{equation}
+
 
 de donde, para cada $\gamma \in M$,
 
@@ -171,7 +178,7 @@ La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodific
 
 Reduciendo cada potencia de $x \pmod{G(x)}$ e igualando coeficientes de $1, x, ..., x^{gr G - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $gr G$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
 
-Procederemos por reducción al absurdo, supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equation}:
+Supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equation}:
 
 \begin{equation}
     \label{prop:key_equation_1}
@@ -193,4 +200,46 @@ $$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{G(x)}$$
 
 de donde,
 
-$$\sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{G(x)}$$
+\begin{equation}
+    \label{prop:key_equation_12}
+    \sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{G(x)}
+\end{equation}
+
+Si $gr(G) = 2t$ y $gr(\sigma^{(1)}) \leq t$, $gr(\sigma^{(2)}) \leq t$, $gr(\eta^{(2)}) < t$ y $gr(\eta^{(1)}) < t$, entonces se da la siguiente igualdad
+
+\begin{equation}
+    \label{prop:key_equation_caso1}
+    \sigma^{(1)}(x) \eta^{(2)}(x) = \sigma^{(2)}(x) \eta^{(1)}(x)
+\end{equation}
+
+Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $G$ es $2t$, entonces \ref{prop:key_equation} tiene una única solución cuando $gr(\eta) < gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
+
+\begin{theorem}
+    Si $gr(G(x)) = 2t$, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código q-ario de Goppa con el polinomio de Goppa $G(x)$.
+\end{theorem}
+
+Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $E_\gamma$ distintos de cero son iguales a 1, entonces \ref{def:eta} y \ref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \ref{prop:key_equation_12} ahora pasa a ser
+
+$$\sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{G(x)}$$
+
+Ahora, cuando $\sigma$ sea par escribiremos en su lugar $\hat{\sigma}$, mientras que cuando $\sigma$ sea impar escribiremos en su lugar $x \sigma '$. Así, tenemos que
+
+\begin{align*} 
+    \left( \hat{\sigma}^{(1)} + x \sigma^{(1)'} \right) \sigma^{(2)'} &\equiv \left( \hat{\sigma}^{(2)} + x \sigma^{(2)'} \right) \sigma^{(1)'}\\ 
+    \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} &\equiv 0 \pmod{G(x)}.
+\end{align*}
+
+El lado izquierdo es un cuadrado perfecto, pues todos los polinomios de ese lado son pares. Esto implica que
+
+$$\hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} \equiv 0 \pmod{\bar{G}(x)}$$
+
+donde $\bar{G}(x)$ es múltiplo de $G(x)$ de menor grado ya que $\bar{G}$ es un cuadrado perfecto. Por lo que, si $gr(\bar{G}) = 2t$, $gr(\sigma^{(1)}) \leq t$ y $gr(\sigma^{(2)}) \leq t$, entonces 
+
+$$\hat{\sigma}^{(1)} \left( \sigma^{(2)} \right) ' = \hat{\sigma}^{(2)} \sigma^{(1)'}.$$
+
+Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teorema se concluye este resultado.
+
+\begin{theorem}
+    Si $gr(G(x)) = t$ y si $G(x)$ no tiene factores irreducibles repetidos, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código de Goppa binario con el polinomio de Goppa $G(x)$.
+\end{theorem}
+
