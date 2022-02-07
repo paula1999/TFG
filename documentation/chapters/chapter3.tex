@@ -44,29 +44,29 @@ $$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} \equiv 0 \pmod{x^{\delta - 1}}$$
 
 La última equivalencia es la base para la definición de los códigos clásicos de Goppa.
 
-Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $G(x) \in \mathbb{F}_{q^t}[x]$ con $G(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma (L,G)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
+Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma (L,G)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
 
 \begin{equation}
-    \label{definicion_goppa}
-    \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{G(x)}
+    \label{def:goppa}
+    \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
 \end{equation}
 
-De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $G(x)$. Además, trabajar con módulo $G(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(G(x))$, y la hipótesis $G(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $G(x)$ el \emph{polinomio de Goppa} de $\Gamma (L,G)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma (L,G)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $G(x) = x^{\delta - 1}$.
+De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $g(x)$. Además, trabajar con módulo $g(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(g(x))$, y la hipótesis $g(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $g(x)$ el \emph{polinomio de Goppa} de $\Gamma (L,G)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma (L,G)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $g(x) = x^{\delta - 1}$.
 
 A continuación, buscaremos una matriz de paridad para $\Gamma (L,G)$. Para ello, observamos que
 
-$$\frac{1}{x - \gamma_i} \equiv - \frac{1}{G(\gamma_i)} \frac{G(x) - G(\gamma_i)}{x - \gamma_i} \pmod{ G(x)}$$
+$$\frac{1}{x - \gamma_i} \equiv - \frac{1}{g(\gamma_i)} \frac{g(x) - g(\gamma_i)}{x - \gamma_i} \pmod{ g(x)}$$
 
-ya que, comparando numeradores, $1 \equiv - G(\gamma_i)^{-1} \left( G(x) - G(\gamma_i) \right) \pmod{G(x)}$. Así que por \eqref{definicion_goppa} $\textbf{c} = c_0 \cdots c_{n-1} \in \Gamma (L,G)$ si y solo si
+ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\gamma_i) \right) \pmod{g(x)}$. Así que por \eqref{def:goppa} $\textbf{c} = c_0 \cdots c_{n-1} \in \Gamma (L,G)$ si y solo si
 
 \begin{equation}
     \label{congruencia_goppa}
-    \sum_{i=0}^{n-1} c_i \frac{G(x) - G(\gamma_i)}{x - \gamma_i} G(\gamma_i)^{-1} \equiv 0 \pmod{G(x)}
+    \sum_{i=0}^{n-1} c_i \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} \equiv 0 \pmod{g(x)}
 \end{equation}
 
-Supongamos que $G(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = gr(G(x))$. Entonces
+Supongamos que $g(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = gr(g(x))$. Entonces
 
-$$\frac{G(x) - G(\gamma_i)}{x - \gamma_i} G(\gamma_i)^{-1} = G(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = G(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)$$
+$$\frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} = g(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = g(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)$$
 
 Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $x^k$ iguales a $0$, en el orden $k = w - 1, w - 2, ..., 0$, tenemos que $\textbf{c} \in \Gamma (L,G)$ si y solo si $Hc^T = 0$, donde 
 
@@ -81,22 +81,38 @@ Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $
         \right)
 \end{equation}
 
-con $h_i = G(\gamma_i)^{-1}$.
+con $h_i = g(\gamma_i)^{-1}$.
 
 \begin{proposition}
     La matriz $H$ se puede reducir a una matriz $H'$ de dimensión $w \times n$, donde 
 
     \begin{equation}
-        H = \left(
+        H' = \left(
             \begin{array}{ccc} 
-                G(\gamma_0)^{-1} & \cdots & G(\gamma_{n-1})^{-1}  \\
-                G(\gamma_0)^{-1} \gamma_0 & \cdots & G(\gamma_{n-1})^{-1} \gamma_{n-1} \\
+                g(\gamma_0)^{-1} & \cdots & g(\gamma_{n-1})^{-1}  \\
+                g(\gamma_0)^{-1} \gamma_0 & \cdots & g(\gamma_{n-1})^{-1} \gamma_{n-1} \\
                 & \vdots & \\
-                G(\gamma_0)^{-1} \gamma_0^{w-1} & \cdots & G(\gamma_{n-1})^{-1} \gamma_{n-1}^{w-1} \\
+                g(\gamma_0)^{-1} \gamma_0^{w-1} & \cdots & g(\gamma_{n-1})^{-1} \gamma_{n-1}^{w-1} \\
             \end{array}
             \right)
     \end{equation}
 \end{proposition}
+
+Las entradas de $H'$ están en $\mathbb{F}_{q^t}$. Eligiendo una base de $\mathbb{F}_{q^t}$ sobre $\mathbb{F}_q$, cada elemento de $\mathbb{F}_{q^t}$ se puede representar como un vector columna $t \times 1$ sobre $\mathbb{F}_q$. Reemplazando cada entrada de $H'$ por su correspondiente vector columna, obtenemos una matriz $H''$ de dimensión $tw \times n$ sobre $\mathbb{F}_{q}$ que tiene la propiedad de que si $\textbf{c} \in \mathbb{F}_q^n$ está en $\Gamma(L, G)$ si y solo si $H''c^T = 0$.
+
+El siguiente resultado nos muestra los límites en la dimensión y la distancia mínima de un código de Goppa.
+
+\begin{theorem}
+    Con la notación de esta sección, sea $\Gamma (L, G)$ un código de Goppa tal que $gr(g(x)) = w$ entonces es un $[n, k, d]$ código con $k \geq n - wt$ y $d \geq w + 1$.
+\end{theorem}
+
+\begin{proof}
+    Las filas de $H''$ pueden ser dependientes, luego esta matriz tiene rango como máximo $wt$. Por lo que $\Gamma(L,G)$ tiene dimensión al menos $n - wt$. Si una palabra código $\textbf{c} \in \Gamma (L, G)$ tiene peso $w$ o menos, entonces el lado izquierdo de \ref{def:goppa} es una función racional, donde el numerador tiene grado $w - 1$ o menos; pero este numerador tiene que ser múltiplo de $g(x)$, lo cual es una contradición pues el grado de $g$ es $w$.
+\end{proof}
+
+Sin embargo, si nos restringimos sobre ciertos polinomios y el cuerpo $\mathbb{F}_2$, podemos garantizar una distancia mínima de $2w + 1$.
+
+
 
 \section{Decodificación de los códigos de Goppa}
 
@@ -108,23 +124,23 @@ de donde
 
 $$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{C_\gamma}{x - \gamma} + \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma}.$$
 
-Como $C$ es una palabra código, la primera sumatoria de la parte derecha desaparece al aplicar el módulo $G(x)$, y tenemos que
+Como $C$ es una palabra código, la primera sumatoria de la parte derecha desaparece al aplicar el módulo $g(x)$, y tenemos que
 
-$$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
+$$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{g(x)}.$$
 
 Definiremos su síndrome como el polinomio $S(x)$ de grado menos que $gr(g(x))$ tal que 
 
-$$S(x) = \sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} \pmod{G(x)}.$$
+$$S(x) = \sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} \pmod{g(x)}.$$
 
 Acabamos de ver que 
 
-$$S(x) = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.$$
+$$S(x) = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{g(x)}.$$
 
 Sea $M$ un subconjunto de $L$ tal que $E_{\gamma} \neq 0$ si y solo si $\gamma \in M$. Entonces
 
 \begin{equation}
     \label{def:sindrome}
-    S(x) = \sum_{\gamma \in M} \frac{E_\gamma}{x - \gamma} \pmod{G(x)}.
+    S(x) = \sum_{\gamma \in M} \frac{E_\gamma}{x - \gamma} \pmod{g(x)}.
 \end{equation}
 
 De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubicaciones de los errores,
@@ -134,7 +150,7 @@ De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubica
     \sigma (x) = \prod_{\gamma \in M} (x - \gamma)
 \end{equation}
 
-Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma
+Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma.
 
 \begin{equation}
     \label{def:eta}
@@ -171,38 +187,38 @@ Lo esencial para decodificar los códigos de Goppa es determinar los coeficiente
 
 \begin{equation}
     \label{prop:key_equation}
-    S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{G(x)}
+    S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{g(x)}
 \end{equation}
 
-La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $G(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \ref{prop:key_equation}.
+La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $g(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \ref{prop:key_equation}.
 
-Reduciendo cada potencia de $x \pmod{G(x)}$ e igualando coeficientes de $1, x, ..., x^{gr G - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $gr G$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
+Reduciendo cada potencia de $x \pmod{g(x)}$ e igualando coeficientes de $1, x, ..., x^{gr g - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $gr G$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
 
 Supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equation}:
 
 \begin{equation}
     \label{prop:key_equation_1}
-    S(x) \sigma^{(1)}(x) \equiv \eta^{(1)}(x) \pmod{G(x)}
+    S(x) \sigma^{(1)}(x) \equiv \eta^{(1)}(x) \pmod{g(x)}
 \end{equation}
 
 \begin{equation}
     \label{prop:key_equation_2}
-    S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{G(x)}
+    S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{g(x)}
 \end{equation}
 
-donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $G(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \ref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
+donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $g(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \ref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
 
-$$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{G(x)}$$
+$$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{g(x)}$$
 
 de la misma forma para \ref{prop:key_equation_2},
 
-$$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{G(x)}$$
+$$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{g(x)}$$
 
 de donde,
 
 \begin{equation}
     \label{prop:key_equation_12}
-    \sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{G(x)}
+    \sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{g(x)}
 \end{equation}
 
 Si $gr(G) = 2t$ y $gr(\sigma^{(1)}) \leq t$, $gr(\sigma^{(2)}) \leq t$, $gr(\eta^{(2)}) < t$ y $gr(\eta^{(1)}) < t$, entonces se da la siguiente igualdad
@@ -215,31 +231,31 @@ Si $gr(G) = 2t$ y $gr(\sigma^{(1)}) \leq t$, $gr(\sigma^{(2)}) \leq t$, $gr(\eta
 Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $G$ es $2t$, entonces \ref{prop:key_equation} tiene una única solución cuando $gr(\eta) < gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
 
 \begin{theorem}
-    Si $gr(G(x)) = 2t$, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código q-ario de Goppa con el polinomio de Goppa $G(x)$.
+    Si $gr(g(x)) = 2t$, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código q-ario de Goppa con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
 Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $E_\gamma$ distintos de cero son iguales a 1, entonces \ref{def:eta} y \ref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \ref{prop:key_equation_12} ahora pasa a ser
 
-$$\sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{G(x)}$$
+$$\sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{g(x)}$$
 
 Ahora, cuando $\sigma$ sea par escribiremos en su lugar $\hat{\sigma}$, mientras que cuando $\sigma$ sea impar escribiremos en su lugar $x \sigma '$. Así, tenemos que
 
 \begin{align*} 
     \left( \hat{\sigma}^{(1)} + x \sigma^{(1)'} \right) \sigma^{(2)'} &\equiv \left( \hat{\sigma}^{(2)} + x \sigma^{(2)'} \right) \sigma^{(1)'}\\ 
-    \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} &\equiv 0 \pmod{G(x)}.
+    \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} &\equiv 0 \pmod{g(x)}.
 \end{align*}
 
 El lado izquierdo es un cuadrado perfecto, pues todos los polinomios de ese lado son pares. Esto implica que
 
 $$\hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} \equiv 0 \pmod{\bar{G}(x)}$$
 
-donde $\bar{G}(x)$ es múltiplo de $G(x)$ de menor grado ya que $\bar{G}$ es un cuadrado perfecto. Por lo que, si $gr(\bar{G}) = 2t$, $gr(\sigma^{(1)}) \leq t$ y $gr(\sigma^{(2)}) \leq t$, entonces 
+donde $\bar{G}(x)$ es múltiplo de $g(x)$ de menor grado ya que $\bar{G}$ es un cuadrado perfecto. Por lo que, si $gr(\bar{G}) = 2t$, $gr(\sigma^{(1)}) \leq t$ y $gr(\sigma^{(2)}) \leq t$, entonces 
 
 $$\hat{\sigma}^{(1)} \left( \sigma^{(2)} \right) ' = \hat{\sigma}^{(2)} \sigma^{(1)'}.$$
 
 Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teorema se concluye este resultado.
 
 \begin{theorem}
-    Si $gr(G(x)) = t$ y si $G(x)$ no tiene factores irreducibles repetidos, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código de Goppa binario con el polinomio de Goppa $G(x)$.
+    Si $gr(g(x)) = t$ y si $g(x)$ no tiene factores irreducibles repetidos, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código de Goppa binario con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
