@@ -18,13 +18,61 @@ El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cit
 
 Antes de estudiar los códigos de Goppa, introduciremos algunos códigos clásicos para motivar el objetivo de este capítulo.
 
-\subsection{Códigos Reed-Solomon generalizados}
+\subsection{Códigos BCH}
+
+% TODO: definición de código cíclico
+\textcolor{red}{TODO: definir los códigos cíclicos}
+
+Los códigos BCH son una de las muchas familias importantes de los códigos cíclicos. Consideramos un código cíclico $\mathcal{C}$ de longitud $n$ sobre $\mathbb{F}_q$ y sea $\delta$ un entero tal que $2 \leq \delta \leq n$. Diremos que $\mathcal{C}$ es un \emph{código BCH} sobre $\mathbb{F}_q$ de longitud $n$ y distancia prevista $\delta$ es un código cíclico con el conjunto
+
+\begin{equation}
+    \label{def:conjunto_BCH}
+    T = C_b \cup \cdots \cup C_{b + \delta - 2}
+\end{equation}
+
+donde $C_i$ es la clase q-ciclotómica módulo $n$ que contiene a $i$. Este código tiene distancia mínima al menos $\delta$ y su dimensión es $n - \vert T \vert$.
+
+
+Variando el valor de $b$ podemos obtener una variedad de códigos con diferentes distancias mínimas y dimensiones. Cuando $b = 1$, $\mathcal{C}$ es un código BCH de \emph{sentido estricto}. Como con cualquier código cíclico, si $n = q^t - 1$, entonces $\mathcal{C}$ es un código BCH \emph{primitivo}.
+
+\subsection{Códigos Reed-Solomon}
+
+En esta sección definiremos los códigos Reed-Solomon, que abreviaremos como códigos RS, como una subfamilia de los códigos BCH.
+
+\begin{definition}
+    Un código RS $\mathcal{C}$ sobre $\mathbb{F}_q$ es un código BCH de longitud $n = q - 1$.
+\end{definition}
+
+El siguiente resultado nos muestra las propiedades de estos códigos.
+
+\begin{theorem}
+    Sea $\mathcal{C}$ un código RS sobre $\mathbb{F}_q$ de longitud $n = q - 1$ y distancia prevista $\delta$. Entonces:
+
+    \begin{enumerate}
+        \item $\mathcal{C}$ tiene conjunto $T = \{ b, ..., b + \delta - 2 \}$ para algún entero $b$.
+        \item $\mathcal{C}$ tiene distancia mínima $d = \delta$ y dimensión $k = n - d + 1$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    % TODO: demostracion
+    \begin{enumerate}
+        \item \textcolor{red}{Hay que completar esta demostración (cuando sepa qué son las clases q-ciclotómicas jeje).}
+        \item Como $\mathcal{C}$ es un código BCH, entonces su distancia mínima es $d = \delta$ y su dimensión es $n - \vert T \vert = n - (\delta - 1) = n - \delta + 1 = n - d + 1$.
+    \end{enumerate}
+\end{proof}
+
+
+\begin{comment}
+    % TODO: esto sirve?
+A continuación, introduciremos la definición de los códigos Reed-Solomon generalizados.
 
 Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Sea $n$ un número entero tal que $1 \leq n \leq q$, $\gamma = (\gamma _0,..., \gamma _{n-1})$ una n-tupla de elementos distintos de $\mathbb{F}_q$, y $\textbf{v} = (v_0,...,v_{n-1})$ una n-tupla de elementos no nulos de $\mathbb{F}_q$. Sea $k$ un número entero tal que $1 \leq k \leq n$. Entonces los códigos
 
 $$GRS_k (\gamma, \textbf{v}) = \left\{ \left( v_0 f(\gamma_0), ..., v_{n-1}f(\gamma_{n-1}) \right) : f \in \mathcal{P}_k \right\}$$
 
 son los códigos Reed-Solomon generalizados (códigos GRS).
+\end{comment}
 
 \subsection{Códigos clásicos de Goppa}
 
@@ -44,20 +92,20 @@ $$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} \equiv 0 \pmod{x^{\delta - 1}}$$
 
 La última equivalencia es la base para la definición de los códigos clásicos de Goppa.
 
-Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma (L,G)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
+Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
 
 \begin{equation}
     \label{def:goppa}
     \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
 \end{equation}
 
-De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $g(x)$. Además, trabajar con módulo $g(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(g(x))$, y la hipótesis $g(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $g(x)$ el \emph{polinomio de Goppa} de $\Gamma (L,G)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma (L,G)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $g(x) = x^{\delta - 1}$.
+De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $g(x)$. Además, trabajar con módulo $g(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(g(x))$, y la hipótesis $g(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $g(x)$ el \emph{polinomio de Goppa} de $\Gamma(L,g)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma(L,g)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $g(x) = x^{\delta - 1}$.
 
-A continuación, buscaremos una matriz de paridad para $\Gamma (L,G)$. Para ello, observamos que
+A continuación, buscaremos una matriz de paridad para $\Gamma(L,g)$. Para ello, observamos que
 
 $$\frac{1}{x - \gamma_i} \equiv - \frac{1}{g(\gamma_i)} \frac{g(x) - g(\gamma_i)}{x - \gamma_i} \pmod{ g(x)}$$
 
-ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\gamma_i) \right) \pmod{g(x)}$. Así que por \eqref{def:goppa} $\textbf{c} = c_0 \cdots c_{n-1} \in \Gamma (L,G)$ si y solo si
+ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\gamma_i) \right) \pmod{g(x)}$. Así que por \eqref{def:goppa} $\textbf{c} = c_0 \cdots c_{n-1} \in \Gamma(L,g)$ si y solo si
 
 \begin{equation}
     \label{congruencia_goppa}
@@ -68,7 +116,7 @@ Supongamos que $g(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, don
 
 $$\frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} = g(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = g(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)$$
 
-Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $x^k$ iguales a $0$, en el orden $k = w - 1, w - 2, ..., 0$, tenemos que $\textbf{c} \in \Gamma (L,G)$ si y solo si $Hc^T = 0$, donde 
+Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $x^k$ iguales a $0$, en el orden $k = w - 1, w - 2, ..., 0$, tenemos que $\textbf{c} \in \Gamma(L,g)$ si y solo si $Hc^T = 0$, donde 
 
 \begin{equation}
     H = \left(
@@ -98,21 +146,38 @@ con $h_i = g(\gamma_i)^{-1}$.
     \end{equation}
 \end{proposition}
 
-Las entradas de $H'$ están en $\mathbb{F}_{q^t}$. Eligiendo una base de $\mathbb{F}_{q^t}$ sobre $\mathbb{F}_q$, cada elemento de $\mathbb{F}_{q^t}$ se puede representar como un vector columna $t \times 1$ sobre $\mathbb{F}_q$. Reemplazando cada entrada de $H'$ por su correspondiente vector columna, obtenemos una matriz $H''$ de dimensión $tw \times n$ sobre $\mathbb{F}_{q}$ que tiene la propiedad de que si $\textbf{c} \in \mathbb{F}_q^n$ está en $\Gamma(L, G)$ si y solo si $H''c^T = 0$.
+Las entradas de $H'$ están en $\mathbb{F}_{q^t}$. Eligiendo una base de $\mathbb{F}_{q^t}$ sobre $\mathbb{F}_q$, cada elemento de $\mathbb{F}_{q^t}$ se puede representar como un vector columna $t \times 1$ sobre $\mathbb{F}_q$. Reemplazando cada entrada de $H'$ por su correspondiente vector columna, obtenemos una matriz $H''$ de dimensión $tw \times n$ sobre $\mathbb{F}_{q}$ que tiene la propiedad de que si $\textbf{c} \in \mathbb{F}_q^n$ está en $\Gamma(L,g)$ si y solo si $H''c^T = 0$.
 
 El siguiente resultado nos muestra los límites en la dimensión y la distancia mínima de un código de Goppa.
 
 \begin{theorem}
-    Con la notación de esta sección, sea $\Gamma (L, G)$ un código de Goppa tal que $gr(g(x)) = w$ entonces es un $[n, k, d]$ código con $k \geq n - wt$ y $d \geq w + 1$.
+    \label{th:dist_min_Goppa}
+    Con la notación de esta sección, sea $\Gamma(L,g)$ un código de Goppa tal que $gr(g(x)) = w$ entonces es un $[n, k, d]$ código con $k \geq n - wt$ y $d \geq w + 1$.
 \end{theorem}
 
 \begin{proof}
-    Las filas de $H''$ pueden ser dependientes, luego esta matriz tiene rango como máximo $wt$. Por lo que $\Gamma(L,G)$ tiene dimensión al menos $n - wt$. Si una palabra código $\textbf{c} \in \Gamma (L, G)$ tiene peso $w$ o menos, entonces el lado izquierdo de \ref{def:goppa} es una función racional, donde el numerador tiene grado $w - 1$ o menos; pero este numerador tiene que ser múltiplo de $g(x)$, lo cual es una contradición pues el grado de $g$ es $w$.
+    Las filas de $H''$ pueden ser dependientes, luego esta matriz tiene rango como máximo $wt$. Por lo que $\Gamma(L,g)$ tiene dimensión al menos $n - wt$. Si una palabra código $\textbf{c} \in \Gamma(L,g)$ tiene peso $w$ o menos, entonces el lado izquierdo de \ref{def:goppa} es una función racional, donde el numerador tiene grado $w - 1$ o menos; pero este numerador tiene que ser múltiplo de $g(x)$, lo cual es una contradición pues el grado de $g$ es $w$.
 \end{proof}
 
 Sin embargo, si nos restringimos sobre ciertos polinomios y el cuerpo $\mathbb{F}_2$, podemos garantizar una distancia mínima de $2w + 1$.
 
+\begin{corollary}
+    Si $\Gamma(L,g)$ es un código de Goppa tal que $gr(g(x)) = w$, entonces puede corregir hasta
 
+    $$\left\lfloor \frac{w}{2} \right\rfloor $$
+
+    errores.
+\end{corollary}
+
+\begin{proof}
+    El teorema \ref{th:decodificacion_maxima_verosimilitud} afirma que es posible corregir hasta 
+    
+    $$\left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor$$
+
+    errores. Además, por el teorema \ref{th:dist_min_Goppa} sabemos que la distancia mínima de un código de Goppa $\Gamma(L,g)$ tal que $gr(g(x)) = w$ es $d(\Gamma(L,g)) = w + 1$. Por lo que
+
+    $$\left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor = \left\lfloor \frac{(w + 1) - 1}{2} \right\rfloor = \left\lfloor \frac{w}{2} \right\rfloor .$$
+\end{proof}
 
 \section{Decodificación de los códigos de Goppa}
 
