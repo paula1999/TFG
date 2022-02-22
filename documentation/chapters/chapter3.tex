@@ -11,68 +11,187 @@
 
 Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
 
-
 El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cite{Goppa_codes_1973}.
 
-\section{Algunos códigos clásicos}
+\section{Códigos Reed-Solomon}
 
-Antes de estudiar los códigos de Goppa, introduciremos algunos códigos clásicos para motivar el objetivo de este capítulo.
-
-\subsection{Códigos BCH}
-
-% TODO: definición de código cíclico
-\textcolor{red}{TODO: definir los códigos cíclicos}
-
-Los códigos BCH son una de las muchas familias importantes de los códigos cíclicos. Consideramos un código cíclico $\mathcal{C}$ de longitud $n$ sobre $\mathbb{F}_q$ y sea $\delta$ un entero tal que $2 \leq \delta \leq n$. Diremos que $\mathcal{C}$ es un \emph{código BCH} sobre $\mathbb{F}_q$ de longitud $n$ y distancia prevista $\delta$ es un código cíclico con el conjunto
-
-\begin{equation}
-    \label{def:conjunto_BCH}
-    T = C_b \cup \cdots \cup C_{b + \delta - 2}
-\end{equation}
-
-donde $C_i$ es la clase q-ciclotómica módulo $n$ que contiene a $i$. Este código tiene distancia mínima al menos $\delta$ y su dimensión es $n - \vert T \vert$.
-
-
-Variando el valor de $b$ podemos obtener una variedad de códigos con diferentes distancias mínimas y dimensiones. Cuando $b = 1$, $\mathcal{C}$ es un código BCH de \emph{sentido estricto}. Como con cualquier código cíclico, si $n = q^t - 1$, entonces $\mathcal{C}$ es un código BCH \emph{primitivo}.
-
-\subsection{Códigos Reed-Solomon}
-
-En esta sección definiremos los códigos Reed-Solomon, que abreviaremos como códigos RS, como una subfamilia de los códigos BCH.
+Antes de estudiar los códigos de Goppa, en esta sección introduciremos los códigos Reed-Solomon, que abreviaremos como códigos RS.
 
 \begin{definition}
-    Un código RS $\mathcal{C}$ sobre $\mathbb{F}_q$ es un código BCH de longitud $n = q - 1$.
+    Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Si $\alpha$ es la n-ésima raíz primitiva de la unidad en $\mathbb{F}_q$ donde $0 \leq k \leq n = q - 1$, entonces el código
+
+    $$\text{RS}_k = \left\{ \left( f(1), f(\alpha), ..., f(\alpha^{q-2}) \right) : f \in \mathcal{P}_k \right\}$$
+
+    es un $[n, k, n - k + 2]$ código Reed-Solomon sobre $\mathbb{F}_q$.
 \end{definition}
 
-El siguiente resultado nos muestra las propiedades de estos códigos.
+\subsection{Decodificación de los códigos Reed-Solomon}
 
-\begin{theorem}
-    Sea $\mathcal{C}$ un código RS sobre $\mathbb{F}_q$ de longitud $n = q - 1$ y distancia prevista $\delta$. Entonces:
+En esta sección presentaremos dos algoritmos para decodificar por el vecino más cercano los códigos Reed-Solomon. En concreto, estudiaremos los métodos de decodificación de Peterson-Gorenstein-Zierler y de Sugiyama. Este primer método consiste en cuatro pasos, en concreto el segundo de ellos destaca por ser muy complicado y llevar demasiado tiempo. Como alternativa a ejecutar este segundo paso, surge el algoritmo de Sugiyama, una aplicación simple del algoritmo de Euclides para polinomios.
 
-    \begin{enumerate}
-        \item $\mathcal{C}$ tiene conjunto $T = \{ b, ..., b + \delta - 2 \}$ para algún entero $b$.
-        \item $\mathcal{C}$ tiene distancia mínima $d = \delta$ y dimensión $k = n - d + 1$.
-    \end{enumerate}
-\end{theorem}
+\subsubsection{Algoritmo de decodificación de Peterson-Gorenstein-Zierler}
+
+Supongamos que recibimos el mensaje $y(x)$, que difiere de la palabra código $c(x)$ en un máximo de $t$ coordenadas. El objetivo de los algoritmos de decodificación es determinar el mensaje original $c(x)$ a partir de $y(x)$. Tenemos que $y(x) = c(x) + e(x)$ donde $c(x) \in \mathcal{C}$ y $e(x)$ denota a los \emph{errores} con peso $\nu \leq t$. Supongamos que el error ocurre en las coordenadas desconocidas $k_1, ..., k_\nu$. Por lo tanto, los errores tendrán la siguiente forma
+
+$$e(x) = e_{k_1} x^{k_1} + \cdots + e_{k_{\nu}} x^{k_{\nu}}.$$
+
+Si determinamos $e(x)$, lo que equivale a encontrar el número de errores $\nu$, las posiciones de los errores $k_j$ y los valores de los errores $e_{k_j}$, podemos decodificar el vector recibido como $c(x) = y(x) - e(x)$.
+
+Comenzamos definiendo el \emph{síndrome} $S_i$ de $y(x)$ como el elemento $S_i = y \left( \alpha^i \right)$ para $1 \leq i \leq 2t$. El primer paso del algoritmo será determinar los síndromes. Además, los síndromes satisfacen que
+
+$$S_i = y (\alpha^i) = c (\alpha^i) + e (\alpha^i) = 0 + e (\alpha^i) = \sum_{j=1}^{\nu} e_{k_j} (\alpha^i) ^{k_j} = \sum_{j=1}^{\nu} e_{k_j} (\alpha^{k_j}) ^i, \qquad 1 \leq i \leq 2t.$$
+
+Para $1 \leq j \leq \nu$ simplificaremos la notación, sea $E_j = e_{k_j}$ que denota el \emph{valor del error en la coordenada} $k_j$ y $X_j = \alpha^{k_j}$ denota el \emph{número de la posición del error correspondiente a la posición del error} $k_j$. Así, los síndromes se pueden reformular como sigue.
+
+\begin{equation}
+    \label{prop:sindromes_peterson}
+    S_i = \sum_{j=1}^{\nu} E_j X_j^i, \qquad 1 \leq i \leq 2t,
+\end{equation}
+
+que resulta en el sistema de ecuaciones:
+
+\begin{equation}
+    \label{prop:sistema_sindromes_peterson}
+    \left\{
+    \begin{array}{c} 
+        S_1 = E_1 X_1 + \cdots + E_\nu X_\nu,\\
+        S_2 = E_1 X_1^2 + \cdots + E_\nu X_\nu^2\\
+        \qquad \vdots \\
+        S_{2t} = E_1 X_1^{2t} + \cdots + E_\nu X_\nu^{2t}
+    \end{array}
+    \right.
+\end{equation}
+
+Este sistema es no linear para los $X_j$ y además desconocemos los valores para $E_j$ y $X_j$. Para resolver este sistema, primero obtendremos los $X_j$ con un nuevo sistema lineal que involucrará nuevas variables. Así, el sistema \ref{prop:sistema_sindromes_peterson} será lineal para los $E_j$ y podremos determinarlos.
+
+Para ello, definimos el \emph{polinomio localizador de errores} como
+
+$$\sigma(x) = (1 - xX_1) \cdots (1 - xX_\nu) = 1 + \sum_{i=1}^\nu \sigma_i x^i$$
+
+Observemos que las raíces de $\sigma(x)$ son las inversas de los $X_j$:
+
+$$\sigma \left( X_j^{-1} \right) = 1 + \sigma_1 X_j^{-1} + \cdots + \sigma_\nu X_j^{-\nu} = 0, \qquad 1 \leq j \leq \nu .$$
+
+Multiplicando por $E_j X_j^{i + \nu}$ obtenemos
+
+$$E_j X_j^{i + \nu} + \sigma_1 E_j X_j^{i + \nu - 1} + \cdots + \sigma_\nu E_j X_j^{i} = 0, \qquad \forall i.$$
+
+Si sumamos para todo $j$ en $1 \leq j \leq \nu$ tenemos
+
+$$\sum_{j=1}^\nu E_j X_j^{i + \nu} + \sigma_1 \sum_{j=1}^\nu E_j X_j^{i + \nu - 1} + \cdots + \sigma_\nu \sum_{j=1}^\nu E_j X_j^{i} = 0.$$
+
+En estas sumas hemos obtenido los síndromes de \ref{prop:sindromes_peterson}, pues $i \geq 1$ y $i + \nu \leq 2t$. Como $\nu \leq t$, tenemos que
+
+$$S_{i + \nu} + \sigma_1 S_{i + \nu - 1} + \cdots + \sigma_\nu S_i = 0, \qquad 1 \leq i \leq \nu ,$$
+
+que equivale a 
+
+$$\sigma_1 S_{i + \nu - 1} + \cdots + \sigma_\nu S_i = -S_{i + \nu}, \qquad 1 \leq i \leq \nu .$$
+
+Así, llegamos al siguiente sistemas de ecuaciones del que podemos obtener los $\sigma_k$.
+
+\begin{equation}
+    \label{prop:sistema_polinomio_localizador_errores}
+    \left(
+        \begin{array}{ccccc}
+            S_1 & S_2 & \cdots & S_{\nu - 1} & S_\nu \\
+            S_2 & S_3 & \cdots & S_\nu & S_{\nu + 1} \\
+                &     & \vdots &       &             \\
+            S_\nu & S_{\nu + 1} & \cdots & S_{2\nu - 2} & S_{2\nu - 1}
+        \end{array}
+    \right)
+    \left(
+        \begin{array}{c}
+            \sigma_\nu \\
+            \sigma_{\nu - 1}\\ 
+            \vdots \\
+            \sigma_{1}
+        \end{array}
+    \right)
+    = 
+    \left(
+        \begin{array}{c}
+            -S_{\nu + 1} \\
+            -S_{\nu + 2}\\ 
+            \vdots \\
+            -S_{2\nu}
+        \end{array}
+    \right)
+\end{equation}
+
+La dificultad para resolver este sistema está en que desconocemos el valor de $\nu$, que queremos que sea lo más pequeño posible. El siguiente lema nos será útil.
+
+\begin{lemma}
+    \label{lm:matriz_singular}
+    Sea $\mu \leq t$ y sea 
+    \[
+        \left(
+        \begin{array}{ccc}
+            S_1 & \cdots & S_\mu \\
+            \vdots & \ddots & \vdots \\
+            S_\mu & \cdots & S_{2\mu - 1}
+        \end{array}
+        \right)
+    \]
+    Si $\mu = \nu$, entonces $M_\mu$ no es singular; pero si $\mu > \nu$, entonces $M_\mu$ es singular, donde $\nu$ es el número de errores que se han producido.
+\end{lemma}
 
 \begin{proof}
-    % TODO: demostracion
-    \begin{enumerate}
-        \item \textcolor{red}{Hay que completar esta demostración (cuando sepa qué son las clases q-ciclotómicas jeje).}
-        \item Como $\mathcal{C}$ es un código BCH, entonces su distancia mínima es $d = \delta$ y su dimensión es $n - \vert T \vert = n - (\delta - 1) = n - \delta + 1 = n - d + 1$.
-    \end{enumerate}
+    Ver Lema 5.4.2 en la página 181, \cite{Huffman_Pless_2010}.
 \end{proof}
 
+Realizaremos un procedimiento iterativo para obtener el valor de $\nu$, empezando con $\mu = t$, que es lo más grande que $\nu$ puede ser. Teniendo en cuenta el lema \ref{lm:matriz_singular}, tenemos que $M_\mu = M_t$. Luego si $M_\mu$ es singular, reducimos el valor de $\mu$ en $1$, $\mu = t - 1$, y volvemos a probar si $M_\mu = M_{t-1}$ es singular. Continuaremos reduciendo $\mu$ en $1$ hasta que obtengamos una matriz $M_\mu$ que no sea singular, en cuyo caso obtendremos el valor de $\nu = \mu$. Así, resolvemos el sistema \ref{prop:sistema_polinomio_localizador_errores} y podremos determinar $\sigma(x)$. Con esto concluimos el segundo paso del algoritmo.
 
-\begin{comment}
-    % TODO: esto sirve?
-A continuación, introduciremos la definición de los códigos Reed-Solomon generalizados.
+El siguiente paso será determinar las raíces de $\sigma(x)$ y calcular sus inversas para determinar los $X_j$. Esto lo podemos hacer calculando reiteradamente $\sigma(\alpha^i)$ para $0 \leq i < n$. Una vez conocidos los $X_j$, podemos resolver el sistema de ecuaciones \ref{prop:sistema_sindromes_peterson} para determinar los $E_j$. Ahora ya podremos determinar los valores de $k_j$ y $e_{k_j}$, y así poder obtener el vector error $e(x)$. Finalmente, restando el vector $e(x)$ al vector $y(x)$ podemos determinar el mensaje original $c(x)$, como queríamos.
 
-Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Sea $n$ un número entero tal que $1 \leq n \leq q$, $\gamma = (\gamma _0,..., \gamma _{n-1})$ una n-tupla de elementos distintos de $\mathbb{F}_q$, y $\textbf{v} = (v_0,...,v_{n-1})$ una n-tupla de elementos no nulos de $\mathbb{F}_q$. Sea $k$ un número entero tal que $1 \leq k \leq n$. Entonces los códigos
+En resumen, el algoritmo de decodificación de Peterson-Gorenstein-Zierler es el siguiente:
 
-$$GRS_k (\gamma, \textbf{v}) = \left\{ \left( v_0 f(\gamma_0), ..., v_{n-1}f(\gamma_{n-1}) \right) : f \in \mathcal{P}_k \right\}$$
+\begin{itemize}
+    \item[I.] Calcular los síndromes $S_i = y(\alpha^i)$ para $1 \leq i \leq 2t$.
+    \item[II.] Iterar decrementando una unidad desde $\mu = t$ hasta que $M_{\mu}$ no sea singular. Definamos ese valor como $\nu = \mu$ y resolvemos \ref{prop:sistema_polinomio_localizador_errores} para obtener $\sigma(x)$.
+    \item[III.] Determinar las raíces de $\sigma(x)$ calculando $\sigma(\alpha^i)$ para $0 \leq i < n$. Los $X_j$ coinciden con las inversas de dichas raíces.
+    \item[IV.] Resolver las primeras $\nu$ ecuaciones de \ref{prop:sistema_sindromes_peterson} para determinar los $E_j$.
+    \item[V.] Calcular los valores de $k_j$ y $e_{k_j}$.
+    \item[VI.] Determinar $c(x)$ como el resultado de la operación $y(x) - e(x)$.
+\end{itemize}
 
-son los códigos Reed-Solomon generalizados (códigos GRS).
-\end{comment}
+\begin{exampleth}
+    % TODO
+    \textcolor{red}{Poner un ejemplo chorra}
+\end{exampleth}
+
+\subsubsection{Algoritmo de decodificación de Sugiyama}
+
+El algoritmo de decodificación de Peterson-Gorenstein-Zierler se puede mejorar, en concreto el paso II consume mucho tiempo pues tiene que computar diversos determinantes para cada matriz hasta encontrar alguna que no sea singular. El algoritmo de Sugiyama presenta una alternativa para este segundo paso, de hecho usa el algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
+
+Recordamos que el polinomio localizador de errores $\sigma(x)$ se define como $\prod_{j=1}^{\nu} (1 - xX_j)$. El \emph{polinomio evaluador de errores} $\omega(x)$ se define como
+
+\begin{equation}
+    \label{def:polinomio_evaluador_errores}
+    \omega(x) = \sum_{j=1}^{\nu} E_j X_j \prod_{\substack{i=1\\ i \neq j}} (1 - xX_i) = \sum_{j=1}^{\nu} E_j X_j \frac{\sigma(x)}{1 - xX_j}.
+\end{equation}
+
+Observemos que $gr(\sigma(x)) = \nu$ y $gr(\omega(x)) \leq \nu - 1$. Definimos el polinomio $S(x)$ de grado como mucho $2t - 1$ tal que 
+
+$$S(x) = \sum_{i=0}^{2t - 1} S_{i+1} x^i,$$
+
+donde $S_i$ para $1 \leq i \leq 2t$ son los síndromes.
+
+De esta forma, se cumple la siguiente relación (página 191, \cite{Huffman_Pless_2010}.)
+
+$$\omega(x) \equiv \sigma(x) S(x) \pmod{x^{2t}},$$
+
+a la que nos referiremos como $ecuación clave$. Además, tenemos que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos.
+
+El algoritmo de Sugiyama es el siguiente.
+
+\begin{itemize}
+    \item[I.] Sean $f(x) = x^{2t}$, $s(x) = S(x)$, $r_{-1}(x) = f(x)$, $r_0(x) = s(x)$, $b_{-1}(x) = 0$ y $b_0(x) = 1$.
+    \item[II.] Iterar incrementando en una unidad desde $i = 1$ hasta $I$, de forma que se cumpla que $gr(r_{I-1}(x)) \geq t$ y $gr(r_I(x)) < t$. En cada iteración habrá que determinar $h_i(x)$, $r_i(x)$ y $b_i(x)$:
+        $$r_{i-2}(x) = r_{i-1}(x) h_i(x) + r_i (x), \qquad \text{ donde } gr(r_i(x)) < gr(r_{i-1}(x)),$$
+        $$b_i(x) = b_{i-2}(x) - h_i(x) b_{i-1}(x).$$
+    \item[III.] $\sigma(x)$ es un escalar no nulo múltiplo de $b_I(x)$. 
+\end{itemize}
 
 \section{Códigos clásicos de Goppa}
 
@@ -354,3 +473,26 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
     Si $gr(g(x)) = t$ y si $g(x)$ no tiene factores irreducibles repetidos, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código binario de Goppa con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
+\subsubsection{El algoritmo de decodificación de Sugiyama}
+
+Dado $g(x)$ un polinomio de Goppa con grado $2t$.
+
+\begin{itemize}
+    \item[I.] Calcular el síndrome $S(x)$.
+    \item[II.] Sean $r_{-1}(x) = g(x)$, $r_0(x) = S(x)$, $U_{-1}(x) = 0$ y $U_0(x) = 1$.
+    \item[III.] Buscar $q_i(x)$ y $r_i(x)$ aplicando el algoritmo de Euclides para encontrar el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ para $i = 1,..., k$, hasta que $k$ cumpla que $gr(r_{k-1}(x)) \geq t$ y $gr(r_k(x)) < t$:
+
+        $$r_{i-2}(x) = r_{i-1}(x) q_i(x) + r_i(x), \qquad gr(r_i(x)) < gr(r_{i-1})(x)$$
+    
+    \item[IV.] Calcular $U_k(x)$, donde
+    
+        $$U_i(x) = q_i(x) U_{i-1}(x) + U_{i-2}(x)$$
+
+    \item[V.] La solución viene dada por:
+        $$\eta(x) = (-1)^k \delta r_k(x)$$
+        $$\sigma(x) = \delta U_k(x)$$
+\end{itemize}
+
+\begin{proposition}
+    Sea $e$ el número de errores que ocurren realmente y sea $k$ el número de iteraciones del algoritmo descrito, entonces $k \leq e$.
+\end{proposition}
