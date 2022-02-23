@@ -193,6 +193,98 @@ El algoritmo de Sugiyama es el siguiente.
     \item[III.] $\sigma(x)$ es un escalar no nulo múltiplo de $b_I(x)$. 
 \end{itemize}
 
+Para verificar que este algoritmo funciona, el siguiente lema nos será de utilidad.
+
+\begin{lemma}
+    \label{lm:dem_sugiyama}
+    Con la notación del algoritmo de Sugiyama, sea $a_{-1}(x) = 1$, $a_0(x) = 0$ y $a_i(x) = a_{i-2}(x) - h_i(x) a_{i-1}(x)$ para $i \geq 1$. Las siguientes afirmaciones son ciertas.
+
+    \begin{itemize}
+        \item $a_i(x) f(x) + b_i(x) s(x) = r_i (x)$ para $i \geq -1$.
+        \item $b_i(x) r_{i-1}(x) - b_{i-1} r_i(x) = (-1)^i f(x)$ para $i \geq 0$.
+        \item $a_i(x) b_{i-1}(x) - a_{i-1} b_i (x) = (-1)^{i+1}$ para $i \geq 0$.
+        \item $gr(b_i(x)) + gr(r_{i-1}(x)) = gr(f(x))$ para $i \geq 0$.
+    \end{itemize}
+\end{lemma}
+
+\begin{proof}
+    Ver Lema 5.4.11 en la página 191, \cite{Huffman_Pless_2010}.
+\end{proof}
+
+Comprobemos ahora que el algoritmo de Sugiyama funciona. Por el Lema \ref{lm:dem_sugiyama} (i) tenemos que
+
+\begin{equation}
+    \label{dem:sugiyama_relacion}
+    a_I(x) x^{2t} + b_I(x) S(x) = r_I(x).
+\end{equation}
+
+Además, por la ecuación clave sabemos que
+
+\begin{equation}
+    \label{dem:sugiyama_key_equation}
+    a(x) x^{2t} + \sigma(x) S(x) = \omega(x)
+\end{equation}
+
+para algún polinomio $a(x)$. Multiplicando \ref{dem:sugiyama_relacion} por $\sigma(x)$ y \ref{dem:sugiyama_key_equation} por $b_I(x)$ obtenemos 
+
+\begin{equation}
+    \label{dem:sugiyama_relacion_sigma}
+    a_I(x) \sigma(x) x^{2t}  + b_I(x) \sigma(x) S(x) = r_I(x) \sigma(x) \quad \text{ y }
+\end{equation}
+\begin{equation}
+    \label{dem:sugiyama_key_equation_b_I}
+    a(x) b_I(x) x^{2t} + \sigma(x) b_I(x) S(x) = \omega(x) b_I(x).
+\end{equation}
+
+Aplicando módulo $x^{2t}$ a ambas ecuaciones tenemos que 
+
+\begin{align*}
+    b_I(x) \sigma(x) S(x) &\equiv r_I(x) \sigma(x) \pmod{x^{2t}} \quad \text{ y }\\
+    \sigma(x) b_I(x) S(x) &\equiv \omega(x) b_I(x) \pmod{x^{2t}}.
+\end{align*}
+
+Por lo tanto,
+
+\begin{equation}
+    \label{dem:sugiyama_modulo}
+    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
+\end{equation}
+
+Como $gr(\sigma(x)) \leq t$, por la elección de $I$,
+
+$$gr(r_I(x) \sigma(x)) = gr(r_I(x)) + gr(\sigma(x)) < t + t = 2t.$$ 
+
+Por el Lema \ref{lm:dem_sugiyama} (iv), la elección de $I$ y como $gr(\omega(x)) < t$, entonces se cumple que 
+
+$$gr(\omega(x) \times b_I(x)) = gr(\omega(x)) + gr(b_I(x)) < t + gr(b_I(x)) = t + (gr(x^{2t}) - gr(r_{I-1}(x))) \leq 3t - t = 2t.$$
+
+Por \ref{dem:sugiyama_modulo} tenemos que $r_I(x) \sigma(x) = \omega(x) b_I(x)$. Esto, junto con \ref{dem:sugiyama_relacion_sigma} y \ref{dem:sugiyama_key_equation_b_I}, implica que 
+
+\begin{equation}
+    \label{dem:sugiyama_implicacion_ecuaciones}
+    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
+\end{equation}
+
+Sin embargo, el Lema \ref{lm:dem_sugiyama} (iii) afirma que $a_I(x)$ y $b_I(x)$ son primos relativos, y por \ref{dem:sugiyama_implicacion_ecuaciones} se cumple que $a(x) = \lambda(x) a_I(x)$. Sustituyendo esta relación en \ref{dem:sugiyama_implicacion_ecuaciones},
+
+\begin{equation}
+    \label{dem:sugiyama_sustitucion}
+    \sigma(x) = \lambda(x) b_I(x).
+\end{equation}
+
+Ahora, sustituyendo estas dos últimas relaciones en \ref{dem:sugiyama_key_equation} obtenemos $\lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \omega(x)$. La ecuación \ref{dem:sugiyama_relacion} implica que
+
+\begin{equation}
+    \label{dem:sugiyama_relacion_omega}
+    \omega(x) = \lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \lambda(x) \cdot \left( a_I(x) x^{2t} + b_I(x) S(x) \right) = \lambda(x) r_I(x).
+\end{equation}
+
+Teniendo en cuenta que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos y por \ref{dem:sugiyama_sustitucion} y \ref{dem:sugiyama_relacion_omega}, $\lambda(x)$ tiene que ser una constante no nula, verificando el paso III del algoritmo de Sugiyama.
+
+Como solo estamos interesados en las raíces de $\sigma(x)$, es suficiente con determinar las raíces de $b_I(x)$ obtenidos en el paso II; lo que nos dará los $X_j$. 
+
+Más adelante veremos que este algoritmo sigue funcionando con otras elecciones de $f(x)$ y $s(x)$, con las modificaciones apropiadas de las condiciones sobre las que el algoritmo termina en el paso II. Una de estas modificaciones nos será útil para decodificar los códigos Goppa que veremos a continuación.
+
 \section{Códigos clásicos de Goppa}
 
 Los códigos clásicos de Goppa se introdujeron por V. D. Goppa en 1970. Estos códigos son generalizaciones de códigos BCH y subcódigos de subcuerpos de ciertos códigos GRS.
@@ -475,7 +567,9 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
 
 \subsubsection{El algoritmo de decodificación de Sugiyama}
 
-Dado $g(x)$ un polinomio de Goppa con grado $2t$.
+En esta sección presentaremos una modificación del algoritmo de Sugiyama, ya estudiado para los códigos RS, para adaptarlo a los códigos Goppa.
+
+Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificación de Sugiyama para los códigos Goppa es el siguiente.
 
 \begin{itemize}
     \item[I.] Calcular el síndrome $S(x)$.
