@@ -9,7 +9,7 @@
 % TODO: introduccion
 \textcolor{red}{Hay que completar esta introducción}
 
-Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
+En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
 
 El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cite{Goppa_codes_1973}.
 
@@ -18,7 +18,7 @@ El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cit
 Antes de estudiar los códigos de Goppa, en esta sección introduciremos los códigos Reed-Solomon, que abreviaremos como códigos RS.
 
 \begin{definition}
-    Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Si $\alpha$ es la n-ésima raíz primitiva de la unidad en $\mathbb{F}_q$ donde $0 \leq k \leq n = q - 1$, entonces el código
+    Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Si $\alpha$ es una n-ésima raíz primitiva de la unidad en $\mathbb{F}_q$ donde $0 \leq k \leq n = q - 1$, entonces el código
 
     $$\text{RS}_k = \left\{ \left( f(1), f(\alpha), ..., f(\alpha^{q-2}) \right) : f \in \mathcal{P}_k \right\}$$
 
@@ -27,11 +27,11 @@ Antes de estudiar los códigos de Goppa, en esta sección introduciremos los có
 
 \subsection{Decodificación de los códigos Reed-Solomon}
 
-En esta sección presentaremos dos algoritmos para decodificar por el vecino más cercano los códigos Reed-Solomon. En concreto, estudiaremos los métodos de decodificación de Peterson-Gorenstein-Zierler y de Sugiyama. Este primer método consiste en cuatro pasos, en concreto el segundo de ellos destaca por ser muy complicado y llevar demasiado tiempo. Como alternativa a ejecutar este segundo paso, surge el algoritmo de Sugiyama, una aplicación simple del algoritmo de Euclides para polinomios.
+En esta sección presentaremos dos algoritmos para decodificar por el vecino más cercano los códigos RS. En concreto, estudiaremos los métodos de decodificación de Peterson-Gorenstein-Zierler y de Sugiyama. Este primer método consiste en cuatro pasos, en concreto el segundo de ellos destaca por ser poco eficiente y llevar demasiado tiempo. Como alternativa a ejecutar este segundo paso, surge el algoritmo de Sugiyama, una aplicación simple del algoritmo de Euclides para polinomios.
 
 \subsubsection{Algoritmo de decodificación de Peterson-Gorenstein-Zierler}
 
-Supongamos que recibimos el mensaje $y(x)$, que difiere de la palabra código $c(x)$ en un máximo de $t$ coordenadas. El objetivo de los algoritmos de decodificación es determinar el mensaje original $c(x)$ a partir de $y(x)$. Tenemos que $y(x) = c(x) + e(x)$ donde $c(x) \in \mathcal{C}$ y $e(x)$ denota a los \emph{errores} con peso $\nu \leq t$. Supongamos que el error ocurre en las coordenadas desconocidas $k_1, ..., k_\nu$. Por lo tanto, los errores tendrán la siguiente forma
+Supongamos que recibimos el mensaje $y(x)$, que difiere de la palabra código $c(x)$ en un máximo de $t$ coordenadas. El objetivo de los algoritmos de decodificación es determinar el mensaje original $c(x)$ a partir de $y(x)$. Tenemos que $y(x) = c(x) + e(x)$ donde $c(x) \in \mathcal{C}$ y $e(x)$ denota a los \emph{errores} con peso $\nu \leq t$. Supongamos que el error ocurre en las coordenadas desconocidas $k_1, ..., k_\nu$. Por lo tanto, el polinomio error tendrá la siguiente forma
 
 $$e(x) = e_{k_1} x^{k_1} + \cdots + e_{k_{\nu}} x^{k_{\nu}}.$$
 
@@ -62,7 +62,7 @@ que resulta en el sistema de ecuaciones:
     \right.
 \end{equation}
 
-Este sistema es no linear para los $X_j$ y además desconocemos los valores para $E_j$ y $X_j$. Para resolver este sistema, primero obtendremos los $X_j$ con un nuevo sistema lineal que involucrará nuevas variables. Así, el sistema \ref{prop:sistema_sindromes_peterson} será lineal para los $E_j$ y podremos determinarlos.
+Este sistema es no lineal para los $X_j$ y además desconocemos los valores para $E_j$ y $X_j$. Para resolver este sistema, primero obtendremos los $X_j$ con un nuevo sistema lineal que involucrará nuevas variables. Así, el sistema \ref{prop:sistema_sindromes_peterson} será lineal para los coeficientes $E_j$ y podremos determinarlos.
 
 Para ello, definimos el \emph{polinomio localizador de errores} como
 
@@ -162,7 +162,7 @@ En resumen, el algoritmo de decodificación de Peterson-Gorenstein-Zierler es el
 
 \subsubsection{Algoritmo de decodificación de Sugiyama}
 
-El algoritmo de decodificación de Peterson-Gorenstein-Zierler se puede mejorar, en concreto el paso II consume mucho tiempo pues tiene que computar diversos determinantes para cada matriz hasta encontrar alguna que no sea singular. El algoritmo de Sugiyama presenta una alternativa para este segundo paso, de hecho usa el algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
+El algoritmo de decodificación de Peterson-Gorenstein-Zierler se puede mejorar. En concreto el paso II es poco eficiente pues tiene que computar diversos determinantes para cada matriz hasta encontrar alguna que no sea singular. El algoritmo de Sugiyama presenta una alternativa para este segundo paso, usando el algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
 
 Recordamos que el polinomio localizador de errores $\sigma(x)$ se define como $\prod_{j=1}^{\nu} (1 - xX_j)$. El \emph{polinomio evaluador de errores} $\omega(x)$ se define como
 
@@ -171,7 +171,7 @@ Recordamos que el polinomio localizador de errores $\sigma(x)$ se define como $\
     \omega(x) = \sum_{j=1}^{\nu} E_j X_j \prod_{\substack{i=1\\ i \neq j}} (1 - xX_i) = \sum_{j=1}^{\nu} E_j X_j \frac{\sigma(x)}{1 - xX_j}.
 \end{equation}
 
-Observemos que $gr(\sigma(x)) = \nu$ y $gr(\omega(x)) \leq \nu - 1$. Definimos el polinomio $S(x)$ de grado como mucho $2t - 1$ tal que 
+Observemos que $gr(\sigma(x)) = \nu$ y $gr(\omega(x)) \leq \nu - 1$. Definimos el polinomio $S(x)$ de grado menor que $2t - 1$ como
 
 $$S(x) = \sum_{i=0}^{2t - 1} S_{i+1} x^i,$$
 
@@ -181,9 +181,9 @@ De esta forma, se cumple la siguiente relación (página 191, \cite{Huffman_Ples
 
 $$\omega(x) \equiv \sigma(x) S(x) \pmod{x^{2t}},$$
 
-a la que nos referiremos como $ecuación clave$. Además, tenemos que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos.
+a la que nos referiremos como \emph{ecuación clave} o \emph{key equation}. Además, tenemos que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos.
 
-El algoritmo de Sugiyama es el siguiente.
+El algoritmo de Sugiyama es el siguiente:
 
 \begin{itemize}
     \item[I.] Sean $f(x) = x^{2t}$, $s(x) = S(x)$, $r_{-1}(x) = f(x)$, $r_0(x) = s(x)$, $b_{-1}(x) = 0$ y $b_0(x) = 1$.
@@ -272,7 +272,11 @@ Sin embargo, el Lema \ref{lm:dem_sugiyama} (iii) afirma que $a_I(x)$ y $b_I(x)$ 
     \sigma(x) = \lambda(x) b_I(x).
 \end{equation}
 
-Ahora, sustituyendo estas dos últimas relaciones en \ref{dem:sugiyama_key_equation} obtenemos $\lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \omega(x)$. La ecuación \ref{dem:sugiyama_relacion} implica que
+Ahora, sustituyendo estas dos últimas relaciones en \ref{dem:sugiyama_key_equation} obtenemos
+
+$$\lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \omega(x).$$ 
+
+La ecuación \ref{dem:sugiyama_relacion} implica que
 
 \begin{equation}
     \label{dem:sugiyama_relacion_omega}
@@ -289,7 +293,7 @@ Más adelante veremos que este algoritmo sigue funcionando con otras elecciones 
 
 Los códigos clásicos de Goppa se introdujeron por V. D. Goppa en 1970. Estos códigos son generalizaciones de códigos BCH y subcódigos de subcuerpos de ciertos códigos GRS.
 
-Para motivar la definición de los códigos de Goppa, introduciremos una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ la raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Elegimos $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
+Para motivar la definición de los códigos de Goppa, introduciremos una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ una raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Elegimos $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
 
 $$(x^n - 1) \sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \sum_{i=0}^{n-1} c_i \sum_{l=0}^{n-1} x^l \left( \beta ^{-i} \right) ^{n-1-l} = \sum_{l=0}^{n-1} x^l \sum_{i=0}^{n-1} c_i \left( \beta^{l+1} \right) ^i.$$
 
@@ -394,7 +398,7 @@ Los códigos binarios de Goppa son códigos de corrección de errores que perten
 
 \begin{definition}
 
-    Fijado el cuerpo de extensión $\mathbb{F}_{2^m}$ de $\mathbb{F}_2$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \} \in \mathbb{F}_{2^m}^n$ una tupla de $n$ elementos distintos de $\mathbb{F}_{2^m}$ y sea $g(x) \in \mathbb{F}_{2^m}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código binario de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \{ 0, 1 \}^n$ tal que 
+    Fijada la extensión de cuerpos $\mathbb{F}_{2^m}$ de $\mathbb{F}_2$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \} \in \mathbb{F}_{2^m}^n$ una tupla de $n$ elementos distintos de $\mathbb{F}_{2^m}$ y sea $g(x) \in \mathbb{F}_{2^m}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código binario de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \{ 0, 1 \}^n$ tal que 
 
     \begin{equation}
         \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
@@ -567,8 +571,12 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
 
 \subsubsection{El algoritmo de decodificación de Sugiyama}
 
-En esta sección presentaremos una modificación del algoritmo de Sugiyama, ya estudiado para los códigos RS, para adaptarlo a los códigos Goppa.
 
+
+En esta sección preentaremos una modificación del algoritmo de Sugiyama, ya estudiado para los códigos RS, para adaptarlo a los códigos Goppa. Esta modificación consiste en aplicar el algoritmo de Euclides para encontrar el máximo común divisor de $r_{i-1}$ y $r_i$ para $i = 1,..., I$ hasta que $I$  cumpla que $gr(r_{I-1}) \geq t$ y $gr(r_I(x)) < t$.
+
+
+\begin{comment}
 Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificación de Sugiyama para los códigos Goppa es el siguiente.
 
 \begin{itemize}
@@ -590,3 +598,5 @@ Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificació
 \begin{proposition}
     Sea $e$ el número de errores que ocurren realmente y sea $k$ el número de iteraciones del algoritmo descrito, entonces $k \leq e$.
 \end{proposition}
+
+\end{comment}

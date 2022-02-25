@@ -36,15 +36,15 @@ La calidad de un código con mensajes de longitud $k$ y palabras código de long
 
 \begin{itemize}
     \item El cociente $\frac{k}{n}$, el \emph{ratio de información} del código, que mide el esfuerzo necesario para transmitir un mensaje codificado.
-    \item La \emph{distancia mínima relativa} $\frac{d}{n}$ que es aproximadamente el doble de la proporción de errores que se pueden corregir en cada mensaje codificado.
+    \item La \emph{distancia mínima relativa} $d$ que es aproximadamente el doble de la proporción de errores que se pueden corregir en cada mensaje codificado.
     \item La \emph{complejidad} de los procedimientos de codificar y decodificar.
 \end{itemize}
 
-De esta forma, uno de los objetivos centrales de la teoría de códigos autocorrectores es construir códigos que sean de calidad. Esto es, códigos que permitan codificar muchos mensajes, que se puedan trasmitir rápida y eficientemente, que detecten y corrijan simultáneamente la mayor cantidad de errores posibles y que haya algoritmos de decodificación fáciles y efectivos. Por lo que habrá que encontrar un balance entre estas distintas metas, pues suelen ser contradictorias entre sí.
+De esta forma, uno de los objetivos centrales de la teoría de códigos autocorrectores es construir códigos que sean de calidad. Esto es, códigos que permitan codificar muchos mensajes, que se puedan trasmitir rápida y eficientemente, que detecten y corrijan simultáneamente la mayor cantidad de errores posibles y que haya algoritmos de decodificación eficientes y efectivos. Por lo que habrá que encontrar un balance entre estas distintas metas, pues suelen ser contradictorias entre sí.
 
 \section{Códigos lineales}
 
-Consideramos $\mathbb{F}_q^n$, que denota al espacio vectorial de las n-tuplas sobre el cuerpo finito $\mathbb{F}_q$. Generalmente los vectores $(a_1, ..., a_n)$ de $\mathbb{F}_q^n$ se denotarán por $a_1 \cdots a_n$.
+Sea $F_q$ el cuerpo finito con $q$ elementos, denotamos por $\mathbb{F}_q^n$ el espacio vectorial de las n-tuplas sobre el cuerpo finito $\mathbb{F}_q$. Generalmente los vectores $(a_1, ..., a_n)$ de $\mathbb{F}_q^n$ se denotarán por $a_1 \cdots a_n$.
 
 \begin{definition}
     Un $(n, M)$ \emph{código} $\mathcal{C}$ sobre $\mathbb{F}_q$ es un subconjunto de 
@@ -59,7 +59,7 @@ Consideramos $\mathbb{F}_q^n$, que denota al espacio vectorial de las n-tuplas s
     \end{itemize}
 \end{exampleth}
 
-Con el fin de aportar más utilidad a los códigos, imponemos linealidad. Así, si $\mathcal{C}$ un subespacio k-dimensional de $\mathbb{F}_q^n$, entonces decimos que $\mathcal{C}$ es un $\left[ n, k \right]$ \emph{código lineal} sobre $\mathbb{F}_q$. De esta forma, los códigos lineales tendrán $q^k$ palabras código. Estos se pueden presentar con una matriz generadora o con una matriz de paridad.
+Si $\mathcal{C}$ un subespacio k-dimensional de $\mathbb{F}_q^n$, entonces decimos que $\mathcal{C}$ es un $\left[ n, k \right]$ \emph{código lineal} sobre $\mathbb{F}_q$. De esta forma, los códigos lineales tendrán $q^k$ palabras código. Estos se pueden presentar con una matriz generadora o con una matriz de paridad.
 
 \begin{definition}
     Una \emph{matriz generadora} para un $\left[ n,k \right]$ código $\mathcal{C}$ es una matriz $k \times n$ donde sus filas forman una base de $\mathcal{C}$.
@@ -69,12 +69,12 @@ Con el fin de aportar más utilidad a los códigos, imponemos linealidad. Así, 
     Para cada conjunto de $k$ columnas independientes de una matriz generadora $G$, se dice que el conjunto de coordenadas correspondiente conforman un \emph{conjunto de información} de $\mathcal{C}$. Las $r = n-k$ restantes coordenadas se denominan \emph{conjunto de redundancia} y el número $r$ es la \emph{redundancia} de $\mathcal{C}$.
 \end{definition}
 
-En general, la matriz generadora no es única. Sin embargo, si las $k$ primeras coordenadas conforman un conjunto de información, entonces el código tiene una única matriz generadora de la forma $( I_k | A)$, donde $I_k$ denota a la matriz identidad $k \times k$. Esta matriz se dice que está en \emph{forma estándar}.
+En general, la matriz generadora no es única pues se puede obtener a partir de cualquier base. Sin embargo, si las $k$ primeras coordenadas conforman un conjunto de información, entonces el código tiene una única matriz generadora de la forma $( I_k | A)$, donde $I_k$ denota a la matriz identidad $k \times k$. Esta matriz se dice que está en \emph{forma estándar}.
 
 Como un código lineal es un subespacio de un espacio vectorial, es el núcleo de alguna transformación lineal.
 
 \begin{definition}
-    Una \emph{matriz de paridad} $H$ de dimensión $(n-k) \times n$ de un $\left[ n,k \right]$ código $\mathcal{C}$ se define como
+    Una \emph{matriz de paridad} $H$ de dimensión $(n-k) \times n$ de un $\left[ n,k \right]$ código $\mathcal{C}$ es una matriz que verifica que
 
     $$C = \left\lbrace \mathbf{x} \in \mathbb{F} _q^n : H\mathbf{x}^T = 0 \right\rbrace .$$
 \end{definition}
@@ -129,11 +129,13 @@ Al igual que con la matriz generadora, la matriz de paridad no es única. Con el
         \end{array} 
         \right)
     \]
+
+    Este código se denomina el $[7, 4]$ \emph{código de Hamming}.
 \end{exampleth}
 
 \section{Código dual}
 
-Sabemos que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que podemos calcular un subespacio ortogonal a dicho subespacio y así obtener lo que se denomina \emph{espacio dual u ortogonal} de $\mathcal{C}$, denotado por $\mathcal{C} ^{\perp}$. Se define este concepto con la operación del producto escalar como sigue.
+Sabemos que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que podemos calcular el subespacio ortogonal a dicho subespacio y así obtener lo que se denomina \emph{espacio dual u ortogonal} de $\mathcal{C}$, denotado por $\mathcal{C} ^{\perp}$. Se define este concepto con la operación del producto escalar como sigue.
 
 \begin{definition}
     El \emph{espacio dual} de $\mathcal{C}$ viene dado por 
@@ -185,7 +187,7 @@ Diremos que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \s
 
 \section{Pesos y distancias}
 
-Es importante saber lo que difieren las palabras código. En este apartado estudiaremos esta idea y cómo puede influir a la teoría de códigos.
+A la hora de corregir errores es importante establecer una medida que nos establezca cuánto de diferentes son las palabras enviadas y recibidas. En este apartado estudiaremos esta idea y cómo puede influir a la teoría de códigos.
 
 \begin{definition}
     La \emph{distancia de Hamming} $\operatorname{d}(\mathbf{x},\mathbf{y})$ entre dos vectores $\mathbf{x}$, $\mathbf{y} \in \mathbb{F}_q^n$ se define como el número de coordenadas en las que $\mathbf{x}$ e $\mathbf{y}$ difieren.
@@ -217,7 +219,7 @@ Es importante saber lo que difieren las palabras código. En este apartado estud
 Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distancia más pequeña entre las distintas palabras código. Esta medida es fundamental a la hora de determinar la capacidad de corregir errores de $\mathcal{C}$.
 
 \begin{exampleth}
-    Sea $\mathcal{C} = {010101, 212121, 111000}$ un código ternario. Entonces
+    Sea $\mathcal{C} = \{010101, 212121, 111000\}$ un código ternario. Entonces
 
     $$d(010101, 212121) = 3, \qquad d(010101, 111000) = 4, \qquad d(212121, 111000) = 5.$$
 
@@ -265,39 +267,20 @@ El siguiente resultado nos muestra la relación entre la distancia y el peso.
     Sean $x,y \in \mathbb{F}_q^n$, por la definición de distancia de Hamming tenemos que $d(x,y) = wt(x-y)$. Se supone ahora que $C$ es un código lineal, luego para todo $x,y \in \mathcal{C}$, $x-y \in \mathcal{C}$, luego para cualquier par de elementos $x,y \in \mathcal{C}$, existe $z \in \mathcal{C}$ tal que $d(x,y) = wt(z) \geq wt(\mathcal{C})$, donde $wt(\mathcal{C})$ es el peso mínimo de $\mathcal{C}$. Por tanto, $d \geq wt(\mathcal{C})$. Por otro lado, para todo $x \in \mathcal{C}$, se tiene que $wt(x) = d(x,0)$. Como $\mathcal{C}$ es lineal, $0 \in \mathcal{C}$, luego $d(x,0) \geq d$. Entonces, $wt(\mathcal{C}) \geq d$. Se concluye que $wt(\mathcal{C}) = d$, como se quería.
 \end{proof}
 
-Como consecuencia de este teorema, para códigos lineales, la distancia mínima también se denomina \emph{peso mínimo} de un código. Si se conoce el peso mínimo $d$ de un $[n,k]$ código, se denota por un $[n,k,d]$ código.
+Como consecuencia de este teorema, para códigos lineales, la distancia mínima también se denomina \emph{peso mínimo} de un código. Si se conoce el peso mínimo $d$ de un $[n,k]$ código, se dice entonces que es un $[n,k,d]_q$ código.
 
-Se ha demostrado que el problema de calcular la distancia mínima de un código lineal binario es NP-difícil, y el problema de decisión correspondiente es NP-completo. Esto es, formalmente, dada una matriz binaria $H$ de dimensión $m \times n$ y un número entero $w > 0$, saber si existe un vector no nulo $x \in \mathbb{F}_2^n$ de peso menor que $w$ tal que $Hw^T = 0$ es un problema NP-completo. 
+En el artículo \cite{Vardy_1997} se ha demostrado que el problema de calcular la distancia mínima de un código lineal binario es NP-difícil, y el problema de decisión correspondiente es NP-completo.
 
-\begin{proof}
-    Para ello, haremos uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
+\begin{theorem}
+    Dada una matriz binaria $H$ de dimensión $m \times n$ y un número entero $w > 0$, saber si existe un vector no nulo $x \in \mathbb{F}_2^n$ de peso menor que $w$ tal que $Hw^T = 0$ es un problema NP-completo. 
+\end{theorem}
 
-    El problema de Decodicificación de Máxima Verosimilitud es NP-completo y consiste en dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
+Veamos un esquema de la demostración de este resultado. Para ello, haremos uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
 
-    El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
-\end{proof}
+El problema de Decodicificación de Máxima Verosimilitud es NP-completo y consiste en dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
 
-Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar realmente duro. A continuación presentaremos un algoritmo para el cálculo de la distancia.
+El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 
-\begin{Ualgorithm}[htbp]
-    \DontPrintSemicolon
-    \KwIn{matriz generadora $G_1 = (I_k | A_1)$ de $\mathcal{C}$}
-    \KwOut{distancia mínima $\bar{d}_i$}
-    $m \longleftarrow 2$\;
-    $k_1 \longleftarrow k$\;
-    \While{rank $(A_m) \neq 0$}{
-        Aplicar la eliminación Gaussiana y posibles permutaciones de las columnas de la matriz $A_{m-1}$ desde $G_{m-1} = \left( \begin{array}{c|c} A_{m-1}' & \begin{array}{c|c} I_{k_{m-1}} & A_{m-1} \\ \hline  0 & 0 \end{array} \end{array} \right)$ para obtener la matriz generadora $G_{m} = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right)$\;
-    }
-    $C_0 \longleftarrow \left\lbrace 0 \right\rbrace$\;
-    $i \longleftarrow 0$\;
-    \While{$\bar{d}_i > d_i'$}{
-        $i \longleftarrow i + 1$\;
-        $C_i \longleftarrow C_{i-1} \cup \bigcup_{j=1}^m \left\lbrace v \cdot G_j : v \in \mathbb{F}(q)^k, \; wt(v) = i \right\rbrace$\;
-        $\bar{d}_i \longleftarrow min \lbrace wt(c) : c \in C_i, \; c \neq 0 \rbrace$\;
-        $d_i' \longleftarrow \sum_{j=1, k-k_j \leq i}^m (i+1)-(k-k_j)$\;
-    }
-    \caption{Algoritmo de Brouwer-Zimmermann: cálculo de la distancia mínima de un $[n,k]$ código lineal $\mathcal{C}$.}
-\end{Ualgorithm}
 
 \begin{definition}
     Sea $A_i$, también denotada por $A_i(\mathcal{C})$, el número de palabras código con peso $i$ en $\mathcal{C}$. Se dice que la lista $A_i$ para $0 \leq i \leq n$ es la distribución del peso o espectro del peso de $\mathcal{C}$.
@@ -305,9 +288,9 @@ Como hemos visto, la distancia mínima es importante en un código lineal. Sin e
 
 \section{Clasificación por isometría}
 
-Como hemos visto, las propiedades de codificación de un código dependen principalmente de las distancias de Hamming entre diferentes palabras codificadas y entre palabras codificadas y no codificadas. Además, puede ser que un código pueda relacionarse con otro por medio de una aplicación que conserve las distancias de Hamming. De esta forma, podemos definir una relación de equivalencia entre dos códigos que preservan la distancia de Hamming.
+Como hemos visto, las propiedades de un código dependen principalmente de las distancias de Hamming entre sus palabras y entre palabras codificadas y no codificadas. Además, puede ser que un código pueda relacionarse con otro por medio de una aplicación que conserve las distancias de Hamming. De esta forma, podemos definir una relación de equivalencia entre dos códigos que preservan la distancia de Hamming.
 
-Tenemos que dos $(n,k)$-códigos $C, C' \subseteq H(n,q)$ son de la misma cualidad si existe un mapeo
+Sean $C$ y $C'$ dos $[n,k]_q$ códigos, se dice que son de la misma cualidad si existe una aplicación
 
 $$\iota : H(n,q) \rightarrow H(n,q)$$
 
@@ -332,3 +315,28 @@ Las permutaciones de las coordenadas son isometrías, que se denominan \emph{iso
     
     $$\pi(c) = \pi(c_0,...,c_{n-1}) := \left( c_{\pi ^{-1} (0)}, ..., c_{\pi ^{-1} (n-1)} \right)$$
 \end{definition}
+
+\section{Algoritmo para el cálculo de la distancia}
+
+Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar realmente duro. A continuación presentaremos el algoritmo de BZ para el cálculo de la distancia, que tiene eficiencia exponencial.
+
+\begin{Ualgorithm}[htbp]
+    \DontPrintSemicolon
+    \KwIn{matriz generadora $G_1 = (I_k | A_1)$ de $\mathcal{C}$}
+    \KwOut{distancia mínima $\bar{d}_i$}
+    $m \longleftarrow 2$\;
+    $k_1 \longleftarrow k$\;
+    \While{rank $(A_m) \neq 0$}{
+        Aplicar la eliminación Gaussiana y posibles permutaciones de las columnas de la matriz $A_{m-1}$ desde $G_{m-1} = \left( \begin{array}{c|c} A_{m-1}' & \begin{array}{c|c} I_{k_{m-1}} & A_{m-1} \\ \hline  0 & 0 \end{array} \end{array} \right)$ para obtener la matriz generadora $G_{m} = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right)$\;
+    }
+    $C_0 \longleftarrow \left\lbrace 0 \right\rbrace$\;
+    $i \longleftarrow 0$\;
+    \While{$\bar{d}_i > d_i'$}{
+        $i \longleftarrow i + 1$\;
+        $C_i \longleftarrow C_{i-1} \cup \bigcup_{j=1}^m \left\lbrace v \cdot G_j : v \in \mathbb{F}(q)^k, \; wt(v) = i \right\rbrace$\;
+        $\bar{d}_i \longleftarrow min \lbrace wt(c) : c \in C_i, \; c \neq 0 \rbrace$\;
+        $d_i' \longleftarrow \sum_{j=1, k-k_j \leq i}^m (i+1)-(k-k_j)$\;
+    }
+    \caption{Algoritmo de Brouwer-Zimmermann: cálculo de la distancia mínima de un $[n,k]$ código lineal $\mathcal{C}$.}
+\end{Ualgorithm}
+
