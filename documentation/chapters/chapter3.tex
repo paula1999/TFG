@@ -13,299 +13,7 @@ En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corr
 
 El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cite{Goppa_codes_1973}.
 
-\section{Códigos Reed-Solomon}
-
-Antes de estudiar los códigos de Goppa, en esta sección introduciremos los códigos Reed-Solomon, que abreviaremos como códigos RS.
-
-\begin{definition}
-    Para $k \geq 0$, $\mathcal{P}_k$ denota el conjunto de polinomios de grado menor que $k$, incluyendo el polinomio nulo, en $\mathbb{F}_q[x]$. Si $\alpha$ es una n-ésima raíz primitiva de la unidad en $\mathbb{F}_q$ donde $0 \leq k \leq n = q - 1$, entonces el código
-
-    $$\text{RS}_k = \left\{ \left( f(1), f(\alpha), ..., f(\alpha^{q-2}) \right) : f \in \mathcal{P}_k \right\}$$
-
-    es un $[n, k, n - k + 2]$ código Reed-Solomon sobre $\mathbb{F}_q$.
-\end{definition}
-
-\subsection{Decodificación de los códigos Reed-Solomon}
-
-En esta sección presentaremos dos algoritmos para decodificar por el vecino más cercano los códigos RS. En concreto, estudiaremos los métodos de decodificación de Peterson-Gorenstein-Zierler y de Sugiyama. Este primer método consiste en cuatro pasos, en concreto el segundo de ellos destaca por ser poco eficiente y llevar demasiado tiempo. Como alternativa a ejecutar este segundo paso, surge el algoritmo de Sugiyama, una aplicación simple del algoritmo de Euclides para polinomios.
-
-\subsubsection{Algoritmo de decodificación de Peterson-Gorenstein-Zierler}
-
-Supongamos que recibimos el mensaje $y(x)$, que difiere de la palabra código $c(x)$ en un máximo de $t$ coordenadas. El objetivo de los algoritmos de decodificación es determinar el mensaje original $c(x)$ a partir de $y(x)$. Tenemos que $y(x) = c(x) + e(x)$ donde $c(x) \in \mathcal{C}$ y $e(x)$ denota a los \emph{errores} con peso $\nu \leq t$. Supongamos que el error ocurre en las coordenadas desconocidas $k_1, ..., k_\nu$. Por lo tanto, el polinomio error tendrá la siguiente forma
-
-$$e(x) = e_{k_1} x^{k_1} + \cdots + e_{k_{\nu}} x^{k_{\nu}}.$$
-
-Si determinamos $e(x)$, lo que equivale a encontrar el número de errores $\nu$, las posiciones de los errores $k_j$ y los valores de los errores $e_{k_j}$, podemos decodificar el vector recibido como $c(x) = y(x) - e(x)$.
-
-Comenzamos definiendo el \emph{síndrome} $S_i$ de $y(x)$ como el elemento $S_i = y \left( \alpha^i \right)$ para $1 \leq i \leq 2t$. El primer paso del algoritmo será determinar los síndromes. Además, los síndromes satisfacen que
-
-$$S_i = y (\alpha^i) = c (\alpha^i) + e (\alpha^i) = 0 + e (\alpha^i) = \sum_{j=1}^{\nu} e_{k_j} (\alpha^i) ^{k_j} = \sum_{j=1}^{\nu} e_{k_j} (\alpha^{k_j}) ^i, \qquad 1 \leq i \leq 2t.$$
-
-Para $1 \leq j \leq \nu$ simplificaremos la notación, sea $E_j = e_{k_j}$ que denota el \emph{valor del error en la coordenada} $k_j$ y $X_j = \alpha^{k_j}$ denota el \emph{número de la posición del error correspondiente a la posición del error} $k_j$. Así, los síndromes se pueden reformular como sigue.
-
-\begin{equation}
-    \label{prop:sindromes_peterson}
-    S_i = \sum_{j=1}^{\nu} E_j X_j^i, \qquad 1 \leq i \leq 2t,
-\end{equation}
-
-que resulta en el sistema de ecuaciones:
-
-\begin{equation}
-    \label{prop:sistema_sindromes_peterson}
-    \left\{
-    \begin{array}{c} 
-        S_1 = E_1 X_1 + \cdots + E_\nu X_\nu,\\
-        S_2 = E_1 X_1^2 + \cdots + E_\nu X_\nu^2\\
-        \qquad \vdots \\
-        S_{2t} = E_1 X_1^{2t} + \cdots + E_\nu X_\nu^{2t}
-    \end{array}
-    \right.
-\end{equation}
-
-Este sistema es no lineal para los $X_j$ y además desconocemos los valores para $E_j$ y $X_j$. Para resolver este sistema, primero obtendremos los $X_j$ con un nuevo sistema lineal que involucrará nuevas variables. Así, el sistema \ref{prop:sistema_sindromes_peterson} será lineal para los coeficientes $E_j$ y podremos determinarlos.
-
-Para ello, definimos el \emph{polinomio localizador de errores} como
-
-$$\sigma(x) = (1 - xX_1) \cdots (1 - xX_\nu) = 1 + \sum_{i=1}^\nu \sigma_i x^i$$
-
-Observemos que las raíces de $\sigma(x)$ son las inversas de los $X_j$:
-
-$$\sigma \left( X_j^{-1} \right) = 1 + \sigma_1 X_j^{-1} + \cdots + \sigma_\nu X_j^{-\nu} = 0, \qquad 1 \leq j \leq \nu .$$
-
-Multiplicando por $E_j X_j^{i + \nu}$ obtenemos
-
-$$E_j X_j^{i + \nu} + \sigma_1 E_j X_j^{i + \nu - 1} + \cdots + \sigma_\nu E_j X_j^{i} = 0, \qquad \forall i.$$
-
-Si sumamos para todo $j$ en $1 \leq j \leq \nu$ tenemos
-
-$$\sum_{j=1}^\nu E_j X_j^{i + \nu} + \sigma_1 \sum_{j=1}^\nu E_j X_j^{i + \nu - 1} + \cdots + \sigma_\nu \sum_{j=1}^\nu E_j X_j^{i} = 0.$$
-
-En estas sumas hemos obtenido los síndromes de \ref{prop:sindromes_peterson}, pues $i \geq 1$ y $i + \nu \leq 2t$. Como $\nu \leq t$, tenemos que
-
-$$S_{i + \nu} + \sigma_1 S_{i + \nu - 1} + \cdots + \sigma_\nu S_i = 0, \qquad 1 \leq i \leq \nu ,$$
-
-que equivale a 
-
-$$\sigma_1 S_{i + \nu - 1} + \cdots + \sigma_\nu S_i = -S_{i + \nu}, \qquad 1 \leq i \leq \nu .$$
-
-Así, llegamos al siguiente sistemas de ecuaciones del que podemos obtener los $\sigma_k$.
-
-\begin{equation}
-    \label{prop:sistema_polinomio_localizador_errores}
-    \left(
-        \begin{array}{ccccc}
-            S_1 & S_2 & \cdots & S_{\nu - 1} & S_\nu \\
-            S_2 & S_3 & \cdots & S_\nu & S_{\nu + 1} \\
-                &     & \vdots &       &             \\
-            S_\nu & S_{\nu + 1} & \cdots & S_{2\nu - 2} & S_{2\nu - 1}
-        \end{array}
-    \right)
-    \left(
-        \begin{array}{c}
-            \sigma_\nu \\
-            \sigma_{\nu - 1}\\ 
-            \vdots \\
-            \sigma_{1}
-        \end{array}
-    \right)
-    = 
-    \left(
-        \begin{array}{c}
-            -S_{\nu + 1} \\
-            -S_{\nu + 2}\\ 
-            \vdots \\
-            -S_{2\nu}
-        \end{array}
-    \right)
-\end{equation}
-
-La dificultad para resolver este sistema está en que desconocemos el valor de $\nu$, que queremos que sea lo más pequeño posible. El siguiente lema nos será útil.
-
-\begin{lemma}
-    \label{lm:matriz_singular}
-    Sea $\mu \leq t$ y sea 
-    \[
-        \left(
-        \begin{array}{ccc}
-            S_1 & \cdots & S_\mu \\
-            \vdots & \ddots & \vdots \\
-            S_\mu & \cdots & S_{2\mu - 1}
-        \end{array}
-        \right)
-    \]
-    Si $\mu = \nu$, entonces $M_\mu$ no es singular; pero si $\mu > \nu$, entonces $M_\mu$ es singular, donde $\nu$ es el número de errores que se han producido.
-\end{lemma}
-
-\begin{proof}
-    Ver Lema 5.4.2 en la página 181, \cite{Huffman_Pless_2010}.
-\end{proof}
-
-Realizaremos un procedimiento iterativo para obtener el valor de $\nu$, empezando con $\mu = t$, que es lo más grande que $\nu$ puede ser. Teniendo en cuenta el lema \ref{lm:matriz_singular}, tenemos que $M_\mu = M_t$. Luego si $M_\mu$ es singular, reducimos el valor de $\mu$ en $1$, $\mu = t - 1$, y volvemos a probar si $M_\mu = M_{t-1}$ es singular. Continuaremos reduciendo $\mu$ en $1$ hasta que obtengamos una matriz $M_\mu$ que no sea singular, en cuyo caso obtendremos el valor de $\nu = \mu$. Así, resolvemos el sistema \ref{prop:sistema_polinomio_localizador_errores} y podremos determinar $\sigma(x)$. Con esto concluimos el segundo paso del algoritmo.
-
-El siguiente paso será determinar las raíces de $\sigma(x)$ y calcular sus inversas para determinar los $X_j$. Esto lo podemos hacer calculando reiteradamente $\sigma(\alpha^i)$ para $0 \leq i < n$. Una vez conocidos los $X_j$, podemos resolver el sistema de ecuaciones \ref{prop:sistema_sindromes_peterson} para determinar los $E_j$. Ahora ya podremos determinar los valores de $k_j$ y $e_{k_j}$, y así poder obtener el vector error $e(x)$. Finalmente, restando el vector $e(x)$ al vector $y(x)$ podemos determinar el mensaje original $c(x)$, como queríamos.
-
-En resumen, el algoritmo de decodificación de Peterson-Gorenstein-Zierler es el siguiente:
-
-\begin{itemize}
-    \item[I.] Calcular los síndromes $S_i = y(\alpha^i)$ para $1 \leq i \leq 2t$.
-    \item[II.] Iterar decrementando una unidad desde $\mu = t$ hasta que $M_{\mu}$ no sea singular. Definamos ese valor como $\nu = \mu$ y resolvemos \ref{prop:sistema_polinomio_localizador_errores} para obtener $\sigma(x)$.
-    \item[III.] Determinar las raíces de $\sigma(x)$ calculando $\sigma(\alpha^i)$ para $0 \leq i < n$. Los $X_j$ coinciden con las inversas de dichas raíces.
-    \item[IV.] Resolver las primeras $\nu$ ecuaciones de \ref{prop:sistema_sindromes_peterson} para determinar los $E_j$.
-    \item[V.] Calcular los valores de $k_j$ y $e_{k_j}$.
-    \item[VI.] Determinar $c(x)$ como el resultado de la operación $y(x) - e(x)$.
-\end{itemize}
-
-\begin{exampleth}
-    % TODO
-    \textcolor{red}{Poner un ejemplo chorra}
-\end{exampleth}
-
-\subsubsection{Algoritmo de decodificación de Sugiyama}
-
-El algoritmo de decodificación de Peterson-Gorenstein-Zierler se puede mejorar. En concreto el paso II es poco eficiente pues tiene que computar diversos determinantes para cada matriz hasta encontrar alguna que no sea singular. El algoritmo de Sugiyama presenta una alternativa para este segundo paso, usando el algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
-
-Recordamos que el polinomio localizador de errores $\sigma(x)$ se define como $\prod_{j=1}^{\nu} (1 - xX_j)$. El \emph{polinomio evaluador de errores} $\omega(x)$ se define como
-
-\begin{equation}
-    \label{def:polinomio_evaluador_errores}
-    \omega(x) = \sum_{j=1}^{\nu} E_j X_j \prod_{\substack{i=1\\ i \neq j}} (1 - xX_i) = \sum_{j=1}^{\nu} E_j X_j \frac{\sigma(x)}{1 - xX_j}.
-\end{equation}
-
-Observemos que $gr(\sigma(x)) = \nu$ y $gr(\omega(x)) \leq \nu - 1$. Definimos el polinomio $S(x)$ de grado menor que $2t - 1$ como
-
-$$S(x) = \sum_{i=0}^{2t - 1} S_{i+1} x^i,$$
-
-donde $S_i$ para $1 \leq i \leq 2t$ son los síndromes.
-
-De esta forma, se cumple la siguiente relación (página 191, \cite{Huffman_Pless_2010}.)
-
-$$\omega(x) \equiv \sigma(x) S(x) \pmod{x^{2t}},$$
-
-a la que nos referiremos como \emph{ecuación clave} o \emph{key equation}. Además, tenemos que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos.
-
-El algoritmo de Sugiyama es el siguiente:
-
-\begin{itemize}
-    \item[I.] Sean $f(x) = x^{2t}$, $s(x) = S(x)$, $r_{-1}(x) = f(x)$, $r_0(x) = s(x)$, $b_{-1}(x) = 0$ y $b_0(x) = 1$.
-    \item[II.] Iterar incrementando en una unidad desde $i = 1$ hasta $I$, de forma que se cumpla que $gr(r_{I-1}(x)) \geq t$ y $gr(r_I(x)) < t$. En cada iteración habrá que determinar $h_i(x)$, $r_i(x)$ y $b_i(x)$:
-        $$r_{i-2}(x) = r_{i-1}(x) h_i(x) + r_i (x), \qquad \text{ donde } gr(r_i(x)) < gr(r_{i-1}(x)),$$
-        $$b_i(x) = b_{i-2}(x) - h_i(x) b_{i-1}(x).$$
-    \item[III.] $\sigma(x)$ es un escalar no nulo múltiplo de $b_I(x)$. 
-\end{itemize}
-
-Para verificar que este algoritmo funciona, el siguiente lema nos será de utilidad.
-
-\begin{lemma}
-    \label{lm:dem_sugiyama}
-    Con la notación del algoritmo de Sugiyama, sea $a_{-1}(x) = 1$, $a_0(x) = 0$ y $a_i(x) = a_{i-2}(x) - h_i(x) a_{i-1}(x)$ para $i \geq 1$. Las siguientes afirmaciones son ciertas.
-
-    \begin{itemize}
-        \item $a_i(x) f(x) + b_i(x) s(x) = r_i (x)$ para $i \geq -1$.
-        \item $b_i(x) r_{i-1}(x) - b_{i-1} r_i(x) = (-1)^i f(x)$ para $i \geq 0$.
-        \item $a_i(x) b_{i-1}(x) - a_{i-1} b_i (x) = (-1)^{i+1}$ para $i \geq 0$.
-        \item $gr(b_i(x)) + gr(r_{i-1}(x)) = gr(f(x))$ para $i \geq 0$.
-    \end{itemize}
-\end{lemma}
-
-\begin{proof}
-    Ver Lema 5.4.11 en la página 191, \cite{Huffman_Pless_2010}.
-\end{proof}
-
-Comprobemos ahora que el algoritmo de Sugiyama funciona. Por el Lema \ref{lm:dem_sugiyama} (i) tenemos que
-
-\begin{equation}
-    \label{dem:sugiyama_relacion}
-    a_I(x) x^{2t} + b_I(x) S(x) = r_I(x).
-\end{equation}
-
-Además, por la ecuación clave sabemos que
-
-\begin{equation}
-    \label{dem:sugiyama_key_equation}
-    a(x) x^{2t} + \sigma(x) S(x) = \omega(x)
-\end{equation}
-
-para algún polinomio $a(x)$. Multiplicando \ref{dem:sugiyama_relacion} por $\sigma(x)$ y \ref{dem:sugiyama_key_equation} por $b_I(x)$ obtenemos 
-
-\begin{equation}
-    \label{dem:sugiyama_relacion_sigma}
-    a_I(x) \sigma(x) x^{2t}  + b_I(x) \sigma(x) S(x) = r_I(x) \sigma(x) \quad \text{ y }
-\end{equation}
-\begin{equation}
-    \label{dem:sugiyama_key_equation_b_I}
-    a(x) b_I(x) x^{2t} + \sigma(x) b_I(x) S(x) = \omega(x) b_I(x).
-\end{equation}
-
-Aplicando módulo $x^{2t}$ a ambas ecuaciones tenemos que 
-
-\begin{align*}
-    b_I(x) \sigma(x) S(x) &\equiv r_I(x) \sigma(x) \pmod{x^{2t}} \quad \text{ y }\\
-    \sigma(x) b_I(x) S(x) &\equiv \omega(x) b_I(x) \pmod{x^{2t}}.
-\end{align*}
-
-Por lo tanto,
-
-\begin{equation}
-    \label{dem:sugiyama_modulo}
-    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
-\end{equation}
-
-Como $gr(\sigma(x)) \leq t$, por la elección de $I$,
-
-$$gr(r_I(x) \sigma(x)) = gr(r_I(x)) + gr(\sigma(x)) < t + t = 2t.$$ 
-
-Por el Lema \ref{lm:dem_sugiyama} (iv), la elección de $I$ y como $gr(\omega(x)) < t$, entonces se cumple que 
-
-$$gr(\omega(x) \times b_I(x)) = gr(\omega(x)) + gr(b_I(x)) < t + gr(b_I(x)) = t + (gr(x^{2t}) - gr(r_{I-1}(x))) \leq 3t - t = 2t.$$
-
-Por \ref{dem:sugiyama_modulo} tenemos que $r_I(x) \sigma(x) = \omega(x) b_I(x)$. Esto, junto con \ref{dem:sugiyama_relacion_sigma} y \ref{dem:sugiyama_key_equation_b_I}, implica que 
-
-\begin{equation}
-    \label{dem:sugiyama_implicacion_ecuaciones}
-    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
-\end{equation}
-
-Sin embargo, el Lema \ref{lm:dem_sugiyama} (iii) afirma que $a_I(x)$ y $b_I(x)$ son primos relativos, y por \ref{dem:sugiyama_implicacion_ecuaciones} se cumple que $a(x) = \lambda(x) a_I(x)$. Sustituyendo esta relación en \ref{dem:sugiyama_implicacion_ecuaciones},
-
-\begin{equation}
-    \label{dem:sugiyama_sustitucion}
-    \sigma(x) = \lambda(x) b_I(x).
-\end{equation}
-
-Ahora, sustituyendo estas dos últimas relaciones en \ref{dem:sugiyama_key_equation} obtenemos
-
-$$\lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \omega(x).$$ 
-
-La ecuación \ref{dem:sugiyama_relacion} implica que
-
-\begin{equation}
-    \label{dem:sugiyama_relacion_omega}
-    \omega(x) = \lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \lambda(x) \cdot \left( a_I(x) x^{2t} + b_I(x) S(x) \right) = \lambda(x) r_I(x).
-\end{equation}
-
-Teniendo en cuenta que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos y por \ref{dem:sugiyama_sustitucion} y \ref{dem:sugiyama_relacion_omega}, $\lambda(x)$ tiene que ser una constante no nula, verificando el paso III del algoritmo de Sugiyama.
-
-Como solo estamos interesados en las raíces de $\sigma(x)$, es suficiente con determinar las raíces de $b_I(x)$ obtenidos en el paso II; lo que nos dará los $X_j$. 
-
-Más adelante veremos que este algoritmo sigue funcionando con otras elecciones de $f(x)$ y $s(x)$, con las modificaciones apropiadas de las condiciones sobre las que el algoritmo termina en el paso II. Una de estas modificaciones nos será útil para decodificar los códigos Goppa que veremos a continuación.
-
 \section{Códigos clásicos de Goppa}
-
-Los códigos clásicos de Goppa se introdujeron por V. D. Goppa en 1970. Estos códigos son generalizaciones de códigos BCH y subcódigos de subcuerpos de ciertos códigos GRS.
-
-Para motivar la definición de los códigos de Goppa, introduciremos una construcción de los códigos BCH de longitud $n$ sobre $\mathbb{F}_q$. Sea $t = ord_q(n)$ y sea $\beta$ una raíz enésima primitiva de la unidad en $\mathbb{F}_{q^t}$. Elegimos $\delta > 1$ y sea $\mathcal{C}$ el código BCH de longitud $n$ y distancia $\delta$. Entonces $c(x) = c_0 + c_1x + \cdots + c_{n-1}x^{n-1} \in \mathbb{F}_q [x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si $c(\beta^j) = 0$ para $1 \leq j \leq \delta - 1$. Tenemos que 
-
-$$(x^n - 1) \sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \sum_{i=0}^{n-1} c_i \sum_{l=0}^{n-1} x^l \left( \beta ^{-i} \right) ^{n-1-l} = \sum_{l=0}^{n-1} x^l \sum_{i=0}^{n-1} c_i \left( \beta^{l+1} \right) ^i.$$
-
-Como $c(\beta^{l+1}) = 0$ para $0 \leq l \leq \delta - 2$, el lado derecho de la ecuación es un polinomio cuyo término de menor grado tiene grado al menos $\delta - 1$. Por lo tanto, el lado derecho se puede escribir como $x^{\delta - 1} p(x)$, donde $p(x)$ es un polinomio en $\mathbb{F}_{q^t}[x]$. Así, podemos decir que $c(x) \in \mathbb{F}_q[x] / (x^n - 1)$ está en $\mathcal{C}$ si y solo si 
-
-$$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} = \frac{x^{\delta - 1} p(x)}{x^n - 1}$$
-
-o equivalentemente
-
-$$\sum_{i=0}^{n-1} \frac{c_i}{x - \beta ^{-i}} \equiv 0 \pmod{x^{\delta - 1}}$$
-
-La última equivalencia es la base para la definición de los códigos clásicos de Goppa.
 
 Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
 
@@ -412,6 +120,10 @@ En los siguientes resultados se enuncian las propiedades de los códigos binario
 \begin{theorem}
     Sea $\Gamma(L,g)$ un código binario de Goppa tal que $gr(g(x)) = w$ entonces es un $[n, k, d]$ código con $k \geq n - wt$ y $d \geq 2w + 1$.
 \end{theorem}
+
+\begin{proof}
+    
+\end{proof}
 
 \begin{corollary}
     Si $\Gamma(L,g)$ es un código de Goppa tal que $gr(g(x)) = w$, entonces puede corregir hasta
@@ -569,7 +281,134 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
     Si $gr(g(x)) = t$ y si $g(x)$ no tiene factores irreducibles repetidos, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código binario de Goppa con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
-\subsubsection{El algoritmo de decodificación de Sugiyama}
+\subsubsection{Algoritmo de decodificación de Sugiyama}
+
+El algoritmo de Sugiyama es una aplicación simple del algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
+
+Recordamos que el polinomio localizador de errores $\sigma(x)$ se define como $\prod_{j=1}^{\nu} (1 - xX_j)$. El \emph{polinomio evaluador de errores} $\omega(x)$ se define como
+
+\begin{equation}
+    \label{def:polinomio_evaluador_errores}
+    \omega(x) = \sum_{j=1}^{\nu} E_j X_j \prod_{\substack{i=1\\ i \neq j}} (1 - xX_i) = \sum_{j=1}^{\nu} E_j X_j \frac{\sigma(x)}{1 - xX_j}.
+\end{equation}
+
+Observemos que $gr(\sigma(x)) = \nu$ y $gr(\omega(x)) \leq \nu - 1$. Definimos el polinomio $S(x)$ de grado menor que $2t - 1$ como
+
+$$S(x) = \sum_{i=0}^{2t - 1} S_{i+1} x^i,$$
+
+donde $S_i$ para $1 \leq i \leq 2t$ son los síndromes.
+
+De esta forma, se cumple la siguiente relación (página 191, \cite{Huffman_Pless_2010}.)
+
+$$\omega(x) \equiv \sigma(x) S(x) \pmod{x^{2t}},$$
+
+a la que nos referiremos como \emph{ecuación clave} o \emph{key equation}. Además, tenemos que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos.
+
+El algoritmo de Sugiyama es el siguiente:
+
+\begin{itemize}
+    \item[I.] Sean $f(x) = x^{2t}$, $s(x) = S(x)$, $r_{-1}(x) = f(x)$, $r_0(x) = s(x)$, $b_{-1}(x) = 0$ y $b_0(x) = 1$.
+    \item[II.] Iterar incrementando en una unidad desde $i = 1$ hasta $I$, de forma que se cumpla que $gr(r_{I-1}(x)) \geq t$ y $gr(r_I(x)) < t$. En cada iteración habrá que determinar $h_i(x)$, $r_i(x)$ y $b_i(x)$:
+        $$r_{i-2}(x) = r_{i-1}(x) h_i(x) + r_i (x), \qquad \text{ donde } gr(r_i(x)) < gr(r_{i-1}(x)),$$
+        $$b_i(x) = b_{i-2}(x) - h_i(x) b_{i-1}(x).$$
+    \item[III.] $\sigma(x)$ es un escalar no nulo múltiplo de $b_I(x)$. 
+\end{itemize}
+
+Para verificar que este algoritmo funciona, el siguiente lema nos será de utilidad.
+
+\begin{lemma}
+    \label{lm:dem_sugiyama}
+    Con la notación del algoritmo de Sugiyama, sea $a_{-1}(x) = 1$, $a_0(x) = 0$ y $a_i(x) = a_{i-2}(x) - h_i(x) a_{i-1}(x)$ para $i \geq 1$. Las siguientes afirmaciones son ciertas.
+
+    \begin{itemize}
+        \item $a_i(x) f(x) + b_i(x) s(x) = r_i (x)$ para $i \geq -1$.
+        \item $b_i(x) r_{i-1}(x) - b_{i-1} r_i(x) = (-1)^i f(x)$ para $i \geq 0$.
+        \item $a_i(x) b_{i-1}(x) - a_{i-1} b_i (x) = (-1)^{i+1}$ para $i \geq 0$.
+        \item $gr(b_i(x)) + gr(r_{i-1}(x)) = gr(f(x))$ para $i \geq 0$.
+    \end{itemize}
+\end{lemma}
+
+\begin{proof}
+    Ver Lema 5.4.11 en la página 191, \cite{Huffman_Pless_2010}.
+\end{proof}
+
+Comprobemos ahora que el algoritmo de Sugiyama funciona. Por el Lema \ref{lm:dem_sugiyama} (i) tenemos que
+
+\begin{equation}
+    \label{dem:sugiyama_relacion}
+    a_I(x) x^{2t} + b_I(x) S(x) = r_I(x).
+\end{equation}
+
+Además, por la ecuación clave sabemos que
+
+\begin{equation}
+    \label{dem:sugiyama_key_equation}
+    a(x) x^{2t} + \sigma(x) S(x) = \omega(x)
+\end{equation}
+
+para algún polinomio $a(x)$. Multiplicando \ref{dem:sugiyama_relacion} por $\sigma(x)$ y \ref{dem:sugiyama_key_equation} por $b_I(x)$ obtenemos 
+
+\begin{equation}
+    \label{dem:sugiyama_relacion_sigma}
+    a_I(x) \sigma(x) x^{2t}  + b_I(x) \sigma(x) S(x) = r_I(x) \sigma(x) \quad \text{ y }
+\end{equation}
+\begin{equation}
+    \label{dem:sugiyama_key_equation_b_I}
+    a(x) b_I(x) x^{2t} + \sigma(x) b_I(x) S(x) = \omega(x) b_I(x).
+\end{equation}
+
+Aplicando módulo $x^{2t}$ a ambas ecuaciones tenemos que 
+
+\begin{align*}
+    b_I(x) \sigma(x) S(x) &\equiv r_I(x) \sigma(x) \pmod{x^{2t}} \quad \text{ y }\\
+    \sigma(x) b_I(x) S(x) &\equiv \omega(x) b_I(x) \pmod{x^{2t}}.
+\end{align*}
+
+Por lo tanto,
+
+\begin{equation}
+    \label{dem:sugiyama_modulo}
+    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
+\end{equation}
+
+Como $gr(\sigma(x)) \leq t$, por la elección de $I$,
+
+$$gr(r_I(x) \sigma(x)) = gr(r_I(x)) + gr(\sigma(x)) < t + t = 2t.$$ 
+
+Por el Lema \ref{lm:dem_sugiyama} (iv), la elección de $I$ y como $gr(\omega(x)) < t$, entonces se cumple que 
+
+$$gr(\omega(x) \times b_I(x)) = gr(\omega(x)) + gr(b_I(x)) < t + gr(b_I(x)) = t + (gr(x^{2t}) - gr(r_{I-1}(x))) \leq 3t - t = 2t.$$
+
+Por \ref{dem:sugiyama_modulo} tenemos que $r_I(x) \sigma(x) = \omega(x) b_I(x)$. Esto, junto con \ref{dem:sugiyama_relacion_sigma} y \ref{dem:sugiyama_key_equation_b_I}, implica que 
+
+\begin{equation}
+    \label{dem:sugiyama_implicacion_ecuaciones}
+    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
+\end{equation}
+
+Sin embargo, el Lema \ref{lm:dem_sugiyama} (iii) afirma que $a_I(x)$ y $b_I(x)$ son primos relativos, y por \ref{dem:sugiyama_implicacion_ecuaciones} se cumple que $a(x) = \lambda(x) a_I(x)$. Sustituyendo esta relación en \ref{dem:sugiyama_implicacion_ecuaciones},
+
+\begin{equation}
+    \label{dem:sugiyama_sustitucion}
+    \sigma(x) = \lambda(x) b_I(x).
+\end{equation}
+
+Ahora, sustituyendo estas dos últimas relaciones en \ref{dem:sugiyama_key_equation} obtenemos
+
+$$\lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \omega(x).$$ 
+
+La ecuación \ref{dem:sugiyama_relacion} implica que
+
+\begin{equation}
+    \label{dem:sugiyama_relacion_omega}
+    \omega(x) = \lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \lambda(x) \cdot \left( a_I(x) x^{2t} + b_I(x) S(x) \right) = \lambda(x) r_I(x).
+\end{equation}
+
+Teniendo en cuenta que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos y por \ref{dem:sugiyama_sustitucion} y \ref{dem:sugiyama_relacion_omega}, $\lambda(x)$ tiene que ser una constante no nula, verificando el paso III del algoritmo de Sugiyama.
+
+Como solo estamos interesados en las raíces de $\sigma(x)$, es suficiente con determinar las raíces de $b_I(x)$ obtenidos en el paso II; lo que nos dará los $X_j$. 
+
+Más adelante veremos que este algoritmo sigue funcionando con otras elecciones de $f(x)$ y $s(x)$, con las modificaciones apropiadas de las condiciones sobre las que el algoritmo termina en el paso II. Una de estas modificaciones nos será útil para decodificar los códigos Goppa que veremos a continuación.
 
 
 
