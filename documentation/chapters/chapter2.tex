@@ -140,7 +140,7 @@ Sabemos que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que p
 \begin{definition}
     El \emph{espacio dual} de $\mathcal{C}$ viene dado por 
     
-    $$\mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; \mathbf{x} \cdot \mathbf{c} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}$$
+    $$\mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; \mathbf{c} \cdot \mathbf{x} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}$$
 \end{definition}
 
 
@@ -152,8 +152,13 @@ El siguiente resultado nos muestra cómo obtener las matrices generadora y de pa
 \end{proposition}
 
 \begin{proof}
-    % TODO:
-    \textcolor{red}{No sé hacerlo}
+    Sea $G$ una matriz generadora y $H$ una matriz de paridad de un código $\mathcal{C}$. Sabemos que $G \cdot H^T = 0$. Por otra parte, tenemos que
+    
+    $$\mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \;  \mathbf{c} \cdot \mathbf{x} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; G \cdot \mathbf{x}^T = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}.$$
+
+    Luego la matriz $H$ es una matriz generadora de $\mathcal{C} ^{\perp}$.
+
+    Además, como $H \cdot G^T = 0$, entonces $G$ es una matriz de paridad de $\mathcal{C} ^{\perp}$.
 \end{proof}
 
 De la proposición anterior se deduce lo siguiente.
