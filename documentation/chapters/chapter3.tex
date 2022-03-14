@@ -9,7 +9,7 @@
 % TODO: introduccion
 \textcolor{red}{Hay que completar esta introducción}
 
-En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corrección de errores lineales no cíclicos. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
+En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corrección de errores lineales. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
 
 El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cite{Goppa_codes_1973}.
 
@@ -22,7 +22,7 @@ Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{
     \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
 \end{equation}
 
-De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $g(x)$. Además, trabajar con módulo $g(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(g(x))$, y la hipótesis $g(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $g(x)$ el \emph{polinomio de Goppa} de $\Gamma(L,g)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma(L,g)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $g(x) = x^{\delta - 1}$.
+De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $g(x)$. Además, trabajar módulo $g(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(g(x))$, y la hipótesis $g(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $g(x)$ el \emph{polinomio de Goppa} de $\Gamma(L,g)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma(L,g)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $g(x) = x^{\delta - 1}$.
 
 A continuación, buscaremos una matriz de paridad para $\Gamma(L,g)$. Para ello, observamos que
 
@@ -69,7 +69,7 @@ con $h_i = g(\gamma_i)^{-1}$.
     \end{equation}
 \end{proposition}
 
-Las entradas de $H'$ están en $\mathbb{F}_{q^t}$. Eligiendo una base de $\mathbb{F}_{q^t}$ sobre $\mathbb{F}_q$, cada elemento de $\mathbb{F}_{q^t}$ se puede representar como un vector columna $t \times 1$ sobre $\mathbb{F}_q$. Reemplazando cada entrada de $H'$ por su correspondiente vector columna, obtenemos una matriz $H''$ de dimensión $tw \times n$ sobre $\mathbb{F}_{q}$ que tiene la propiedad de que si $\textbf{c} \in \mathbb{F}_q^n$ está en $\Gamma(L,g)$ si y solo si $H''c^T = 0$.
+Las entradas de $H'$ están en $\mathbb{F}_{q^t}$. Eligiendo una base de $\mathbb{F}_{q^t}$ sobre $\mathbb{F}_q$, cada elemento de $\mathbb{F}_{q^t}$ se puede representar como un vector columna $t \times 1$ sobre $\mathbb{F}_q$. Reemplazando cada entrada de $H'$ por su correspondiente vector columna, obtenemos una matriz $H''$ de dimensión $tw \times n$ sobre $\mathbb{F}_{q}$ que tiene la propiedad de que $\textbf{c} \in \mathbb{F}_q^n$ está en $\Gamma(L,g)$ si y solo si $H''c^T = 0$.
 
 El siguiente resultado nos muestra los límites en la dimensión y la distancia mínima de un código de Goppa.
 
@@ -115,54 +115,35 @@ Los códigos binarios de Goppa son códigos de corrección de errores que perten
 
 Observemos que si $g(x)$ es un polinomio irreducible, todos los elementos $\gamma \in \mathbb{F}_{2^m}$ satisfacen $g(\gamma) \neq 0$. A los códigos que cumplan esta propiedad los llamaremos \emph{códigos binarios de Goppa irreducibles}.
 
-En los siguientes resultados se enuncian las propiedades de los códigos binarios de Goppa, que tienen ciertas diferencias con los generales.
-
-\begin{theorem}
-    Sea $\Gamma(L,g)$ un código binario de Goppa tal que $gr(g(x)) = w$ entonces es un $[n, k, d]$ código con $k \geq n - wt$ y $d \geq 2w + 1$.
-\end{theorem}
-
-\begin{proof}
-    
-\end{proof}
-
-\begin{corollary}
-    Si $\Gamma(L,g)$ es un código de Goppa tal que $gr(g(x)) = w$, entonces puede corregir hasta
-
-    $$\left\lfloor \frac{(2w + 1) - 1}{2} \right\rfloor $$
-
-    errores.
-\end{corollary}
-
-Observamos que con estos códigos podemos doblar la capacidad correctora de los códigos generales de Goppa.
-
+La importancia de estos códigos se debe a que pueden doblar la capacidad correctora de los códigos generales de Goppa.
 
 \subsection{Decodificación de los códigos de Goppa}
 
-Como hemos visto, al transmitir una palabra código a un receptor, éste podría recibir la palabra alterada. Para que el receptor pueda determinar el mensaje original, necesitaremos decodificar el mensaje recibido. Supongamos que $E$ es el vector de errores que se añade a la palabra código $C$ transmitida, entonces la palabra recibida $R$ está dada por
+Como hemos visto, al transmitir una palabra código a un receptor, éste podría recibir la palabra alterada. Para que el receptor pueda determinar el mensaje original, necesitaremos decodificar el mensaje recibido. Sea $\Gamma(L,g)$ un código de Goppa, donde $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ es una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$. Supongamos que $e$ es el vector de errores que se añade a la palabra código $c$ transmitida, entonces la palabra recibida $y$ está dada por
 
-$$R = C + E$$
+$$y = c + e$$
 
 de donde 
 
-$$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{C_\gamma}{x - \gamma} + \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma}.$$
+$$\sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{c_\gamma}{x - \gamma} + \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma}.$$
 
-Como $C$ es una palabra código, la primera sumatoria de la parte derecha desaparece al aplicar el módulo $g(x)$, y tenemos que
+Como $c$ es una palabra código, la primera sumatoria de la parte derecha desaparece al aplicar el módulo $g(x)$, y tenemos que
 
-$$\sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{g(x)}.$$
+$$\sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.$$
 
 Definiremos su síndrome como el polinomio $S(x)$ de grado menos que $gr(g(x))$ tal que 
 
-$$S(x) = \sum_{\gamma \in L} \frac{R_\gamma}{x - \gamma} \pmod{g(x)}.$$
+$$S(x) = \sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} \pmod{g(x)}.$$
 
 Acabamos de ver que 
 
-$$S(x) = \sum_{\gamma \in L} \frac{E_\gamma}{x - \gamma} \pmod{g(x)}.$$
+$$S(x) = \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.$$
 
-Sea $M$ un subconjunto de $L$ tal que $E_{\gamma} \neq 0$ si y solo si $\gamma \in M$. Entonces
+Sea $M$ un subconjunto de $L$ tal que $e_{\gamma} \neq 0$ si y solo si $\gamma \in M$. Entonces
 
 \begin{equation}
     \label{def:sindrome}
-    S(x) = \sum_{\gamma \in M} \frac{E_\gamma}{x - \gamma} \pmod{g(x)}.
+    S(x) = \sum_{\gamma \in M} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.
 \end{equation}
 
 De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubicaciones de los errores,
@@ -176,7 +157,7 @@ Sin embargo, para los códigos de Goppa es más conveniente definir una variante
 
 \begin{equation}
     \label{def:eta}
-    \eta (x) = \sum_{\gamma \in M} E_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)
+    \eta (x) = \sum_{\gamma \in M} e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)
 \end{equation}
 
 Observemos que de esta forma $\sigma(x)$ y $\eta(x)$ deben ser primos relativos.
@@ -191,12 +172,12 @@ Derivando la expresión de $\sigma(x)$, tenemos que
 
 de donde, para cada $\gamma \in M$,
 
-$$\eta (\gamma) = E_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = E_\gamma \sigma'(\gamma)$$
+$$\eta (\gamma) = e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = e_\gamma \sigma'(\gamma)$$
 
-por lo que $E_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una vez que hemos calculado los polinomios $\sigma$ y $\eta$, las coordenadas del vector error vienen dadas por 
+por lo que $e_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una vez que hemos calculado los polinomios $\sigma$ y $\eta$, las coordenadas del vector error vienen dadas por 
 
 \[
-    E_\gamma = \left\{ \begin{array}{lcc}
+    e_\gamma = \left\{ \begin{array}{lcc}
     0 &   \text{si}  & \sigma(\gamma) \neq 0 \\
     \\ \frac{\eta(\gamma)}{\sigma'(\gamma)} &  \text{si} & \sigma(\gamma) = 0
     \end{array}
@@ -214,7 +195,7 @@ Lo esencial para decodificar los códigos de Goppa es determinar los coeficiente
 
 La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $g(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \ref{prop:key_equation}.
 
-Reduciendo cada potencia de $x \pmod{g(x)}$ e igualando coeficientes de $1, x, ..., x^{gr g - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $gr G$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
+Reduciendo cada potencia de $x \pmod{g(x)}$ e igualando coeficientes de $1, x, ..., x^{gr(g) - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $gr(G)$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
 
 Supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equation}:
 
@@ -256,7 +237,7 @@ Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y
     Si $gr(g(x)) = 2t$, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código q-ario de Goppa con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
-Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $E_\gamma$ distintos de cero son iguales a 1, entonces \ref{def:eta} y \ref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \ref{prop:key_equation_12} ahora pasa a ser
+Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $e_\gamma$ distintos de cero son iguales a 1, entonces \ref{def:eta} y \ref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \ref{prop:key_equation_12} ahora pasa a ser
 
 $$\sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{g(x)}$$
 
@@ -285,25 +266,26 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
 
 El algoritmo de Sugiyama es una aplicación simple del algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
 
-Recordamos que el polinomio localizador de errores $\sigma(x)$ se define como $\prod_{j=1}^{\nu} (1 - xX_j)$. El \emph{polinomio evaluador de errores} $\omega(x)$ se define como
+Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificación de Sugiyama para los códigos Goppa es el siguiente.
 
-\begin{equation}
-    \label{def:polinomio_evaluador_errores}
-    \omega(x) = \sum_{j=1}^{\nu} E_j X_j \prod_{\substack{i=1\\ i \neq j}} (1 - xX_i) = \sum_{j=1}^{\nu} E_j X_j \frac{\sigma(x)}{1 - xX_j}.
-\end{equation}
+\begin{itemize}
+    \item[I.] Calcular el síndrome $S(x)$.
+    \item[II.] Sean $r_{-1}(x) = g(x)$, $r_0(x) = S(x)$, $U_{-1}(x) = 0$ y $U_0(x) = 1$.
+    \item[III.] Buscar $q_i(x)$ y $r_i(x)$ aplicando el algoritmo de Euclides para encontrar el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ para $i = 1,..., k$, hasta que $k$ cumpla que $gr(r_{k-1}(x)) \geq t$ y $gr(r_k(x)) < t$:
 
-Observemos que $gr(\sigma(x)) = \nu$ y $gr(\omega(x)) \leq \nu - 1$. Definimos el polinomio $S(x)$ de grado menor que $2t - 1$ como
+        $$r_{i-2}(x) = r_{i-1}(x) q_i(x) + r_i(x), \qquad gr(r_i(x)) < gr(r_{i-1})(x)$$
+    
+    \item[IV.] Calcular $U_k(x)$, donde
+    
+        $$U_i(x) = q_i(x) U_{i-1}(x) + U_{i-2}(x)$$
 
-$$S(x) = \sum_{i=0}^{2t - 1} S_{i+1} x^i,$$
+    \item[V.] La solución viene dada por:
+        $$\eta(x) = (-1)^k \delta r_k(x)$$
+        $$\sigma(x) = \delta U_k(x)$$
+\end{itemize}
 
-donde $S_i$ para $1 \leq i \leq 2t$ son los síndromes.
 
-De esta forma, se cumple la siguiente relación (página 191, \cite{Huffman_Pless_2010}.)
-
-$$\omega(x) \equiv \sigma(x) S(x) \pmod{x^{2t}},$$
-
-a la que nos referiremos como \emph{ecuación clave} o \emph{key equation}. Además, tenemos que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos.
-
+\begin{comment}
 El algoritmo de Sugiyama es el siguiente:
 
 \begin{itemize}
@@ -377,7 +359,7 @@ $$gr(r_I(x) \sigma(x)) = gr(r_I(x)) + gr(\sigma(x)) < t + t = 2t.$$
 
 Por el Lema \ref{lm:dem_sugiyama} (iv), la elección de $I$ y como $gr(\omega(x)) < t$, entonces se cumple que 
 
-$$gr(\omega(x) \times b_I(x)) = gr(\omega(x)) + gr(b_I(x)) < t + gr(b_I(x)) = t + (gr(x^{2t}) - gr(r_{I-1}(x))) \leq 3t - t = 2t.$$
+$$gr(\omega(x) b_I(x)) = gr(\omega(x)) + gr(b_I(x)) < t + gr(b_I(x)) = t + (gr(x^{2t}) - gr(r_{I-1}(x))) \leq 3t - t = 2t.$$
 
 Por \ref{dem:sugiyama_modulo} tenemos que $r_I(x) \sigma(x) = \omega(x) b_I(x)$. Esto, junto con \ref{dem:sugiyama_relacion_sigma} y \ref{dem:sugiyama_key_equation_b_I}, implica que 
 
@@ -409,33 +391,5 @@ Teniendo en cuenta que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relat
 Como solo estamos interesados en las raíces de $\sigma(x)$, es suficiente con determinar las raíces de $b_I(x)$ obtenidos en el paso II; lo que nos dará los $X_j$. 
 
 Más adelante veremos que este algoritmo sigue funcionando con otras elecciones de $f(x)$ y $s(x)$, con las modificaciones apropiadas de las condiciones sobre las que el algoritmo termina en el paso II. Una de estas modificaciones nos será útil para decodificar los códigos Goppa que veremos a continuación.
-
-
-
-En esta sección preentaremos una modificación del algoritmo de Sugiyama, ya estudiado para los códigos RS, para adaptarlo a los códigos Goppa. Esta modificación consiste en aplicar el algoritmo de Euclides para encontrar el máximo común divisor de $r_{i-1}$ y $r_i$ para $i = 1,..., I$ hasta que $I$  cumpla que $gr(r_{I-1}) \geq t$ y $gr(r_I(x)) < t$.
-
-
-\begin{comment}
-Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificación de Sugiyama para los códigos Goppa es el siguiente.
-
-\begin{itemize}
-    \item[I.] Calcular el síndrome $S(x)$.
-    \item[II.] Sean $r_{-1}(x) = g(x)$, $r_0(x) = S(x)$, $U_{-1}(x) = 0$ y $U_0(x) = 1$.
-    \item[III.] Buscar $q_i(x)$ y $r_i(x)$ aplicando el algoritmo de Euclides para encontrar el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ para $i = 1,..., k$, hasta que $k$ cumpla que $gr(r_{k-1}(x)) \geq t$ y $gr(r_k(x)) < t$:
-
-        $$r_{i-2}(x) = r_{i-1}(x) q_i(x) + r_i(x), \qquad gr(r_i(x)) < gr(r_{i-1})(x)$$
-    
-    \item[IV.] Calcular $U_k(x)$, donde
-    
-        $$U_i(x) = q_i(x) U_{i-1}(x) + U_{i-2}(x)$$
-
-    \item[V.] La solución viene dada por:
-        $$\eta(x) = (-1)^k \delta r_k(x)$$
-        $$\sigma(x) = \delta U_k(x)$$
-\end{itemize}
-
-\begin{proposition}
-    Sea $e$ el número de errores que ocurren realmente y sea $k$ el número de iteraciones del algoritmo descrito, entonces $k \leq e$.
-\end{proposition}
 
 \end{comment}
