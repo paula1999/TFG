@@ -7,4 +7,42 @@
 % Para el criptosistema de McEliece (que es que implementaremos) está el archivo sander-report-s15.pdf, 
 % donde se explica este y el criptosistema de Niederreter, que es equivalente en seguridad.
 
+% buscar la referencia original del 78 de McEliece que ahi viene mejor explicado
+
 \chapter{Criptografía post-cuántica basada en códigos}
+
+% TODO: introducción
+
+
+El principal objetivo de la criptografía es proporcionar confidencialidad mediante métodos de cifrado. Cuando queremos enviar un mensaje a un destinatario, el canal de comunicación puede ser inseguro y otras personas podrían leerlo o incluso modificarlo de tal forma que el destinatario no se diera cuenta. Para prevenir estos ataques nos será de utilidad la criptografía.
+
+
+\section{Introducción}
+
+En general, los métodos de cifrado consisten en encriptar el mensaje, \emph{texto llano}, antes de ser transmitido, de esta forma obtenemos un \emph{texto cifrado}. Este texto cifrado se transmite al destinatario, quien lo \emph{desencripta} mediante una \emph{clave de descifrado}, la cual solo conocen el receptor y el emisor y previamente la intercambiaron.
+
+Para encriptar y desencriptar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}).
+
+En 1976, Diffie y Hellman introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (pk, sk)$, que consiste en dos partes: $pk$ es la clave de cifrado y es pública, y $sk$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $pk$ del receptor. Así, el receptor poddrá descifrar el texto cifrado usando su clave privada $sk$, que solo la conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
+
+\section{Objetivos de la criptografía}
+
+Además de proporcionar confidencialidad, la criptografía proporciona soluciones para otros problemas:
+
+\begin{enumerate}
+    \item \emph{Integridad de datos}. El receptor de un mensaje debería ser capaz de determinar que el mensaje no ha sido modificado durante la transmisión.
+    \item \emph{Autenticación}. El receptor de un mensaje debería ser capaz de verificar su origen.
+    \item \emph{No repudiabilidad}. El emisor de un mensaje debería ser incapaz de negar posteriormente que envió el mensaje.
+\end{enumerate}
+
+Para garantizar la integridad de los datos, hay métodos simétricos y de clave pública. El mensaje $m$ es aumentado por un \emph{código de autenticación de mensaje} (MAC). Este código es generado por un algoritmo que depende de la clave secreta. Así, el mensaje aumentado $(m, MAC(k,m))$ está protegido contra modificaciones. El receptor ahora puede comprobar la integridad del mensaje $(m, \bar{m})$ verificando que $MAC(k, m) = \bar{m}$. Más adelante veremos que la autenticación de códigos se puede implementar con funciones hash con clave.
+
+Las firmas digitales requieren métodos de clave pública y proporcionan autenticación y no repudiablidad. Cualquier persona puede verificar si una firma digital es válida con la clave pública del firmante. Esto es, si firmamos con nuestra clave privada $k$, obtenemos la firma $Sign(sk, m)$. El receptor recibe la firma $s$ del mensaje $m$ y comprueba con el algoritmo de verificación \emph{Verify} que se cumple que $Verify(pk, s, m) = ok$, siendo $pk$ la clave pública del emisor.
+
+\section{Criptografía de Clave Pública}
+
+A diferencia de la criptografía simétrica, en la criptografía de clave pública los participantes en la comunicación no comparten una clave secreta. Cada uno tiene un par de claves: la \emph{clave secreta} $sk$ conocida solo por él y una \emph{clave pública} conocida por todos.
+
+Supongamos que Bob tiene un par de claves $(pk, sk)$ y Alice quiere encriptar un mensaje $m$ para Bob. Alice, como cualquier otra persona, conoce la clave pública $pk$ de Bob. Alice usa una función de encriptación $E$ con la clave pública $pk$ de Bob para obtener el texto cifrado $c = E(pk, m)$. Denotamos la encriptación con una llave fija $pk$ por $E_{pk}$, es decir, $E_{pk} := E(pk, m)$. Esto solo puede ser seguro si es prácticamente inviable calcular $m$ de $c = E_{pk}(m)$. Sin embargo, Bob sí es capaz de calcular el mensaje $m$, ya que puede usar su clave secreta. La función de encriptación $E_{pk}$ debe tener la propiedad de que su pre-imagen $m$ del texto cifrado $c = E_{pk}(m)$ sea fácil de calcular usando la clave secreta $sk$ de Bob, quien es el único que puede descifrar el mensaje encriptado.
+
+% Me he quedado por la pagina 50, parrafo 2
