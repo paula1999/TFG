@@ -45,4 +45,30 @@ A diferencia de la criptografía simétrica, en la criptografía de clave públi
 
 Supongamos que Bob tiene un par de claves $(pk, sk)$ y Alice quiere encriptar un mensaje $m$ para Bob. Alice, como cualquier otra persona, conoce la clave pública $pk$ de Bob. Alice usa una función de encriptación $E$ con la clave pública $pk$ de Bob para obtener el texto cifrado $c = E(pk, m)$. Denotamos la encriptación con una llave fija $pk$ por $E_{pk}$, es decir, $E_{pk} := E(pk, m)$. Esto solo puede ser seguro si es prácticamente inviable calcular $m$ de $c = E_{pk}(m)$. Sin embargo, Bob sí es capaz de calcular el mensaje $m$, ya que puede usar su clave secreta. La función de encriptación $E_{pk}$ debe tener la propiedad de que su pre-imagen $m$ del texto cifrado $c = E_{pk}(m)$ sea fácil de calcular usando la clave secreta $sk$ de Bob, quien es el único que puede descifrar el mensaje encriptado.
 
-% Me he quedado por la pagina 50, parrafo 2
+En la criptografía de clave pública, necesitamos unas funciones $\left( E_{pk} \right)_{pk \in PK}$ tales que cada función $E_{pk}$ se pueda cacular con un algoritmo eficiente. Sin embargo, su pre-imagen debería ser prácticamente inviable de calcular. Estas familias $\left( E_{pk} \right)_{pk \in PK}$ se denominan \emph{funciones de una sola dirección}. En cada función $E_{pk}$ de la familia, tiene que haber una información secreta $sk$ para que el algoritmo sea eficiente y calcule la inversa de $E_{pk}$. Las funciones con esa propiedad se denominan \emph{funciones con trampilla}.
+
+En 1976, Diffie y Hellman presentaron la idea de la criptografía de clave pública, es decir, introdujeron métodos de clave pública para el acuerdo de clave y, además, describieron cómo las firmas digitales funcionarían. El primer criptosistema de clave pública que podía servir como un mecanismo de acuerdo de clave y como una firma digital fue el criptosistema RSA, que actualmente es el más conocido y usado. Este criptosistema lleva el nombre de sus inventores: Rivest, Shamir y Adleman. El criptosistema RSA se basa en la dificultad de factorizar grandes números, lo que le permite construir funciones de una sola dirección con una trampilla. Otras funciones de una sola dirección se basan en la dificultad de extraer logaritmos discretos. Estos dos problemas de la teoría de números son los cimientos de los criptosistemas de clave pública más usados actualmente.
+
+Cada participante en un criptosistema de clave pública tiene una clave $k = (pk, sk)$, que consiste enu na clave pública ($pk$) y una clave privada o secreta ($sk$). Para garantizar la seguridad del criptosistema, debería ser inviable obtener la clave privada $sk$ a partir de la clave pública $pk$. Un algoritmo eficiente debería ser el encargado de elegir aleatoriamente ambas claves en un gran espacio de parámetros. Así, cualquiera puede usar $pk$ para encriptar mensajes, pero solo quien posea $sk$ podrá desencriptarlos.
+
+En cuanto a las firmas digitales, supongamos que tenemos una familia de funciones con trampilla $\left( E_{pk} \right)_{pk \in PK}$ donde cada función $E_{pk}$ es biyectiva. Sea $pk$ la clave pública de Alice, quien es la única de calcular la inversa $E_{pk}^{-1}$ de $E_{pk}$ pues para ello se necesita la clave privada $sk$ de Alice. De esta forma, si Alice quiere firmar un mensaje $m$, tiene que calcular $E_{pk}^{-1}(m)$, que será el valor de la firma $s$ de $m$. Todo el mundo puede verificar la firma de Alice $s$ pues cualquiera puede usar su clave pública $pk$ y calcular $E_{pk}(s)$. Si $E_{pk} (s) = m$, entonces podemos asegurarnos de que Alice realmente firmó $m$ porque es la única que es capaz de calcular $E_{pk}^{-1}(m)$.
+
+Una importante aplicación de los criptosistemas de clave pública es que permiten intercambiar claves en sistemas de clave secreta. Si Alice conoce la clave pública de Bob, ella puede generar una clave de sesión, cifrarla con la clave pública de Bob y enviársela.  
+
+\section{RSA}
+
+El criptosistema RSA consiste en multiplicar dos números primos muy grandes y publicar su producto $n$. Una parte de la clave pública la conformará $n$, mientras que los factores de $n$ se mantienen en secreto y se usarán como clave privada. La idea básica es que los factores de $n$ no puedan recuperarse de $n$. Por lo que la seguridad de RSA radica en la dificultad del problema de factorización de enteros.
+
+\subsection{Generación de claves}
+
+Cada usuario del criptosistema RSA posee una clave pública y otra privada. Para generar este par de claves, se siguen los siguientes tres pasos:
+
+\begin{enumerate}
+    \item Se eligen aleatoriamente dos grandes números primos distintos $p$ y $q$ y se calcula su producto $n = p \cdot q$.
+    \item Se elige un entero $e$ tal que $1 < e < \phi(n)$ y sea primo con $\phi(n)$. La clave pública será $(n, e)$.
+    \item Se calcula $d$ que verifique $ed \equiv 1 \pmod{\phi(n)}$. La clave privada será $(n, d)$.
+\end{enumerate}
+
+Los números $n$, $e$ y $d$ se denominan \emph{módulo}, \emph{exponente de cifrado} y \emph{exponente de descifrado}, respectivamente. El exponente de descifrado $d$ se puede obtener con el algoritmo extendido de Euclides. Con este exponente es posible descifrar un texto cifrado y generar una firma digital
+
+% pagina 58
