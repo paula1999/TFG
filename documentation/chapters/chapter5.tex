@@ -55,6 +55,15 @@ En cuanto a las firmas digitales, supongamos que tenemos una familia de funcione
 
 Una importante aplicación de los criptosistemas de clave pública es que permiten intercambiar claves en sistemas de clave secreta. Si Alice conoce la clave pública de Bob, ella puede generar una clave de sesión, cifrarla con la clave pública de Bob y enviársela.  
 
+Algunos sistemas conocidos de clave pública son:
+
+\begin{itemize}
+    \item \emph{RSA}: está basado en el problema de factorización de enteros.
+    \item \emph{ElGamal}: está basado en el problema del logaritmo discreto.
+    \item \emph{McEliece}: está basado en la teoría de los códigos Goppa.
+    \item \emph{Curvas Elípticas}: son una generalización del sistema ElGamal y se basan en el problema de calcular logaritmos discretos en curvas elípticas.
+\end{itemize}
+
 \section{RSA}
 
 El criptosistema RSA consiste en multiplicar dos números primos muy grandes y publicar su producto $n$. Una parte de la clave pública la conformará $n$, mientras que los factores de $n$ se mantienen en secreto y se usarán como clave privada. La idea básica es que los factores de $n$ no puedan recuperarse de $n$. Por lo que la seguridad de RSA radica en la dificultad del problema de factorización de enteros.
@@ -69,6 +78,25 @@ Cada usuario del criptosistema RSA posee una clave pública y otra privada. Para
     \item Se calcula $d$ que verifique $ed \equiv 1 \pmod{\phi(n)}$. La clave privada será $(n, d)$.
 \end{enumerate}
 
-Los números $n$, $e$ y $d$ se denominan \emph{módulo}, \emph{exponente de cifrado} y \emph{exponente de descifrado}, respectivamente. El exponente de descifrado $d$ se puede obtener con el algoritmo extendido de Euclides. Con este exponente es posible descifrar un texto cifrado y generar una firma digital
+Los números $n$, $e$ y $d$ se denominan \emph{módulo}, \emph{exponente de cifrado} y \emph{exponente de descifrado}, respectivamente. El exponente de descifrado $d$ se puede obtener con el algoritmo extendido de Euclides. Con este exponente es posible descifrar un texto cifrado y generar una firma digital.
 
-% pagina 58
+\subsection{Cifrado y descifrado}
+
+Supongamos que queremos cifrar un mensaje para Bob. Para ello, usaremos la clave pública $(n, e)$ de Bob. Los mensajes que podemos encriptar $m \in \{ 0, ..., n-1 \}$ se pueden considerar elementos de $\mathbb{Z}_n$.
+
+Para cifrar un texto plano $m \in \mathbb{Z}_n$, podemos usar la función RSA
+
+$$RSA_{n, e} : \mathbb{Z}_n \longrightarrow \mathbb{Z}_n, \; m \longmapsto m^e,$$
+
+es decir, el texto cifrado $c$ es $m^e$ módulo $n$.
+
+Para que Bob descifre el texto cifrado $c$, puede usar la función RSA
+
+$$RSA_{n, d} : \mathbb{Z}_n \longrightarrow \mathbb{Z}_n, \; c \longmapsto c^d,$$
+
+donde $(n, d)$ es su clave secreta. De esta forma, Bob puede recuperar el texto plano, es decir, $m = c^d$ módulo $n$, pues las funciones de cifrado y descifrado $RSA_{n, e}$ y $RSA_{n, d}$ son inversas entre sí.
+
+Con este procedimiento de cifrado, podemos cifrar secuencias de bit hasta $k := \lfloor \log_2{n} \rfloor$ bits. Si los mensajes son más largos, podemos dividirlos en bloques de longitud $k$ y cifrar cada uno por separado.
+
+\section{Criptografía post-cuántica}
+
