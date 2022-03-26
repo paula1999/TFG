@@ -19,39 +19,88 @@ El principal objetivo de la criptografía es proporcionar confidencialidad media
 
 \section{Introducción}
 
-En general, los métodos de cifrado consisten en encriptar el mensaje, \emph{texto llano}, antes de ser transmitido, de esta forma obtenemos un \emph{texto cifrado}. Este texto cifrado se transmite al destinatario, quien lo \emph{desencripta} mediante una \emph{clave de descifrado}, la cual solo conocen el receptor y el emisor y previamente la intercambiaron.
+En general, los métodos de cifrado consisten en encriptar el mensaje, \emph{texto plano}, antes de ser transmitido, de esta forma obtenemos un \emph{texto cifrado} o \emph{criptograma}. Este texto cifrado se transmite al destinatario, quien lo \emph{desencripta} mediante una \emph{clave de descifrado}, la cual solo conocen el receptor y el emisor y previamente la intercambiaron.
+
+Formalmente, dado un conjunto de los mensajes (textos planos) $\mathcal{M}$, un conjunto de los criptogramas $\mathcal{C}$ y el espacio de claves $\mathcal{K}_p \times \mathcal{K}_s$, un \emph{criptosistema} viene definido por dos aplicaciones
+
+$$E : \mathcal{K}_p \times \mathcal{M} \rightarrow \mathcal{C},$$
+$$D : \mathcal{K}_s \times \mathcal{C} \rightarrow \mathcal{M},$$
+
+tales que para cualquier clave $k_p \in \mathcal{K}_p$, existe una clave $k_s \in \mathcal{K}_s$ de manera que dado cualquier mensaje $m \in \mathcal{M}$,
+
+\begin{equation}
+    \label{def:criptosistema}
+    D(k_s, E(k_p, m)) = m.
+\end{equation}
+
+Para simplificar la notación de las funciones de cifrado y descifrado usaremos, fijadas las claves $k_p \in \mathcal{K}_p$ y su correspondiente $k_s \in \mathcal{K}_s$:
+
+$$E_{k_p} : \mathcal{M} \rightarrow \mathcal{C}, \; \left[ E_{k_p} (m) = E(k_p, m) \right]$$
+$$D_{k_s} : \mathcal{C} \rightarrow \mathcal{M}, \; \left[ D_{k_s} (c) = D(k_s, c) \right]$$
+
+La propiedad \ref{def:criptosistema} se transforma en
+
+$$D_{k_s} \left( E_{k_p}(m) \right) = m.$$
 
 Para encriptar y desencriptar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}).
 
-En 1976, Diffie y Hellman introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (pk, sk)$, que consiste en dos partes: $pk$ es la clave de cifrado y es pública, y $sk$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $pk$ del receptor. Así, el receptor poddrá descifrar el texto cifrado usando su clave privada $sk$, que solo la conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
+En 1976, Diffie y Hellman introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, también llamada \emph{criptografía asimétrica}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (k_p, k_s)$, que consiste en dos partes: $k_p$ es la clave de cifrado y es pública, y $k_s$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $k_p$ del receptor. Así, el receptor poddrá descifrar el texto cifrado usando su clave privada $k_s$, que solo la conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
 
 \section{Objetivos de la criptografía}
 
 Además de proporcionar confidencialidad, la criptografía proporciona soluciones para otros problemas:
 
 \begin{enumerate}
+    \item \emph{Confidencialidad}. La información solo puede ser accesible por las entidades autorizadas.
     \item \emph{Integridad de datos}. El receptor de un mensaje debería ser capaz de determinar que el mensaje no ha sido modificado durante la transmisión.
-    \item \emph{Autenticación}. El receptor de un mensaje debería ser capaz de verificar su origen.
-    \item \emph{No repudiabilidad}. El emisor de un mensaje debería ser incapaz de negar posteriormente que envió el mensaje.
+    \item \emph{Autenticidad}. El receptor de un mensaje debería ser capaz de verificar su origen.
+    \item \emph{No repudio}. El emisor de un mensaje debería ser incapaz de negar posteriormente que envió el mensaje.
 \end{enumerate}
 
 Para garantizar la integridad de los datos, hay métodos simétricos y de clave pública. El mensaje $m$ es aumentado por un \emph{código de autenticación de mensaje} (MAC). Este código es generado por un algoritmo que depende de la clave secreta. Así, el mensaje aumentado $(m, MAC(k,m))$ está protegido contra modificaciones. El receptor ahora puede comprobar la integridad del mensaje $(m, \bar{m})$ verificando que $MAC(k, m) = \bar{m}$. Más adelante veremos que la autenticación de códigos se puede implementar con funciones hash con clave.
 
-Las firmas digitales requieren métodos de clave pública y proporcionan autenticación y no repudiablidad. Cualquier persona puede verificar si una firma digital es válida con la clave pública del firmante. Esto es, si firmamos con nuestra clave privada $k$, obtenemos la firma $Sign(sk, m)$. El receptor recibe la firma $s$ del mensaje $m$ y comprueba con el algoritmo de verificación \emph{Verify} que se cumple que $Verify(pk, s, m) = ok$, siendo $pk$ la clave pública del emisor.
+Las firmas digitales requieren métodos de clave pública y proporcionan autenticación y no repudiablidad. Cualquier persona puede verificar si una firma digital es válida con la clave pública del firmante. Esto es, si firmamos con nuestra clave privada $k$, obtenemos la firma $Sign(k_s, m)$. El receptor recibe la firma $s$ del mensaje $m$ y comprueba con el algoritmo de verificación \emph{Verify} que se cumple que \emph{Verify}$(k_p, s, m) = ok$, siendo $k_p$ la clave pública del emisor.
 
-\section{Criptografía de Clave Pública}
+\section{Criptografía simétrica}
 
-A diferencia de la criptografía simétrica, en la criptografía de clave pública los participantes en la comunicación no comparten una clave secreta. Cada uno tiene un par de claves: la \emph{clave secreta} $sk$ conocida solo por él y una \emph{clave pública} conocida por todos.
+Un criptosistema \emph{simétrico}, como hemos visto, viene determinado por dos aplicaciones
 
-Supongamos que Bob tiene un par de claves $(pk, sk)$ y Alice quiere encriptar un mensaje $m$ para Bob. Alice, como cualquier otra persona, conoce la clave pública $pk$ de Bob. Alice usa una función de encriptación $E$ con la clave pública $pk$ de Bob para obtener el texto cifrado $c = E(pk, m)$. Denotamos la encriptación con una llave fija $pk$ por $E_{pk}$, es decir, $E_{pk} := E(pk, m)$. Esto solo puede ser seguro si es prácticamente inviable calcular $m$ de $c = E_{pk}(m)$. Sin embargo, Bob sí es capaz de calcular el mensaje $m$, ya que puede usar su clave secreta. La función de encriptación $E_{pk}$ debe tener la propiedad de que su pre-imagen $m$ del texto cifrado $c = E_{pk}(m)$ sea fácil de calcular usando la clave secreta $sk$ de Bob, quien es el único que puede descifrar el mensaje encriptado.
+$$E : \mathcal{K} \times \mathcal{M} \rightarrow \mathcal{C},$$
+$$D : \mathcal{K} \times \mathcal{C} \rightarrow \mathcal{M},$$
 
-En la criptografía de clave pública, necesitamos unas funciones $\left( E_{pk} \right)_{pk \in PK}$ tales que cada función $E_{pk}$ se pueda cacular con un algoritmo eficiente. Sin embargo, su pre-imagen debería ser prácticamente inviable de calcular. Estas familias $\left( E_{pk} \right)_{pk \in PK}$ se denominan \emph{funciones de una sola dirección}. En cada función $E_{pk}$ de la familia, tiene que haber una información secreta $sk$ para que el algoritmo sea eficiente y calcule la inversa de $E_{pk}$. Las funciones con esa propiedad se denominan \emph{funciones con trampilla}.
+tales que para cualquier clave $k \in \mathcal{K}$ y cualquier mensaje $m \in \mathcal{M}$,
+
+\begin{equation}
+    \label{def:criptosistema_simetrico}
+    D(k, E(k, m)) = m.
+\end{equation}
+
+Fijada $k \in \mathcal{K}$, usaremos la notación 
+
+$$E_k : \mathcal{M} \rightarrow \mathcal{C},$$
+$$D_k : \mathcal{C} \rightarrow \mathcal{M},$$
+
+para las funciones de cifrado y descifrado. La propiedad \ref{def:criptosistema_simetrico} se transforma en
+
+$$D_k \left( E_k (m) \right) = m.$$
+
+Observamos que la clave que se usa para cifrar es la misma que se usa para descifrar.
+
+Algunos ejemplos importantes de sistemas simétricos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}).
+
+\section{Criptografía asimétrica}
+
+A diferencia de la criptografía simétrica, en la criptografía asimétrica los participantes en la comunicación no comparten una clave secreta. Cada uno tiene un par de claves: la \emph{clave secreta} $k_s$ conocida solo por él y una \emph{clave pública} conocida por todos.
+
+Supongamos que Bob tiene un par de claves $(k_p, k_s)$ y Alice quiere encriptar un mensaje $m$ para Bob. Alice, como cualquier otra persona, conoce la clave pública $k_p$ de Bob. Alice usa una función de encriptación $E$ con la clave pública $k_p$ de Bob para obtener el texto cifrado $c = E_{k_p}(m)$. Esto solo puede ser seguro si es prácticamente inviable calcular $m$ de $c = E_{k_p}(m)$. Sin embargo, Bob sí es capaz de calcular el mensaje $m$, ya que puede usar su clave secreta. La función de encriptación $E_{k_p}$ debe tener la propiedad de que su pre-imagen $m$ del texto cifrado $c = E_{k_p}(m)$ sea fácil de calcular usando la clave secreta $k_s$ de Bob, quien es el único que puede descifrar el mensaje encriptado.
+
+En la criptografía de clave pública, necesitamos unas funciones $\left( E_{k_p} \right)_{k_p \in K_P}$ tales que cada función $E_{k_p}$ se pueda cacular con un algoritmo eficiente. Sin embargo, su pre-imagen debería ser prácticamente inviable de calcular. Estas familias $\left( E_{k_p} \right)_{k_p \in K_P}$ se denominan \emph{funciones de una sola dirección}. En cada función $E_{k_p}$ de la familia, tiene que haber una información secreta $k_s$ para que el algoritmo sea eficiente y calcule la inversa de $E_{k_p}$. Las funciones con esa propiedad se denominan \emph{funciones con trampilla}.
 
 En 1976, Diffie y Hellman presentaron la idea de la criptografía de clave pública, es decir, introdujeron métodos de clave pública para el acuerdo de clave y, además, describieron cómo las firmas digitales funcionarían. El primer criptosistema de clave pública que podía servir como un mecanismo de acuerdo de clave y como una firma digital fue el criptosistema RSA, que actualmente es el más conocido y usado. Este criptosistema lleva el nombre de sus inventores: Rivest, Shamir y Adleman. El criptosistema RSA se basa en la dificultad de factorizar grandes números, lo que le permite construir funciones de una sola dirección con una trampilla. Otras funciones de una sola dirección se basan en la dificultad de extraer logaritmos discretos. Estos dos problemas de la teoría de números son los cimientos de los criptosistemas de clave pública más usados actualmente.
 
-Cada participante en un criptosistema de clave pública tiene una clave $k = (pk, sk)$, que consiste enu na clave pública ($pk$) y una clave privada o secreta ($sk$). Para garantizar la seguridad del criptosistema, debería ser inviable obtener la clave privada $sk$ a partir de la clave pública $pk$. Un algoritmo eficiente debería ser el encargado de elegir aleatoriamente ambas claves en un gran espacio de parámetros. Así, cualquiera puede usar $pk$ para encriptar mensajes, pero solo quien posea $sk$ podrá desencriptarlos.
+Cada participante en un criptosistema de clave pública tiene una clave $k = (k_p, k_s)$, que consiste enu na clave pública ($k_p$) y una clave privada o secreta ($k_s$). Para garantizar la seguridad del criptosistema, debería ser inviable obtener la clave privada $k_s$ a partir de la clave pública $k_p$. Un algoritmo eficiente debería ser el encargado de elegir aleatoriamente ambas claves en un gran espacio de parámetros. Así, cualquiera puede usar $k_p$ para encriptar mensajes, pero solo quien posea $k_s$ podrá desencriptarlos.
 
-En cuanto a las firmas digitales, supongamos que tenemos una familia de funciones con trampilla $\left( E_{pk} \right)_{pk \in PK}$ donde cada función $E_{pk}$ es biyectiva. Sea $pk$ la clave pública de Alice, quien es la única de calcular la inversa $E_{pk}^{-1}$ de $E_{pk}$ pues para ello se necesita la clave privada $sk$ de Alice. De esta forma, si Alice quiere firmar un mensaje $m$, tiene que calcular $E_{pk}^{-1}(m)$, que será el valor de la firma $s$ de $m$. Todo el mundo puede verificar la firma de Alice $s$ pues cualquiera puede usar su clave pública $pk$ y calcular $E_{pk}(s)$. Si $E_{pk} (s) = m$, entonces podemos asegurarnos de que Alice realmente firmó $m$ porque es la única que es capaz de calcular $E_{pk}^{-1}(m)$.
+En cuanto a las firmas digitales, supongamos que tenemos una familia de funciones con trampilla $\left( E_{k_p} \right)_{k_p \in K_P}$ donde cada función $E_{k_p}$ es biyectiva. Sea $k_p$ la clave pública de Alice, quien es la única de calcular la inversa $E_{k_p}^{-1}$ de $E_{k_p}$ pues para ello se necesita la clave privada $k_s$ de Alice. De esta forma, si Alice quiere firmar un mensaje $m$, tiene que calcular $E_{k_p}^{-1}(m)$, que será el valor de la firma $s$ de $m$. Todo el mundo puede verificar la firma de Alice $s$ pues cualquiera puede usar su clave pública $k_p$ y calcular $E_{k_p}(s)$. Si $E_{k_p} (s) = m$, entonces podemos asegurarnos de que Alice realmente firmó $m$ porque es la única que es capaz de calcular $E_{k_p}^{-1}(m)$.
 
 Una importante aplicación de los criptosistemas de clave pública es que permiten intercambiar claves en sistemas de clave secreta. Si Alice conoce la clave pública de Bob, ella puede generar una clave de sesión, cifrarla con la clave pública de Bob y enviársela.  
 
@@ -64,11 +113,11 @@ Algunos sistemas conocidos de clave pública son:
     \item \emph{Curvas Elípticas}: son una generalización del sistema ElGamal y se basan en el problema de calcular logaritmos discretos en curvas elípticas.
 \end{itemize}
 
-\section{RSA}
+\subsection{RSA}
 
 El criptosistema RSA consiste en multiplicar dos números primos muy grandes y publicar su producto $n$. Una parte de la clave pública la conformará $n$, mientras que los factores de $n$ se mantienen en secreto y se usarán como clave privada. La idea básica es que los factores de $n$ no puedan recuperarse de $n$. Por lo que la seguridad de RSA radica en la dificultad del problema de factorización de enteros.
 
-\subsection{Generación de claves}
+\subsubsection{Generación de claves}
 
 Cada usuario del criptosistema RSA posee una clave pública y otra privada. Para generar este par de claves, se siguen los siguientes tres pasos:
 
@@ -80,13 +129,14 @@ Cada usuario del criptosistema RSA posee una clave pública y otra privada. Para
 
 Los números $n$, $e$ y $d$ se denominan \emph{módulo}, \emph{exponente de cifrado} y \emph{exponente de descifrado}, respectivamente. El exponente de descifrado $d$ se puede obtener con el algoritmo extendido de Euclides. Con este exponente es posible descifrar un texto cifrado y generar una firma digital.
 
-\subsection{Cifrado y descifrado}
+\subsubsection{Cifrado y descifrado}
 
 Supongamos que queremos cifrar un mensaje para Bob. Para ello, usaremos la clave pública $(n, e)$ de Bob. Los mensajes que podemos encriptar $m \in \{ 0, ..., n-1 \}$ se pueden considerar elementos de $\mathbb{Z}_n$.
 
 Para cifrar un texto plano $m \in \mathbb{Z}_n$, podemos usar la función RSA
 
-$$RSA_{n, e} : \mathbb{Z}_n \longrightarrow \mathbb{Z}_n, \; m \longmapsto m^e,$$
+$$RSA_{n, e} : \mathbb{Z}_n \longrightarrow \mathbb{Z}_n$$
+$$ RSA_{n, e}(m) = m^e \pmod{n},$$
 
 es decir, el texto cifrado $c$ es $m^e$ módulo $n$.
 
@@ -98,5 +148,19 @@ donde $(n, d)$ es su clave secreta. De esta forma, Bob puede recuperar el texto 
 
 Con este procedimiento de cifrado, podemos cifrar secuencias de bit hasta $k := \lfloor \log_2{n} \rfloor$ bits. Si los mensajes son más largos, podemos dividirlos en bloques de longitud $k$ y cifrar cada uno por separado.
 
+\subsubsection{Firma digital}
+
+El criptosistema RSA también se puede usar para realizar firmas digitales. Sea $(n, e)$ la clave pública y $d$ el exponente de descifrado, si queremos firmar un mensaje $m$, le aplicamos el algoritmo de descifrado y obtenemos la \emph{firma} de $m$, $\sigma = m^d$. Decimos que $(m, \sigma)$ es un \emph{mensaje firmado}. Para verificar ese mensaje, basta con calcular $\sigma ^e$, donde $e$ es la clave pública del firmante, y comprobar que coincide con $m$.
+
 \section{Criptografía post-cuántica}
+
+Se cree que algumos sistemas criptográficos, tales como RSA, resisten los ataques de grandes ordenadores clásicos, pero no de los grandes ordenadores cuánticos. Sin embargo, se cree que algunas alternativas, como el sistema de McEliece con una clave de cuatro millones de bits, son capaces de resistir los ataques de grandes ordenadores clásicos y cuánticos.
+
+Es por esto que surgen diversas preocupaciones, ante la amenaza de los ordenadores cuánticos se duda sobre si seguir usando RSA o simplemente cambiar a otros sistemas criptográficos que sean resistentes a dichos ordenadores. Sin embargo, esto no es tan sencillo pues necesitamos tiempo para mejorar la eficiencia, fomentar la confanza y mejorar de la usabilidad de la criptografía post-cuántica. En breve, todavía no estamos preparados para que el mundo cambie a la criptografía post-cuántica.
+
+En esta sección estudiaremos los sistemas criptográficos basados en códigos, criptosistemas que usan un código de corrección de errores $\mathcal{C}$. Para ello, agregan un error a una palabra de $\mathcal{C}$ o al calcular un síndrome relativo a la matriz de paridad de $\mathcal{C}$.
+
+El primero de esos sistemas es un sistema de cifrado de clave pública y fue propuesto por Robert J. McEliece in 1978. Este sistema usa como clave privada un código de Goppa binario aleatorio y, como clave pública, una matriz generadora aleatoria de una versión permutada aleatoriamente de ese código. El texto cifrado es una palabra código a la que se le han añadido algunos errores, y solo el que posee la clave privada puede eliminar esos errores. Actualmente, no se conoce ningún ataque que presente una amenaza grave a este sistema, ni los ordenadores cuánticos. Cabe destacar la seguridad y la rapidez del criptosistema de McEliece, ya que tanto los procedimientos de cifrado y descifrado son de baja complejidad.
+
+\subsection{Criptosistema de McEliece}
 
