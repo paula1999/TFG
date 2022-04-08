@@ -47,6 +47,41 @@ cleardoublepage=empty,abstractoff,BCOR=5mm,paper=a4,fontsize=12pt,main=spanish]{
 \usepackage{listings} % Código
 \usepackage{comment}
 
+% Operadores
+
+\DeclareMathOperator{\gr}{gr}
+\DeclareMathOperator{\mcd}{mcd}
+
+\lstset{ frame=Ltb,
+framerule=0pt,
+aboveskip=0.5cm,
+framextopmargin=3pt,
+framexbottommargin=3pt,
+framexleftmargin=0.4cm,
+framesep=0pt,
+rulesep=.4pt,
+backgroundcolor=\color{white},
+rulesepcolor=\color{black},
+%
+stringstyle=\ttfamily,
+showstringspaces = false,
+basicstyle=\small\ttfamily,
+commentstyle=\color{gray},
+keywordstyle=\bfseries,
+%
+numbers=left,
+numbersep=15pt,
+numberstyle=\tiny,
+numberfirstline = false,
+breaklines=true,
+}
+
+
+
+\lstdefinestyle{Python}
+{language=Python,
+}
+
 
 % Plantilla classicthesis
 \usepackage[beramono,eulerchapternumbers,linedheaders,parts,a5paper,dottedtoc,
@@ -121,6 +156,10 @@ manychapters,pdfspacing]{classicthesis}
 {\end{algorithm}}
 \makeatother
 
+% Comandos
+\theoremstyle{plain}
+\newtheorem{problemth}{Problema}
+
 \begin{document}
 
 \ThisULCornerWallPaper{1}{figures/ugrA4.pdf}
@@ -145,8 +184,15 @@ manychapters,pdfspacing]{classicthesis}
 \input{chapters/chapter3}
 \input{chapters/chapter4}
 \input{chapters/chapter5}
-%\input{chapters/chapter6}
-%\input{chapters/chapter7}
+\input{chapters/chapter6}
+\input{chapters/chapter7}
+
+% TODO: Apéndice
+\appendix
+\include{appendix/sage-Goppa}
+\include{appendix/sage-McEliece}
+\include{appendix/sage-Niederreiter}
+
 
 % TODO: Conclusión
 \input{add_ons/conclusion}
