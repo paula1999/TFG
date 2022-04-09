@@ -6,12 +6,7 @@
 
 \chapter{Códigos de Goppa}
 
-% TODO: introduccion
-\textcolor{red}{Hay que completar esta introducción}
-
-En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corrección de errores lineales. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a hablar sobre los códigos de Goppa y sus propiedades más importantes.
-
-El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010} y \cite{Goppa_codes_1973}.
+En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corrección de errores lineales. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov \cite{Varshamov-Gilbert_bound_1982}, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a estudiar los códigos de Goppa \cite[Sección 13.2.2]{Huffman_Pless_2010} y sus propiedades más importantes, así como su codificación y decodificación \cite{Goppa_codes_1973}.
 
 \section{Códigos clásicos de Goppa}
 
@@ -19,7 +14,7 @@ Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{
 
 \begin{equation}
     \label{def:goppa}
-    \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
+    \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}.
 \end{equation}
 
 De esta forma, cuando la parte de la izquierda está escrita como una función racional, significa que el numerador es un múltiplo de $g(x)$. Además, trabajar módulo $g(x)$ es como trabajar en el anillo $\mathbb{F}_{q^t}[x]/(g(x))$, y la hipótesis $g(\gamma_i) \neq 0$ garantiza que $x - \gamma_i$ es invertible en este anillo. Se llama a $g(x)$ el \emph{polinomio de Goppa} de $\Gamma(L,g)$. Notemos que el código BCH de longitud $n$ y la distancia elegida $\delta$ es el código de Goppa $\Gamma(L,g)$ con $L = \{ 1, \beta^{-1}, ..., \beta^{1-n} \}$ y $g(x) = x^{\delta - 1}$.
@@ -32,7 +27,7 @@ ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\ga
 
 \begin{equation}
     \label{congruencia_goppa}
-    \sum_{i=0}^{n-1} c_i \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} \equiv 0 \pmod{g(x)}
+    \sum_{i=0}^{n-1} c_i \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} \equiv 0 \pmod{g(x)}.
 \end{equation}
 
 Supongamos que $g(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = \gr(g(x))$. Entonces
@@ -49,7 +44,7 @@ Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $
             & \vdots & \\
             h_0 \sum_{j=1}^w \left( g_j + \gamma_0^{j-1} \right) & \cdots & h_{n-1} \sum_{j=1}^w \left( g_{j} + \gamma_{n-1}^{j-1} \right) \\
         \end{array}
-        \right)
+        \right),
 \end{equation}
 
 con $h_i = g(\gamma_i)^{-1}$.
@@ -65,7 +60,7 @@ con $h_i = g(\gamma_i)^{-1}$.
                 & \vdots & \\
                 g(\gamma_0)^{-1} \gamma_0^{w-1} & \cdots & g(\gamma_{n-1})^{-1} \gamma_{n-1}^{w-1} \\
             \end{array}
-            \right)
+            \right).
     \end{equation}
 \end{proposition}
 
@@ -124,9 +119,9 @@ La importancia de estos códigos se debe a que pueden doblar la capacidad correc
 
 \subsection{Decodificación de los códigos de Goppa}
 
-Como hemos visto, al transmitir una palabra código a un receptor, éste podría recibir la palabra alterada. Para que el receptor pueda determinar el mensaje original, necesitaremos decodificar el mensaje recibido. Sea $\Gamma(L,g)$ un código de Goppa, donde $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ es una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$. Supongamos que $e$ es el vector de errores que se añade a la palabra código $c$ transmitida, entonces la palabra recibida $y$ está dada por
+Como hemos visto, al transmitir una palabra código a un receptor, éste podría recibir la palabra alterada. Para que el receptor pueda determinar el mensaje original, necesitaremos decodificar el mensaje recibido, \cite{Goppa_codes_1973}. Sea $\Gamma(L,g)$ un código de Goppa, donde $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ es una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$. Supongamos que $e$ es el vector de errores que se añade a la palabra código $c$ transmitida, entonces la palabra recibida $y$ está dada por
 
-$$y = c + e$$
+$$y = c + e,$$
 
 de donde 
 
@@ -155,7 +150,7 @@ De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubica
 
 \begin{equation}
     \label{def:localizaciones}
-    \sigma (x) = \prod_{\gamma \in M} (x - \gamma)
+    \sigma (x) = \prod_{\gamma \in M} (x - \gamma).
 \end{equation}
 
 Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma.
@@ -171,13 +166,13 @@ Derivando la expresión de $\sigma(x)$, tenemos que
 
 \begin{equation}
     \label{def:localizaciones_derivada}
-    \sigma'(x) = \sum_{\gamma \in M} \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)
+    \sigma'(x) = \sum_{\gamma \in M} \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial),
 \end{equation}
 
 
 de donde, para cada $\gamma \in M$,
 
-$$\eta (\gamma) = e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = e_\gamma \sigma'(\gamma)$$
+$$\eta (\gamma) = e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = e_\gamma \sigma'(\gamma),$$
 
 por lo que $e_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una vez que hemos calculado los polinomios $\sigma$ y $\eta$, las coordenadas del vector error vienen dadas por 
 
@@ -195,7 +190,7 @@ Lo esencial para decodificar los códigos de Goppa es determinar los coeficiente
 
 \begin{equation}
     \label{prop:key_equation}
-    S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{g(x)}
+    S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{g(x)}.
 \end{equation}
 
 La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $g(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \ref{prop:key_equation}.
@@ -206,19 +201,19 @@ Supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equati
 
 \begin{equation}
     \label{prop:key_equation_1}
-    S(x) \sigma^{(1)}(x) \equiv \eta^{(1)}(x) \pmod{g(x)}
+    S(x) \sigma^{(1)}(x) \equiv \eta^{(1)}(x) \pmod{g(x)},
 \end{equation}
 
 \begin{equation}
     \label{prop:key_equation_2}
-    S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{g(x)}
+    S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{g(x)},
 \end{equation}
 
 donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $g(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \ref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
 
-$$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{g(x)}$$
+$$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{g(x)}.$$
 
-de la misma forma para \ref{prop:key_equation_2},
+De la misma forma para \ref{prop:key_equation_2},
 
 $$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{g(x)}$$
 
@@ -226,14 +221,14 @@ de donde,
 
 \begin{equation}
     \label{prop:key_equation_12}
-    \sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{g(x)}
+    \sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{g(x)}.
 \end{equation}
 
 Si $\gr(G) = 2t$ y $\gr(\sigma^{(1)}) \leq t$, $\gr(\sigma^{(2)}) \leq t$, $\gr(\eta^{(2)}) < t$ y $\gr(\eta^{(1)}) < t$, entonces se da la siguiente igualdad
 
 \begin{equation}
     \label{prop:key_equation_caso1}
-    \sigma^{(1)}(x) \eta^{(2)}(x) = \sigma^{(2)}(x) \eta^{(1)}(x)
+    \sigma^{(1)}(x) \eta^{(2)}(x) = \sigma^{(2)}(x) \eta^{(1)}(x).
 \end{equation}
 
 Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $G$ es $2t$, entonces \ref{prop:key_equation} tiene una única solución cuando $\gr(\eta) < \gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
@@ -269,7 +264,7 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
 
 \subsubsection{Algoritmo de decodificación de Sugiyama}
 
-El algoritmo de Sugiyama es una aplicación simple del algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
+El algoritmo de Sugiyama, descrito en \cite{Sugiyama_1975}, es una aplicación simple del algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
 
 Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificación de Sugiyama para los códigos Goppa es el siguiente.
 
@@ -288,6 +283,8 @@ Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificació
         $$\eta(x) = (-1)^k \delta r_k(x)$$
         $$\sigma(x) = \delta U_k(x)$$
 \end{itemize}
+
+% TODO: decir por qué funciona
 
 
 \begin{comment}
