@@ -6,15 +6,9 @@
 
 \chapter{Introducción a la teoría de códigos lineales}
 
-% TODO: reescribir introducción
+En este capítulo  introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definiendo básica de código para estudiar posteriormente el concepto de código lineal y algunas de sus propiedades más relevante, junto con otros conceptos relacionados. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular un concepto muy importante en la teoría de códigos. 
 
-\textcolor{red}{Hay que reescribir este párrafo}
-
-El inicio de la teoría de códigos surgió a partir de la publicación de Claude Shannon sobre ``Una teoría matemática sobre la comunicación"\ en 1948 \cite{Shannon_1948}. En este artículo, Shannon explica que es posible transmitir mensajes fiables en un canal de comunicación que puede corromper la información enviada a través de él siempre y cuando no se supere la capacidad de dicho canal.
-
-Con la teoría de códigos, podemos codificar datos antes de transmitirlos de tal forma que los datos alterados puedan ser decodificados al grado de precisión especificado. Así, el principal problema es determinar el mensaje que fue enviado a partir del recibido. El Teorema de Shannon nos garantiza que el mensaje recibido coincidirá con el que fue enviado un cierto porcentaje de las veces. Esto hace que el objetivo de la teoría de códigos sea crear códigos que cumplan las condiciones de este teorema.
-
-En esta sección introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. El desarrollo de este capítulo se ha basado en \cite{Huffman_Pless_2010}, \cite{Vardy_1997}, \cite{Wassermann_2006} y \cite{Podesta_2006}.
+El desarrollo de este capítulo se ha basado, principalmente, en \cite[Capítulo 1]{Huffman_Pless_2010}.
 
 \section{Introducción}
 
@@ -23,7 +17,7 @@ Supongamos que queremos enviar un mensaje, por lo que habrá un emisor y un rece
 \begin{figure}[H]
 	\center
 	\includegraphics[scale=0.5]{figures/Diagrama_comunicacion.png}
-	\caption{Esquema del modelo de comunicación}
+	\caption{Esquema del modelo de comunicación, \cite{Podesta_2006}.}
 \end{figure}
 
 Las flechas indican que la comunicación es en un solo sentido.
@@ -261,7 +255,7 @@ Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distan
 
     Si la palabra código $c \in \mathcal{C}$ fue enviada y no han ocurrido más de $t$ errores durante la transmisión, el vector recibido es 
 
-    \begin{wrapfigure}{r}{0.25\textwidth} %this figure will be at the right
+    \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[scale=0.5]{figures/Diagrama_decodificacion_maxima_verosimilitud.png}
     \end{wrapfigure}
@@ -297,17 +291,21 @@ El siguiente resultado nos muestra la relación entre la distancia y el peso.
 
 Como consecuencia de este teorema, para códigos lineales, la distancia mínima también se denomina \emph{peso mínimo} de un código. Si se conoce el peso mínimo $d$ de un $[n,k]$ código, se dice entonces que es un $[n,k,d]_q$ código.
 
-En el artículo \cite{Vardy_1997} se ha demostrado que el problema de calcular la distancia mínima de un código lineal binario es NP-difícil, y el problema de decisión correspondiente es NP-completo.
+En el artículo \cite{Vardy_1997} se ha demostrado que el problema de calcular la distancia mínima de un código lineal binario es NP-duro, y el problema de decisión correspondiente es NP-completo.
 
-\begin{theorem}
-    Dada una matriz binaria $H$ de dimensión $m \times n$ y un número entero $w > 0$, saber si existe un vector no nulo $x \in \mathbb{F}_2^n$ de peso menor que $w$ tal que $Hw^T = 0$ es un problema NP-completo. 
-\end{theorem}
+\begin{problemth}[Distancia mínima]
+    \label{pr:min-dist}
+    Dada una matriz binaria $H$ de dimensión $m \times n$ y un número entero $w > 0$. ¿Existe un vector no nulo $x \in \mathbb{F}_2^n$ de peso menor que $w$ tal que $Hw^T = 0$? 
+\end{problemth}
 
-Veamos un esquema de la demostración de este resultado. Para ello, haremos uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
+El problema \ref{pr:min-dist} es un problema NP-completo. Veamos un esquema de la demostración de este resultado. Para ello, haremos uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
 
-El problema de Decodicificación de Máxima Verosimilitud es NP-completo y consiste en dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
+\begin{problemth}[Decodificación de Máxima Verosimilitud]
+    \label{pr:dmv}
+    Dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
+\end{problemth}
 
-El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-difícil, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
+El problema \ref{pr:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-duro, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 
 
 \begin{definition}
@@ -318,7 +316,7 @@ El problema de Decodificación de Máxima Verosimilitud sigue siendo NP-completo
 
 Como hemos visto, las propiedades de un código dependen principalmente de las distancias de Hamming entre sus palabras y entre palabras codificadas y no codificadas. Además, puede ser que un código pueda relacionarse con otro por medio de una aplicación que conserve las distancias de Hamming. De esta forma, podemos definir una relación de equivalencia entre dos códigos que preservan la distancia de Hamming.
 
-Sean $C$ y $C'$ dos $[n,k]_q$ códigos, se dice que son de la misma cualidad si existe una aplicación
+Sean $C$ y $C'$ dos $[n,k]_q$ códigos, se dice que son de la \emph{misma cualidad} si existe una aplicación
 
 $$\iota : F^n_q \rightarrow F^n_q$$
 
@@ -346,7 +344,7 @@ Las permutaciones de las coordenadas son isometrías, que se denominan \emph{iso
 
 \section{Algoritmo para el cálculo de la distancia}
 
-Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar laborioso. A continuación presentaremos el algoritmo de BZ para el cálculo de la distancia, que tiene eficiencia exponencial. Este algoritmo destaca por ser el algoritmo más rápido para calcular la distancia mínima de un código lineal. En particular, si el código es binario se considera eficaz.
+Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar laborioso. A continuación presentaremos el algoritmo de BZ para el cálculo de la distancia, que tiene eficiencia exponencial \cite[Sección 1.8]{Wassermann_2006}. Este algoritmo destaca por ser el algoritmo más rápido para calcular la distancia mínima de un código lineal. En particular, si el código es binario se considera eficaz.
 
 \begin{Ualgorithm}[H]
     \DontPrintSemicolon
