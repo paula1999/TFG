@@ -7,7 +7,7 @@
 
 \chapter{Preliminares}
 
-En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Se abordarán conceptos relacionados con el álgebra lineal, anillos, cuerpos finitos, polinomios, algoritmos genéticos, etc.
+En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando concepto de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en la población para introducir los algoritmos genéticos.
 
 \section{Anillos}
 
@@ -92,7 +92,6 @@ Notemos que todos los cuerpos finitos de orden $q$ son isomorfos, aunque cada cu
 \end{proposition}
 
 % TODO: homomorfismo de cuerpos
-
 
 \subsection{Anillo de polinomios sobre cuerpos finitos}
 
@@ -239,43 +238,162 @@ $$g_{m-1} g_{m-2} \cdots g_1 g_0 \leftrightarrow  g_{m-1} \alpha^{m-1} g_{m-2} \
 
 De esta forma, multiplicamos los polinomios en $\alpha$ de forma usual y aplicamos al resultado que $f(\alpha) = 0$ para reducir las potencias de $\alpha$ mayores que $m-1$ a polinomios en $\alpha$ de grado menor que $m$.
 
-\section{Algoritmos genéticos}
 
-%TODO
-Añadir introducción a la sección: qué es y para qué sirve (tratar problemas que no son P, o que no se sabe que sean P). Didáctica!!!!
+\section{Teoría de la complejidad}
 
-Los \emph{algoritmos genéticos} son algoritmos de optimización, búsqueda y aprendizaje inspirados en los procesos de evolución 
-natural y evolución genética.
+El objetivo de esta sección se basa en clasificar los problemas de acuerdo a su dificultad. Nos centraremos en estudiar la complejidad de los problemas decidibles, es decir, los problemas que pueden tener algoritmos para resolverlos.
 
-% TODO: esquema del ciclo de la evolución
-En general, los algoritmos genéticos siguen el siguiente procedimiento (explicarlo mejor).
+\subsection{Complejidad de los algoritmos}
 
-\begin{lstlisting}
-    t = 0
-    inicializar la poblacion P(t)
-    evaluar la poblacion P(t)
-    Mientras (no se cumpla la condicion de parada) hacer 
-        t = t + 1
-        seleccionar P' desde P(t-1)
-        recombinar P'
-        mutar P'
-        reemplazar P(t) a partir de P(t-1) y P'
-        evaluar P(t)
-\end{lstlisting}
+A la hora de resolver un problema con un algoritmo, tendrán gran importancia los recursos que consume dicho algoritmo, sobre todo el espacio y el tiempo. La complejidad del tiempo de un algoritmo es el número de pasos que necesita para resolver un problema de tamaño $n$. La complejidad de un algoritmo siempre se define en el peor de los casos, esto es, se obtiene una cota para el recuento de los pasos en el peor de los casos. 
 
-Existen dos modelos de algoritmos genéticos, el modelo generacional y el modelo estacionario.
+La siguiente definición nos proporciona la notación más importante en el análisis de los algoritmos.
 
-En el modelo generacional, durante cada iteración se crea una población completa con nuevos individuos.
-Así, la nueva población reemplaza directamente a la antigua.
+\begin{definition}[Notación $\mathcal{O}$-grande]
+    Sean $f, g : \mathbb{N}^r \longrightarrow \mathbb{R}$. Decimos que $f(n) = O(g(n))$ si existen dos constantes $c \in \mathbb{R}^+$ y $n_0 \in \mathbb{N}^r$ tales que $\forall n \geq n_0$, $f(n) \leq c \cdot g(n)$.
+\end{definition}
 
-En el modelo estacionario, durante cada iteración se escogen dos padres de la población y se les aplican los operadores genéticos.
-De este modo, los descendientes reemplazan a los cromosomas de la población anterior.
+Con esta notación podemos analizar el tiempo esperado que va a tardar un algoritmo en realizar una tarea.
+
+\begin{proposition}
+    Para cualquier $\lambda \in \mathbb{R}^+$ y $g : \mathbb{N}^r \longrightarrow \mathbb{R}$, tenemos que
+
+    $$\mathcal{O}(g(n)) = \mathcal{O}(\lambda g(n)), \qquad \forall n \in \mathbb{N}^r.$$
+\end{proposition}
+
+A continuación presentaremos algunos conceptos importantes para especificar la complejidad de los algoritmos que nos serán de utilidad más adelante.
+
+\begin{definition}[Algoritmo en tiempo polinomial]
+    Un algoritmo es un \emph{algoritmo en tiempo polinomial} si su complejidad es $\mathcal{O}(p(n))$, donde $p(n)$ es una función polinómica de $n$.
+\end{definition}
+
+\begin{definition}[Algoritmo en tiempo exponencial]
+    Un algoritmo es un \emph{algoritmo en tiempo exponencial} si su complejidad es $\mathcal{O}(c^n)$, donde $c$ es una constante real estrictamente mayor que $1$.
+\end{definition}
+
+\subsection{Complejidad de los problemas}
+
+La complejidad de un problema es equivalente a la complejidad del mejor algoritmo que resuelve ese problema. Diremos que un problema es \emph{fácil} si existe un algoritmo en tiempo polinomial que lo resuelve, mientras que un problema será \emph{difícil} si no existe ningún algoritmo en tiempo polinomial que lo resuelva.
+
+La teoría de la complejidad de los problemas se ocupa de los \emph{problemas de decisión}. Un problema de decisión siempre tiene una respuesta de sí o no.
+
+\begin{figure}[H]   
+	\center
+	\includegraphics[scale=0.5]{figures/Complejidad.png}
+	\caption{Clases de complejidad de los problemas de decisión.}
+    \label{fg:complexity}
+\end{figure}
+
+Con la teoría computacional podemos clasificar los problemas en sus clases de complejidad. Existen dos clases importantes de problemas: P y NP (Figura \ref{fg:complexity}).
+
+La clase de complejidad P representa a la familia de problemas de decisión que se pueden resolver mediante un algoritmo en tiempo polinomial. Los problemas que pertenecen a esta clase son \emph{fáciles} de resolver.
+
+La clase de compejidad NP representa a la familia de problemas de decisión que se pueden resolver por un algoritmo no determinista en tiempo polinomial. Un algoritmo no determinista tiene algunos puntos en los que hay múltiples combinaciones diferentes sin ninguna especificación de cuál se tomará. Estos problemas se dicen que son más \emph{difíciles} de resolver.
+
+Para definir la clase de los problemas NP-completos, necesitaremos previamente definir el concepto de reducción.
+
+\begin{definition}[Reducción polinómica]
+    Un problema de decisión $A$ se \emph{reduce polinómicamente} a otro problema de decisión $B$ si, para todas las instancias de entrada $I_A$ de $A$, siempre se puede construir una instancia de entrada $I_B$ para $B$ en una función de tiempo polinomial, de tal forma que $I_A$ es una instancia positiva de $A$ si y solo si $I_B$ es una instancia positiva de $B$.
+\end{definition}
+
+Un problema de decisión es \emph{NP-completo} si es NP y cualquier otro problema de NP se reduce a él. Los problemas que pertenecen a esta clase son los \emph{más difíciles} dentro de la clase NP.
+
+La figura \ref{fg:complexity} muestra la relación entre los problemas P, NP y NP-completos.
+
+Los problemas \emph{NP-duros} son problemas de optimización cuyo problema de decisión asociado es NP-completo. Las metaheurísticas constituyen una importante alternativa para resolver esta clase de problemas.
+
+\section{Metaheurísticas basadas en la población}
+
+Las \emph{metaheurísticas} representan una familia de técnicas de optimización aproximada. Proporcionan soluciones aceptables en un tiempo razonable para resolver problemas difíciles y complejos, esto es, problemas que no pertenecen a la clase de complejidad P o que no se conoce que pertenezcan a dicha clase. Sin embargo, no garantizan la optimalidad de las soluciones obtenidas.
+
+Las \emph{metaheurísticas basadas en la población} se pueden ver como una mejora iterativa en una población de soluciones. Estas metaheurísticas consisten en inicializar la población, posteriormente generan una nueva población de soluciones y finalmente esta nueva población reemplaza a la actual usando algunos procedimientos de selección. Una vez se alcanza la condición dada, el proceso de búsqueda finaliza y obtenemos una solución.
+
+El esquema de este procedimiento se muestra a continuación.
+
+\begin{Ualgorithm}[H]
+    \small
+    \DontPrintSemicolon
+    \KwOut{Mejor solución encontrada}
+    $P \longleftarrow P_0$ \tcp{Generación de la población inicial}
+    $t \longleftarrow 0$\;
+    \While{No se cumpla la condición de parada}{
+        Generar($P_t'$) \tcp{Generación de la nueva población}
+        $P_{t+1} \longleftarrow $ SeleccionarPoblación($P_t \cup P_t'$) \tcp{Selección de la nueva población}
+        $t \longleftarrow t + 1$\;
+    }
+\end{Ualgorithm}
+
+Vamos a estudiar en detalle este procedimiento concretando los conceptos en los que se basa.
+
+\begin{enumerate}
+    \item \textbf{Generación de la población inicial}. Las metaheurísticas basadas en la población comienzan con una población inicial de soluciones. Este paso juega un papel fundamental en la efectividad del algoritmo y su eficiencia. El principal criterio para generar la población es que haya diversidad.
+    \item \textbf{Generación de una nueva población}. En este paso, se genera una nueva población de soluciones. Se puede realizar de varias formas, sin embargo la que estudiaremos será la que se basa en la evolución. En esta categoría, las soluciones que componen la población se seleccionan y se reproducen usando operadores de variación (por ejemplo, mutación, recombinación) y actúan directamente sobre sus representaciones. Una nueva solución surge a partir de los diferentes atributos de las soluciones de la población actual.
+    \item \textbf{Selección de la nueva población}. Este último paso consiste en seleccionar las nuevas soluciones y reemplazar a la población actual. Este reemplazamiento se puede realizar de varias maneras, por ejemplo una estrategia se basa en seleccionar la nueva población generada como la población actual, otra estrategia se fundamenta en el escoger las dos mejores soluciones de la nueva población y reemplazarlas por las dos peores de la población actual, etc.
+\end{enumerate}
+
+El criterio de parada suele ser un número máximo de iteraciones (generaciones), un número máximo de evaluaciones de la función objetivo, etc.
+
+\subsection{Algoritmos evolutivos}
+
+Los \emph{algoritmos evolutivos} son algoritmos basados en poblaciones. Estos se fundamentan en el concepto de \emph{competición}. Se representan como una clase de algoritmos de optimización iterativos que simulan la evolución de las especies, en este caso, la evolución de la población de soluciones.
+
+Inicialmente, tenemos una población de soluciones que suele ser generada aleatoriamente. También tenemos una función objetivo, que es la que queremos optimizar, que evalúa cada individuo perteneciente a la población indicando la idoneidad de pertenencia al problema (\emph{fitness}). En cada paso, los individuos se seleccionan para formar los padres. En esta selección los individuos con mayor fitness tendrán altas probabilidades de ser escogidos. Luego, los individuos seleccionados se reproducen usando operadores de variación (por ejemplo, cruce, mutación) para generar nuevos descendientes, de forma que nos permite explorar el espacio de búsqueda y obtendremos soluciones diversas. Finalmente, el esquema de reemplazamiento se basa en determinar los individuos que sobrevivirán entre los descendientes y los padres. Esta iteración representa una generación. Este proceso es iterativo hasta que se cumpla el criterio de parada.
+
+Cada solución que forma parte de la población se suele llamar \emph{cromosoma}. A su vez, cada cromosoma está formado por \emph{genes}.
+
+\begin{figure}[H]   
+	\center
+	\includegraphics[scale=0.5]{figures/Algoritmos_evolutivos.png}
+	\caption{Generación en algoritmos evolutivos.}
+    \label{fg:alg_ev}
+\end{figure}
+
+El algoritmo \ref{alg:ev} ilustra este procedimiento.
+
+\begin{Ualgorithm}[H]
+    \label{alg:ev}
+    \small
+    \DontPrintSemicolon
+    \KwOut{Mejor solución encontrada}
+    Generar$(P_0)$ \tcp{Generación de la población inicial}
+    $t \longleftarrow 0$\;
+    \While{No se cumpla la condición de parada}{
+        Evaluar($P_t$)
+        $P_t' \longleftarrow$ Seleccionar($P_t$)\;
+        $P_t' \longleftarrow$ Reproducción($P_t'$)\;
+        Evaluar($P_t'$)\;
+        $P_{t+1} \longleftarrow$ Reemplazar($P_t, P_t'$)\;
+        $t \longleftarrow t + 1$\;
+    }
+\end{Ualgorithm}
+
+\subsubsection{Algoritmos genéticos}
+
+Los \emph{algoritmos genéticos} son algoritmos de optimización, búsqueda y aprendizaje inspirados en los procesos de evolución natural y evolución genética.
+
+Estos algoritmos suelen aplicar como operador de variación un operador de cruce a las dos soluciones (cromosomas) que juegan un papel importante, además de un operador de mutación que modifica aleatoriamente el contenido del individuo (gen) para fomentar la diversidad. Los algoritmos genéticos usan una selección probabilística. El reemplazamiento es generacional, esto es, los padres serán reemplazados por sus descendientes. El operador de cruce se basa en un cruce uniforme o por segmento fijo, mientras que la mutación, con cierta probabilidad, determinará si algún gen puede mutar.
+
+El operador de cruce es un operador binario y, a veces, $n$-ario. Este operador se basa en adquirir las características de los dos padres y generar un descendiente. La principal característica de este operador es la \emph{heredabilidad}, pues crea un cromosoma a partir de los genes heredados de los padres. Esto es, el descendiente tendrá una recombinación de las características de sus padres. Los padres cruzarán con una cierta probabilidad $p_c$. El operador de cruce debe producir soluciones válidas.
+
+El operador de mutación es un operador unario que actúa sobre un solo individuo. Las mutaciones representan pequeños cambios de los individuos seleccionados. La probabilidad $p_m$ define la probabilidad de mutar cada elemento (gen) de la representación. Este operador debe garantizar que cualquier solución estará en el espacio de búsqueda y que sea válida. Con la mutación conseguimos introducir diversidad en los individuos de una población.
+
+El algoritmo \ref{alg:gen} ilustra este procedimiento.
+
+\begin{Ualgorithm}[H]
+    \label{alg:gen}
+    \small
+    \DontPrintSemicolon
+    \KwOut{Mejor solución encontrada}
+    Generar$(P_0)$ \tcp{Generación de la población inicial}
+    $t \longleftarrow 0$\;
+    \While{No se cumpla la condición de parada}{
+        Evaluar($P_t$)
+        $P_t' \longleftarrow$ Seleccionar($P_t$)\;
+        $P_t' \longleftarrow$ OperadorCruce($P_t'$)\;
+        $P_t' \longleftarrow$ OperadorMutación($P_t'$)\;
+        $P_{t+1} \longleftarrow$ Reemplazar($P_t, P_t'$)\;
+        $t \longleftarrow t + 1$\;
+    }
+\end{Ualgorithm}
+
 Este modelo es elitista y produce una convergencia rápida cuando se reemplazan los peores cromosomas de la población.
-
-%TODO
-Añadir más cosas
-
-
-\section{Clases de complejidad}
-
-Explicar que es un problema NP-completo y demás.
