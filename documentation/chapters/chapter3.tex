@@ -49,6 +49,9 @@ Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $
 
 con $h_i = g(\gamma_i)^{-1}$.
 
+% TODO
+\textcolor{red}{Formalizar la otra forma de construir la matriz de paridad a partir de los coeficientes de los polinomios de paridad.}
+
 \begin{proposition}
     La matriz $H$ se puede reducir a una matriz $H'$ de dimensión $w \times n$, donde 
 
@@ -95,6 +98,85 @@ El siguiente resultado nos muestra los límites en la dimensión y la distancia 
     $$\left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor = \left\lfloor \frac{(w + 1) - 1}{2} \right\rfloor = \left\lfloor \frac{w}{2} \right\rfloor .$$
 \end{proof}
 
+Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usaremos el código descrito en el apéndice \ref{annex:sage-Goppa} en los siguientes ejemplos.
+
+\begin{exampleth}
+    Sea $\mathbb{F}_2^6$ el cuerpo de extensión sobre $\mathbb{F}_2^2$. Definimos el polinomio $g(x) = x^5 + ax^2 + 1 \in \mathbb{F}_2^6$ y tomamos $n = 30$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
+    \begin{lstlisting}[gobble=4]
+        sage: F = GF(2^2)
+        sage: L = GF(2^6)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^5 + a*x^2 + 1
+        sage: n = 30
+        sage: defining_set = []
+        sage: while len(defining_set) != n:
+                aux = L.random_element()
+                if g(aux) != 0 and aux not in defining_set:
+                    defining_set = defining_set + [aux]
+        sage: C = Goppa(defining_set, g, F)
+        sage: C
+        > [30, 15] Goppa code
+    \end{lstlisting}
+    Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+    \begin{lstlisting}[gobble=4]
+        sage: C.parity_check_matrix()
+    \end{lstlisting}
+    % TODO: salida con la matriz
+\end{exampleth}
+
+% TODO: más ejemplos
+\textcolor{red}{Completar y añadir más ejemplos}
+
+\begin{comment}
+    Sea el cuerpo de extensión $\mathbb{F}_{2^3}$ de $\mathbb{F}_2$ y sea $g(x) = x^2 + x + 1 \in \mathbb{F}_{2^3}[x]$. Definimos $L$ como una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$ tales que sus elementos no son raíces de $g$. 
+
+    El código de Goppa asociado al conjunto de definición $L$ y al polinomio $g$ es un $[8, 2]$ código de Goppa. Este código tiene distancia mínima $5$ y su matriz de paridad es la siguiente:
+
+    \[
+        H = \left(
+        \begin{array}{cccccccc} 
+            1 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+            0 & 1 & 1 & 1 & 0 & 1 & 0 & 0 \\
+            0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+            0 & 0 & 1 & 0 & 1 & 1 & 1 & 0 \\
+            0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 \\
+        \end{array}
+        \right)    
+    \]
+
+    El codificador asociado al $[8, 2]$ código de Goppa tiene la siguiente matriz generadora:
+
+    \[
+        G = \left(
+        \begin{array}{cccccccc} 
+            1 & 0 & 0 & 1 & 0 & 1 & 1 & 1 \\
+            0 & 1 & 1 & 1 & 1 & 1 & 1 & 0 \\
+        \end{array}
+        \right)    
+    \]
+
+    Sea $(0, 1) \in \mathbb{F}_2$ una palabra, la podemos codificar con la matriz anterior:
+
+    $$x = (0, 1, 1, 1, 1, 1, 1, 0).$$
+
+    Ahora, queremos enviar la palabra codificada $x$ a nuestro destinatario, pero para ello le añadimos un error en una posición aleatoria. Sea $e$ el error definido como:
+
+    $$e = (0, 0, 0, 0, 1, 0, 0, 0).$$
+
+    La palabra que enviaremos será:
+
+    $$y = x + e = (0, 1, 1, 1, 0, 1, 1, 0).$$
+
+    El destinatario decodificará esta palabra con el algoritmo de Sugiyama obteniendo:
+
+    $$(0, 1, 1, 1, 1, 1, 1, 0),$$
+
+    que coincide con $x$.
+\end{comment}
+
 \subsection{Códigos binarios de Goppa}
 
 Los códigos binarios de Goppa son códigos de corrección de errores que pertenecen a la clase de los códigos de Goppa que acabamos de estudiar. La estructura binaria le da más ventajas matemáticas sobre variantes no binarias y, además, tienen propiedades interesantes adecuadas para la construcción del criptosistema McEliece.
@@ -113,9 +195,27 @@ Observemos que si $g(x)$ es un polinomio irreducible, todos los elementos $\gamm
 La importancia de estos códigos se debe a que pueden doblar la capacidad correctora de los códigos generales de Goppa.
 
 
+\begin{exampleth}
+    % TODO
+\end{exampleth}
+
+% TODO: más ejemplos
+\textcolor{red}{Completar y añadir más ejemplos}
+
 \subsection{Codificación de los códigos de Goppa}
 
-% TODO
+La codificación de un mensaje consiste en escribirlo como una palabra código de un código. Fijado un código de Goppa $\Gamma (L, g)$ sobre $\mathbb{F}_q$ con matriz generadora $G$. Dado el mensaje $\textbf{m} \in \mathbb{F}_q$, lo podemos codificar realizando la operación
+
+$$\textbf{c} = \textbf{m} G.$$
+
+De esta forma obtenemos la palabra código $\textbf{c}$ que está en $\Gamma (L, g)$.
+
+\begin{exampleth}
+    % TODO
+\end{exampleth}
+
+% TODO: más ejemplos
+\textcolor{red}{Completar y añadir más ejemplos}
 
 \subsection{Decodificación de los códigos de Goppa}
 
@@ -186,18 +286,18 @@ por lo que $e_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una
 
 donde $\sigma'(x)$ es la derivada de $\sigma(x)$.
 
-Lo esencial para decodificar los códigos de Goppa es determinar los coeficientes de los polinomios $\sigma$ y $\eta$. Para ello, tenemos que relacionar $\sigma$ y $\eta$ al síndrome de la ecuación \ref{def:sindrome}. Esto se consigue multiplicando las ecuaciones \ref{def:sindrome} y \ref{def:localizaciones}, obteniendo
+Lo esencial para decodificar los códigos de Goppa es determinar los coeficientes de los polinomios $\sigma$ y $\eta$. Para ello, tenemos que relacionar $\sigma$ y $\eta$ al síndrome de la ecuación \eqref{def:sindrome}. Esto se consigue multiplicando las ecuaciones \eqref{def:sindrome} y \eqref{def:localizaciones}, obteniendo
 
 \begin{equation}
     \label{prop:key_equation}
     S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{g(x)}.
 \end{equation}
 
-La ecuación \ref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $g(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \ref{prop:key_equation}.
+La ecuación \eqref{prop:key_equation} es la \emph{ecuación clave} para decodificar los códigos de Goppa. Dado $g(x)$ y $S(x)$, el problema de decodificar consiste en encontrar polinomios de grado bajo $\sigma(x)$ y $\eta(x)$ que satisfacen \eqref{prop:key_equation}.
 
-Reduciendo cada potencia de $x \pmod{g(x)}$ e igualando coeficientes de $1, x, ..., x^{\gr(g) - 1}$, tenemos que \ref{prop:key_equation} es un sistema de $\gr(G)$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \ref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
+Reduciendo cada potencia de $x \pmod{g(x)}$ e igualando coeficientes de $1, x, ..., x^{\gr(g) - 1}$, tenemos que \eqref{prop:key_equation} es un sistema de $\gr(G)$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \eqref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
 
-Supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equation}:
+Supongamos que existen dos pares diferentes de soluciones a \eqref{prop:key_equation}:
 
 \begin{equation}
     \label{prop:key_equation_1}
@@ -209,11 +309,11 @@ Supongamos que existen dos pares diferentes de soluciones a \ref{prop:key_equati
     S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{g(x)},
 \end{equation}
 
-donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $g(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \ref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
+donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $g(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \eqref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
 
 $$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{g(x)}.$$
 
-De la misma forma para \ref{prop:key_equation_2},
+De la misma forma para \eqref{prop:key_equation_2},
 
 $$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{g(x)}$$
 
@@ -231,13 +331,13 @@ Si $\gr(G) = 2t$ y $\gr(\sigma^{(1)}) \leq t$, $\gr(\sigma^{(2)}) \leq t$, $\gr(
     \sigma^{(1)}(x) \eta^{(2)}(x) = \sigma^{(2)}(x) \eta^{(1)}(x).
 \end{equation}
 
-Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $G$ es $2t$, entonces \ref{prop:key_equation} tiene una única solución cuando $\gr(\eta) < \gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
+Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $G$ es $2t$, entonces \eqref{prop:key_equation} tiene una única solución cuando $\gr(\eta) < \gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
 
 \begin{theorem}
     Si $\gr(g(x)) = 2t$, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código q-ario de Goppa con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
-Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $e_\gamma$ distintos de cero son iguales a 1, entonces \ref{def:eta} y \ref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \ref{prop:key_equation_12} ahora pasa a ser
+Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $e_\gamma$ distintos de cero son iguales a 1, entonces \eqref{def:eta} y \eqref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \eqref{prop:key_equation_12} ahora pasa a ser
 
 $$\sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{g(x)}$$
 
@@ -266,25 +366,236 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
 
 El algoritmo de Sugiyama, descrito en \cite{Sugiyama_1975}, es una aplicación simple del algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
 
-Dado $g(x)$ un polinomio de Goppa con grado $2t$, el algoritmo de decodificación de Sugiyama para los códigos Goppa es el siguiente.
+A continuación vamos a describir alguna de las propiedades el algoritmo de Euclides que están relacionadas con el método para resolver la ecuación clave para decodificar los códigos de Goppa. El algoritmo de Euclides que presentamos en \ref{th:alg-euclides}, en este caso aplicado a los polinomios $r_{-1}(x)$ y $r_0(x)$ donde $\gr(r_{-1}) > \gr(r_0)$, se puede reescribir en forma de matriz como sigue:
+
+\begin{equation}
+    \label{alg:euclides-matriz}
+    \left( 
+        \begin{array}{c}  
+            r_{i-2}(x) \\
+            r_{i-1}(x) \\
+        \end{array} 
+    \right)
+    = 
+    \left( 
+        \begin{array}{cc}  
+            q_{i}(x) & 1 \\
+            1 & 0 \\
+        \end{array} 
+    \right)
+    \left( 
+        \begin{array}{c}  
+            r_{i-1}(x) \\
+            r_{i}(x) \\
+        \end{array} 
+    \right).
+\end{equation}
+
+Definimos los polinomios $U_i(x)$ y $V_i(x)$ como
+
+\begin{equation}
+    \label{alg:euclides-u}
+    U_i(x) = q_i(x)U_{i-1}(x) + U_{i-2}(x)
+\end{equation}
+y
+$$V_i(x) = q_i(x)V_{i-1}(x) + V_{i-2}(x),$$
+
+donde $U_0(x) = 1$, $U_{-1}(x) = 0$, $V_0(x) = 0$ y $V_{-1}(x) = 1$, tenemos que
+
+\begin{equation}
+    \label{alg:euclides-u-v}
+    \left( 
+        \begin{array}{cc}  
+            U_i(x) & U_{i-1} \\
+            V_i(x) & V_{i-1} \\
+        \end{array} 
+    \right)
+    = 
+    \left( 
+        \begin{array}{cc}  
+            q_{1}(x) & 1 \\
+            1 & 0 \\
+        \end{array} 
+    \right)
+    \cdots
+    \left( 
+        \begin{array}{cc}  
+            q_{i}(x) & 1 \\
+            1 & 0 \\
+        \end{array} 
+    \right).
+\end{equation}
+
+De \eqref{alg:euclides-matriz} y \eqref{alg:euclides-u-v}, obtenemos
+
+\[
+    \left( 
+        \begin{array}{c}  
+            r_{-1}(x) \\
+            r_{0}(x) \\
+        \end{array} 
+    \right)
+    = 
+    \left( 
+        \begin{array}{cc}  
+            U_i(x) & U_{i-1}(x) \\
+            V_i(x) & V_{i-1}(x) \\
+        \end{array} 
+    \right)
+    \left( 
+        \begin{array}{c}  
+            r_{i-1}(x) \\
+            r_{i}(x) \\
+        \end{array} 
+    \right).
+\]
+
+Como el determinante de la matriz de la izquierda de \ref{alg:euclides-u-v} es $(-1)^i$, tenemos que
+
+\[
+    \left( 
+        \begin{array}{c}  
+            r_{-1}(x) \\
+            r_{0}(x) \\
+        \end{array} 
+    \right)
+    = 
+    (-1)^i
+    \left( 
+        \begin{array}{cc}  
+            V_{i-1}(x) & -U_{i-1}(x) \\
+            -V_i(x) & U_{i}(x) \\
+        \end{array} 
+    \right)
+    \left( 
+        \begin{array}{c}  
+            r_{-1}(x) \\
+            r_{0}(x) \\
+        \end{array} 
+    \right).
+\]
+
+Esta ecuación nos permite relacionar el resto $r_i(x)$ de la iteración $i$-ésima con los polinomios $r_{-1}(x)$ y $r_0(x)$ de la siguiente manera
+
+\begin{equation}
+    \label{prop:relacion-r_i}
+    r_i(x) = (-1)^i \left( -V_i(x) r_{-1}(x) + U_i(x) r_0(x) \right).
+\end{equation}
+
+Como consecuencia, podemos observar que $r_{-1}(x)$ divide al polinomio $\left( -r_{-1}(x) + (-1)^i U_i(x) r_0(x) \right)$. Esto conlleva a la siguiente relación:
+
+\begin{equation}
+    \label{prop:euclides-resto}
+    r_i(x) \equiv (-1)^i U_i(x) r_0(x) \pmod{r_{-1}(x)}.
+\end{equation}
+
+Observamos que esta relación es similar a la ecuación clave para decodificar los códigos de Goppa. Veamos otras propiedades del algoritmo de Euclides que también están relacionadas con dicha ecuación clave.
+
+Aplicando \ref{th:alg-euclides} a los polinomios $r_{-1}(x)$ y $r_0(x)$, sabemos que en cada iteración $i$-ésima se cumple la siguiente relación:
+
+\begin{equation}
+    \label{prop:euclides-grados}
+    \gr(r_i) < \gr(r_{i-1}).
+\end{equation}
+
+Por \eqref{alg:euclides-u}, se tiene que $\gr(U_i) = \sum_{j=1}^i \gr(q_j)$. Como $\gr(r_{i-1}) = \gr(r_{-1}) - \sum_{j=1}^i \gr(q_j)$, aplicando \ref{th:alg-euclides}, es claro que
+
+\begin{equation}
+    \label{prop:euclides-grado-u}
+    \gr(U_i) = \gr(r_{-1}) - \gr(r_{i-1}).
+\end{equation}
+
+A partir de \eqref{alg:euclides-u-v}, obtenemos
+
+\begin{equation}
+    \label{prop:euclides-primos-rel}
+    U_i(x) V_{i-1}(x) = U_{i-1}(x) V_i(x) = (-1)^i.
+\end{equation}
+
+De esta forma, hemos probado que los polinomios $U_i(x)$ y $V_i(x)$ son primos relativos.
+
+A continuación se describe el teorema fundamental para resolver la ecuación clave para decodificar los códigos de Goppa, usando el algoritmo de Euclides.
+
+\begin{theorem}[Algoritmo de Sugiyama]
+    \label{th:alg-Sugiyama}
+    Fijado un código de Goppa $\Gamma(L, g)$ sobre el cuerpo $\mathbb{F}_q$ y sean $S(x)$ su síndrome, $\sigma(x)$ el polinomio localizador de errores y $\eta(x)$ el polinomio evaluador de errores. Definimos $r_{-1}(x) = g(x)$ y $r_0(x) = S(x)$. Empezamos las divisiones \ref{th:alg-euclides} del algoritmo de Euclides para calcular el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ desde $i = 0$ hasta $i = k$, de tal forma que se cumpla que $\gr(r_{k-1}) \geq t$ y $\gr(r_k) \leq t - 1$. Entonces la solución viene dada por
+
+    \begin{equation}
+        \label{th:sol-Goppa}
+        \sigma_s(x) = \delta U_k (x),
+        \eta_s(x) = (-1)^k \delta r_k(x)
+    \end{equation}
+
+    donde $\delta$ es una constante no nula que hace que $\sigma_s(x)$ sea mónico.
+\end{theorem}
+
+\begin{proof}
+    Comenzamos viendo que el número de iteraciones $k$ cuando se satisfacen $\gr(r_{k-1}) \geq t$ y $\gr(r_k) \leq t - 1$ es único. Tenemos que $\gr(r_0) = \gr(S) \leq t$ \cite[Lema 1]{Sugiyama_1975}. Sea $p(x)$ el máximo común divisor de $g(x)$ y $S(x)$, existe la iteración $i$ en la que se cumple que $\gr(p) \leq \gr(r_i) \leq t - 1$. Por \eqref{prop:euclides-grados}, es claro que la secuencia de $\gr(r_i)$ para $i = 0, 1, 2$ decrece monótonamente conforme $i$ se incrementa. Concluimos que el número de iteraciones $k$ es único.
+
+    Por otra parte, como $U_k(x) S(x) \equiv (-1)^k r_k(x) \pmod{g(x)}$ se satisface por \eqref{prop:euclides-resto}, tenemos que $\sigma_s(x)$ y $\eta_s(x)$ dados por \eqref{th:sol-Goppa} satisfacen la relación
+
+    $$\sigma_s(x) S(x) \equiv \eta_s(x) \pmod{g(x)}.$$
+
+    Deduzcamos ahora el grado de los polinomios $\sigma_s$ y $\eta_s$. Sabemos que $\gr(r_k) \leq t - 1$, luego $\eta$ cumple que $\gr(\eta_s) \leq t - 1$. En cuanto a $\sigma$, por \eqref{prop:euclides-grado-u} tenemos que $\gr(U_k) = \gr(g) - \gr(r_{k-1})$ y como $\gr(r_{k-1}) \geq t$, entonces $\gr(\sigma_s) \leq t$.
+
+    Veamos ahora que $\sigma_s(x)$ y $\eta_s(x)$ son primos relativos. Para ello, supongamos que no lo son. Entonces estos polinomios satisfacen
+
+    \begin{equation}\label{prop:sigma-eta-no-primos-relativos}
+        \begin{split}
+            \sigma_s(x)     &=   \mu(x) \sigma(x)\\
+            \eta_s(x)       &= \mu(x) \eta(x),\\
+        \end{split}
+    \end{equation}
+
+    donde $\mu(x)$ es un polinomio conveniente \cite[Página 92]{Sugiyama_1975}.
+    
+    Por \eqref{prop:relacion-r_i} y \eqref{prop:sigma-eta-no-primos-relativos}, tenemos que
+
+    \begin{align*}
+        \mu(x) \eta(x)  &=   \mu(x) \sigma(x) S(x) - \delta V_k(x) g(x)\\
+        \eta(x)         &=  \sigma(x) S(x) + \phi(x) g(x),
+    \end{align*}
+    
+    donde $\phi(x)$ es un polinomio conveniente. A partir de estas relaciones, es evidente que $\mu(x)$ divide a $V_k(x)$. El polinomio $\mu(x)$ también divide a $U_k(x)$. Pero esto contradice a \eqref{prop:euclides-primos-rel} que implica que $U_k(x)$ y $V_k(x)$ son primos relativos. Por lo que $\sigma_s(x)$ y $\eta_s(x)$ son primos relativos.
+
+    Finalmente, el factor $\delta$ hace que $\sigma_s(x)$ sea mónico. Por lo tanto, $\sigma_s(x)$ y $\eta_s(x)$ dados por \eqref{th:sol-Goppa} son la solución del problema.
+\end{proof}
+
+\begin{corollary}
+    Sea $e$ el número de errores que realmente se produjeron y sea $k$ el número de iteraciones del algoritmo descrito en el teorema, entonces $k \leq e$.
+\end{corollary}
+
+\begin{proof}
+    Como el número de errores que se produjeron es $e$, entonces $\gr(\sigma) = e$. Por \eqref{alg:euclides-u} y \eqref{th:sol-Goppa},
+    $$\gr(\sigma_s) = \sum_{i=1}^k \gr(q_i).$$
+
+    Como $\gr(q_i) \geq 1$ para todo $i$, concluimos que $k \leq e$.
+\end{proof}
+
+En resumen, el algoritmo de Sugiyama consiste en:
 
 \begin{itemize}
     \item[I.] Calcular el síndrome $S(x)$.
-    \item[II.] Sean $r_{-1}(x) = g(x)$, $r_0(x) = S(x)$, $U_{-1}(x) = 0$ y $U_0(x) = 1$.
-    \item[III.] Buscar $q_i(x)$ y $r_i(x)$ aplicando el algoritmo de Euclides para encontrar el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ para $i = 1,..., k$, hasta que $k$ cumpla que $\gr(r_{k-1}(x)) \geq t$ y $\gr(r_k(x)) < t$:
-
+    \item[II.] Sean $r_{-1}(x) = g(x)$, $r_0(x) = S(x)$, $U_{-1}(x) = 0$, $U_0(x) = 1$, $V_0(x)$ y $V_{-1}(x) = 1$.
+    \item[III.] Buscar $U_i(x)$, $V_i(x)$, $q_i(x)$ y $r_i(x)$ aplicando el algoritmo de Euclides para encontrar el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ para $i = 1,..., k$, hasta que $k$ cumpla que $\gr(r_{k-1}(x)) \geq t$ y $\gr(r_k(x)) < t$:
         $$r_{i-2}(x) = r_{i-1}(x) q_i(x) + r_i(x), \qquad \gr(r_i(x)) < \gr(r_{i-1})(x)$$
-    
-    \item[IV.] Calcular $U_k(x)$, donde
-    
         $$U_i(x) = q_i(x) U_{i-1}(x) + U_{i-2}(x)$$
-
-    \item[V.] La solución viene dada por:
-        $$\eta(x) = (-1)^k \delta r_k(x)$$
-        $$\sigma(x) = \delta U_k(x)$$
+        $$V_i(x) = q_i(x) V_{i-1}(x) + V_{i-2}(x)$$  
+    \item[IV.] La solución viene dada por:
+        $$\sigma_s(x) = \delta U_k(x)$$ 
+        $$\eta_s(x) = (-1)^k \delta r_k(x)$$   
+    \item[V.] Calcular las raíces de $\sigma(x)_s$.
+    \item[VI.] Para cada raíz $P$, buscar la posición en la que se encuentra en el conjunto de definición y el error en esa posición tendrá el valor:
+        $$\frac{\eta(P)}{\sigma'(P)}.$$
+    \item[VII.] Restar a la palabra codificada el error para obtener el mensaje original codificado.
 \end{itemize}
 
-% TODO: decir por qué funciona
+\begin{exampleth}
+    % TODO
+\end{exampleth}
+
+% TODO: más ejemplos
+\textcolor{red}{Completar y añadir más ejemplos}
 
 
 \begin{comment}
