@@ -78,16 +78,45 @@ Observemos que si $p$ un número primo y $q$ es un número entero tal que $q = p
 Notemos que todos los cuerpos finitos de orden $q$ son isomorfos, aunque cada cuerpo puede tener diferentes representaciones.
 
 \begin{proposition}
+    \label{prop:multiplo-p}
     Sea $\mathbb{F}_q$ un cuerpo finito con $q = p^n$ elementos, entonces 
 
     $$p \cdot \alpha = 0, \qquad \forall \alpha \in \mathbb{F}_q.$$
 \end{proposition}
+
+\begin{proof}
+    La característica del cuerpo finito $\mathbb{F}_q$ es $p$, luego $p1 = 0$, donde $1$ es el elemento neutro para la multiplicación. Por la propiedad distributiva tenemos que
+
+    $$p \cdot \alpha = \underbrace{\alpha + \cdots + \alpha}_{p\ veces} = a \underbrace{(1 + \cdots + 1)}_{p\ veces} = a0 = 0.$$
+\end{proof}
 
 \begin{proposition}
     Sea $\mathbb{F}_q$ un cuerpo finito con característica $p$, se cumple que
 
     $$( \alpha + \beta )^p = \alpha^p + \beta^p, \qquad \forall \alpha, \beta \in \mathbb{F}_q.$$
 \end{proposition}
+
+\begin{proof}
+    Por el teorema del binomio, podemos desarrollar la $n$-ésima potencia de un binomio. En este caso tenemos que
+    \begin{equation}
+        \label{eq:binomio}
+        ( \alpha + \beta )^p
+            =\sum_{k=0}^p {p \choose k}\alpha^{p-k} \beta^k
+            ={p \choose 0}\alpha^p + {p\choose 1} \alpha^{p-1} \beta + \cdots + {p\choose p-1}\alpha \beta^{p-1} + {p \choose p} \beta^p.
+    \end{equation}
+
+    Por otra parte, sabemos que
+    $${p \choose i} = \frac{n!}{i! (p-i)!}.$$
+
+    En consecuencia, ${p \choose i}$ es divisible por $p$ para $1 \leq i \leq p-1$.
+
+    Por lo tanto, los coeficientes de la parte de la derecha de \eqref{eq:binomio}, salvo el primero y el último, son múltiplos de $p$. Por \ref{prop:multiplo-p}, estos términos se anulan y concluimos que
+
+    \begin{equation}
+        ( \alpha + \beta )^p = \alpha^p + \beta^p.
+    \end{equation}
+    
+\end{proof}
 
 % TODO: homomorfismo de cuerpos
 
