@@ -3,8 +3,6 @@
 % Consiste en poner lo que ya sabías, porque lo has dado en el grado, y que te haga falta 
 % (por ejemplo, algebra lineal, cuerpos finitos, operaciones con polinomios, algoritmos genéticos, etc).
 
-% TODO
-
 \chapter{Preliminares}
 
 En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando concepto de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en la población para introducir los algoritmos genéticos.
@@ -107,9 +105,10 @@ En el conjunto de polinomios definimos una suma y un producto.
 
 Sean $f = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$ y $g = b_m x^m + b_{m-1} x^{m-1} + \cdots + b_1 x + b_0$ dos polinomios. Supongamos que $m \leq n$, tomando $b_i = 0$ para todo $n \geq i > m$, definimos las operaciones de suma y producto de polinomios:
 
-$$f + g = (a_n + b_n)x^n + (a_{n-1} + b_{n-1})x^{n-1} + \cdots + (a_1 + b_1)x + (a_0 + b_0).$$
-$$f \cdot g = a_n b_m x^{n+m} + (a_n b_{m+1} + a_{n-1} b_m) x^{n+m-1} + \cdots + (a_1 b_0 + a_0 b_1)x + a_0 b_0.$$
-
+\begin{align*}
+    f + g       &= (a_n + b_n)x^n + (a_{n-1} + b_{n-1})x^{n-1} + \cdots + (a_1 + b_1)x + (a_0 + b_0).\\
+    f \cdot g   &= a_n b_m x^{n+m} + (a_n b_{m+1} + a_{n-1} b_m) x^{n+m-1} + \cdots + (a_1 b_0 + a_0 b_1)x + a_0 b_0.
+\end{align*} 
 De esta forma, diremos que el conjunto $A[X]$ con las operaciones anteriores es un \emph{anillo de polinomios en X con coeficientes en A}.
 
 \begin{definition}
@@ -151,16 +150,19 @@ Los polinomios $c(x)$ y $r(x)$ se llaman \emph{cociente} y \emph{resto}, respect
 Usando este resultado de forma recursiva, obtendremos el máximo común divisor de los polinomios $f(x)$ y $g(x)$. Este procedimiento se conoce como \emph{Algoritmo de Euclides}. El siguiente resultado describe este algoritmo.
 
 \begin{theorem}[Algoritmo de Euclides]
+    \label{th:alg-euclides}
     Sean $f(x)$ y $g(x)$ polinomios definidos en $\mathbb{F}_q[x]$ con $g(x)$ no nulo.
     \begin{enumerate}
         \item Realizar los siguientes pasos hasta que $r_n(x) = 0$ para algún $n$:
-        $$f(x) = g(x) c_1(x) + r_1(x), \qquad \textit{donde } \gr(r_1(x)) < \gr(x),$$
-        $$g(x) = r_1(x) c_2(x) + r_2(x), \qquad \textit{donde } \gr(r_2(x)) < \gr(r_1),$$
-        $$r_1(x) = r_2(x) c_3(x) + r_3(x), \qquad \textit{donde } \gr(r_3(x)) < \gr(r_2),$$
-        $$\vdots$$
-        $$r_{n-3}(x) = r_{n-2}(x) c_{n-1}(x) + r_{n-1}(x), \qquad \textit{donde } \gr(r_{n-1}(x)) < \gr(r_{n-2}),$$
-        $$r_{n-2}(x) = r_{n-1}(x) c_{n}(x) + r_{n}(x), \qquad \textit{donde } r_n(x) = 0.$$
-        Entonces $\mcd(f(x), \; g(x)) = cr_{n-1}(x)$, donde $c \in \mathbb{F}_q$ es una constante para que $c r_{n-1}(x)$ sea mónico.
+            \begin{align*}
+                f(x)        &= g(x) c_1(x) + r_1(x), & &\textit{donde } \gr(r_1(x)) < \gr(x),\\
+                g(x)        &= r_1(x) c_2(x) + r_2(x),& &\textit{donde } \gr(r_2(x)) < \gr(r_1),\\
+                r_1(x)      &= r_2(x) c_3(x) + r_3(x),& &\textit{donde } \gr(r_3(x)) < \gr(r_2),\\
+                            &\; \; \vdots & &\\
+                r_{n-3}(x)  &= r_{n-2}(x) c_{n-1}(x) + r_{n-1}(x),& &\textit{donde } \gr(r_{n-1}(x)) < \gr(r_{n-2}),\\
+                r_{n-2}(x)  &= r_{n-1}(x) c_{n}(x) + r_{n}(x),& &\textit{donde } r_n(x) = 0.
+            \end{align*}
+            Entonces $\mcd(f(x), \; g(x)) = cr_{n-1}(x)$, donde $c \in \mathbb{F}_q$ es una constante para que $c r_{n-1}(x)$ sea mónico.
         \item Existen polinomios $a(x), b(x) \in \mathbb{F}_q[x]$ tales que 
         $$a(x) f(x) + b(x) g(x) = \mcd(f(x), \; g(x)).$$
     \end{enumerate}
@@ -232,7 +234,7 @@ donde $\gr(r(x)) \leq m - 1$ o $r(x) = 0$. Entonces
 
 $$(g_1(x) + (f(x))) (g_2(x) + (f(x))) = r(x) + (f(x)).$$
 
-Podemos simplificar la notación si reemplazamos $x$ por $\alpha$ donde $f(\alpha) = 0$. Por \ref{pr:multiplicacion_clase_lateral}, se cumple que $g_1(\alpha) g_2(\alpha) = r(\alpha)$ y la correspondencia \ref{pr:correspondencia} queda como sigue
+Podemos simplificar la notación si reemplazamos $x$ por $\alpha$ donde $f(\alpha) = 0$. Por \eqref{pr:multiplicacion_clase_lateral}, se cumple que $g_1(\alpha) g_2(\alpha) = r(\alpha)$ y la correspondencia \eqref{pr:correspondencia} queda como sigue
 
 $$g_{m-1} g_{m-2} \cdots g_1 g_0 \leftrightarrow  g_{m-1} \alpha^{m-1} g_{m-2} \alpha^{m-2}\cdots g_1 \alpha g_0.$$
 
