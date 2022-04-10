@@ -1,2 +1,201 @@
-\chapter[Implementación en SageMath de los códigos Goppa]{Implementación en SageMath de los códigos Goppa}
+\chapter[Implementación en SageMath de los códigos de Goppa]{Implementación en SageMath de los códigos de Goppa}
 \label{annex:sage-Goppa}
+
+En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder} para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original.
+
+% TODO: GoppaEncoder y GoppaDecoder heredan, hay que mencionarlo
+
+\section{Clase para códigos de Goppa}
+
+Esta clase simula el comportamiento básico de los códigos de Goppa, es decir, proporciona métodos para calcular el código de Goppa asociado a un conjunto de definición y un polinomio sobre un cuerpo finito. Además, proporciona métodos para obtener las matrices de paridad y generadora.
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+    \item[class Goppa(self, defining\_set, generating\_pol, field)]
+    
+    \emph{Hereda de:} \texttt{AbstractLinearCode}
+  
+    Representación de un código de Goppa como un código lineal.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[field] Cuerpo finito sobre el que se define el código de Goppa.
+        \item[generating\_pol] Polinomio mónico con coeficientes en un cuerpo finito $GF(p^m)$ que extiende de \texttt{field}.
+        \item[defining\_set] Tupla de $n$ elementos distintos de $GF(p^m)$ que no son las raíces de \texttt{generating\_pol}.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        % TODO
+    \end{lstlisting}
+    \textcolor{red}{Completar ejemplo}
+
+    \begin{description}[font=\ttfamily, style=nextline]
+        \item[get\_generating\_pol(self)] Devuelve el polinomio generador del código.
+        
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[get\_defining\_set(self)] Devuelve el conjunto de definición del código.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[get\_parity\_pol(self)] Devuelve el polinomio de paridad del código.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[get\_parity\_check\_matrix(self)] Devuelve la matriz de paridad del código.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[get\_generator\_matrix(self)] Devuelve la matriz generadora del código.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[get\_dimension(self)] Devuelve la dimensión del código.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+    \end{description}
+\end{description}
+
+\section{Codificador para códigos de Goppa}
+
+En esta sección presentaremos la implementación del codificador para los códigos de Goppa.
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+    \item[class GoppaEncoder(self, code)]
+    
+    \emph{Hereda de:} \texttt{Encoder}
+  
+    Representación de un codificador para un código de Goppa usando su matriz generadora.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[code] Código asociado a este codificador.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        % TODO
+    \end{lstlisting}
+    \textcolor{red}{Completar ejemplo}
+
+    \begin{description}[font=\ttfamily, style=nextline]
+        \item[get\_generator\_matrix(self)] Devuelve la matriz generadora del código asociado a \texttt{self}.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[encode(self, m)] Transforma \texttt{m} en una palabra código del código asociado a \texttt{self}.
+
+        \textsc{Argumentos}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[m] Vector asociado a un mensaje de \texttt{self}.
+        \end{description}
+
+        \textsc{Salida}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[] Vector asociado a una palabra código del código asociado a \texttt{self}.
+        \end{description}
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+    \end{description}
+\end{description}
+
+\section{Decodificador para códigos de Goppa}
+
+En esta sección presentaremos la implementación del decodificador para los códigos de Goppa. Este decodificador usa el algoritmo de Sugiyama descrito en \ref{th:alg-Sugiyama}.
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+    \item[class GoppaDecoder(self, code)]
+    
+    \emph{Hereda de:} \texttt{Decoder}
+  
+    Representación de un decodificador para un código de Goppa usando el algoritmo de Sugiyama.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[code] Código asociado a este decodificador.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        % TODO
+    \end{lstlisting}
+    \textcolor{red}{Completar ejemplo}
+
+    \begin{description}[font=\ttfamily, style=nextline]
+        \item[get\_syndrome(self, c)] Devuelve el polinomio síndrome asociado a la palabra código \texttt{c}.
+        
+        \textsc{Argumentos}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[c] Vector del espacio de entrada del código asociado a \texttt{self}.
+        \end{description}
+
+        \textsc{Salida}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[] Polinomio síndrome asociado al elemento \texttt{c}.
+        \end{description}
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[get\_generating\_pol(self)] Devuelve el polinomio generador del código asociado a \texttt{self}.
+        
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+
+        \item[decote\_to\_code(self, word)] Corrije los errores de \texttt{word} y devuelve una palabra código del código asociado a \texttt{self}.
+         
+        \textsc{Argumentos}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[word] Vector del espacio de entrada del código asociado a \texttt{self}.
+        \end{description}
+
+        \textsc{Salida}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[] Vector asociado a una palabra código del código asociado a \texttt{self}.
+        \end{description}
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+        \textcolor{red}{Completar ejemplo}
+    \end{description}
+\end{description}
