@@ -1,2 +1,72 @@
 \chapter[Implementación en SageMath del criptosistema de McEliece]{Implementación en SageMath del criptosistema de McEliece}
 \label{annex:sage-McEliece}
+
+\section{Clase para el criptosistema McEliece}
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+    \item[class McEliece(self, n, p, q, g)]
+  
+    Representación del criptosistema de McEliece
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        % TODO
+        \item[]
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        % TODO
+    \end{lstlisting}
+
+    \begin{description}[font=\ttfamily, style=nextline]
+        \item[get\_public\_key(self)] Devuelve la matriz generadora pública que es parte de la clave pública.
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+
+        \item[encrypt(self, m)] Devuelve el criptograma asociado al texto plano \texttt{m}.
+
+        \textsc{Argumentos}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[m] Texto plano que se va a encriptar.
+        \end{description}
+        
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+
+        \item[decrypt(self, c)] Devuelve el texto plano asociado al criptograma \texttt{c}.
+
+        \textsc{Argumentos}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[c] Criptograma que se va a desencriptar.
+        \end{description}
+        
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            % TODO
+        \end{lstlisting}
+    \end{description}
+\end{description}
+
+\section{Funciones auxiliares}
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+    \item[get\_weight(c)]
+  
+    Calcula el peso del vector \texttt{c}.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[c] Vector al que se le va a calcular su peso.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        % TODO
+    \end{lstlisting}
+\end{description}

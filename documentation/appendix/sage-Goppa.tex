@@ -1,9 +1,7 @@
 \chapter[Implementación en SageMath de los códigos de Goppa]{Implementación en SageMath de los códigos de Goppa}
 \label{annex:sage-Goppa}
 
-En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder} para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original.
-
-% TODO: GoppaEncoder y GoppaDecoder heredan, hay que mencionarlo
+En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que hereda de la clase \texttt{Encoder} y es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder}, que hereda de la clase \texttt{Decoder}, para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original.
 
 \section{Clase para códigos de Goppa}
 
@@ -25,58 +23,129 @@ Esta clase simula el comportamiento básico de los códigos de Goppa, es decir, 
 
     \textsc{Ejemplos}
     \begin{lstlisting}[gobble=4]
-        % TODO
+        sage: F = GF(2^2)
+        sage: L = GF(2^4)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^3 + a*x^2 + 1
+        sage: n = 10
+        sage: defining_set = get_defining_set(n, g, L)
+        sage: C = Goppa(defining_set, g, F)
+        sage: C
+        > [10, 4] Goppa code
     \end{lstlisting}
-    \textcolor{red}{Completar ejemplo}
 
     \begin{description}[font=\ttfamily, style=nextline]
         \item[get\_generating\_pol(self)] Devuelve el polinomio generador del código.
         
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: C.get_generating_pol()
+            > x^{3} + z_{4} x^{2} + 1
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[get\_defining\_set(self)] Devuelve el conjunto de definición del código.
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: C.get_defining_set()
+            > [z4^3 + z4^2, 0, z4^2 + 1, z4^2 + z4 + 1, z4 + 1, z4^3 + z4 + 1, z4^2 + z4, z4^3 + z4^2 + 1, z4^3 + z4^2 + z4 + 1, z4^3 + z4]
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[get\_parity\_pol(self)] Devuelve el polinomio de paridad del código.
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: C.get_parity_pol()
+            > [(z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4)*x + 1, x^2 + z4*x, z4^3*x^2 + (z4^3 + z4^2 + 1)*x + z4^3 + z4^2, (z4^3 + z4)*x^2 + z4^2*x + z4^3 + z4^2 + z4 + 1, (z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4^2 + 1)*x + z4^2, (z4^3 + z4)*x^2 + (z4^2 + 1)*x + 1, (z4 + 1)*x^2 + (z4^3 + z4^2)*x + z4^3 + z4^2 + z4, (z4^3 + z4^2 + 1)*x^2 + (z4^2 + z4 + 1)*x + z4^2 + 1, (z4^3 + z4^2)*x^2 + (z4 + 1)*x + z4, z4^2*x^2 + (z4^2 + z4)*x + z4^3 + 1]
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[get\_parity\_check\_matrix(self)] Devuelve la matriz de paridad del código.
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: C.get_parity_check_matrix()
+            > [1    0      0      1    z2      1      0 z2 + 1     0 z2 + 1]
+              [0    0     z2 z2 + 1     1      0 z2 + 1      1     1 z2 + 1]
+              [z2   0      1     z2     1 z2 + 1      0 z2 + 1     1     z2]
+              [z2   1     z2      1    z2      1     z2      0     1      0]
+              [1    1     z2     z2     1     z2      1      1     0     z2]
+              [z2   0 z2 + 1     z2    z2     z2      1     z2    z2      1]
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[get\_generator\_matrix(self)] Devuelve la matriz generadora del código.
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: C.get_generator_matrix()
+            > [1   0   0   0   z2   1      z2    z2   z2 + 1   z2 + 1]
+              [0   1   0   0   z2   0       0    z2       z2   z2 + 1]
+              [0   0   1   0    0   0  z2 + 1    z2   z2 + 1       z2]
+              [0   0   0   1   z2  z2      z2    z2   z2 + 1       z2]
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[get\_dimension(self)] Devuelve la dimensión del código.
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: C.get_dimension()
+            > 4
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
     \end{description}
 \end{description}
 
@@ -98,18 +167,40 @@ En esta sección presentaremos la implementación del codificador para los códi
 
     \textsc{Ejemplos}
     \begin{lstlisting}[gobble=4]
-        % TODO
+        sage: F = GF(2^2)
+        sage: L = GF(2^4)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^3 + a*x^2 + 1
+        sage: n = 10
+        sage: defining_set = get_defining_set(n, g, L)
+        sage: C = Goppa(defining_set, g, F)
+        sage: GoppaEncoder(C)
+        > Encoder for [10, 4] Goppa code
     \end{lstlisting}
-    \textcolor{red}{Completar ejemplo}
 
     \begin{description}[font=\ttfamily, style=nextline]
         \item[get\_generator\_matrix(self)] Devuelve la matriz generadora del código asociado a \texttt{self}.
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: E = GoppaEncoder(C)
+            sage: E.get_generator_matrix()
+            > [1   0   0   0   z2   1      z2    z2   z2 + 1   z2 + 1]
+              [0   1   0   0   z2   0       0    z2       z2   z2 + 1]
+              [0   0   1   0    0   0  z2 + 1    z2   z2 + 1       z2]
+              [0   0   0   1   z2  z2      z2    z2   z2 + 1       z2]
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[encode(self, m)] Transforma \texttt{m} en una palabra código del código asociado a \texttt{self}.
 
@@ -125,9 +216,21 @@ En esta sección presentaremos la implementación del codificador para los códi
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^6)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^5 + a*x^2 + 1
+            sage: n = 30
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: E = GoppaEncoder(C)
+            sage: word = vector(F, (0, 1, 0, 0, b, b + 1, b, 0, 0, b, 0, b, b + 1, 1, b + 1))
+            sage: x = E.encode(word)
+            sage: x
+            > (0, 1, 0, 0, z2, z2 + 1, z2, 0, 0, z2, 0, z2, z2 + 1, 1, z2 + 1, z2 + 1, 0, z2 + 1, 0, z2, z2, 1, 0, z2, z2, z2 + 1, z2, 0, z2 + 1, 1)
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
     \end{description}
 \end{description}
 
@@ -149,9 +252,18 @@ En esta sección presentaremos la implementación del decodificador para los có
 
     \textsc{Ejemplos}
     \begin{lstlisting}[gobble=4]
-        % TODO
+        sage: F = GF(2^2)
+        sage: L = GF(2^4)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^3 + a*x^2 + 1
+        sage: n = 10
+        sage: defining_set = get_defining_set(n, g, L)
+        sage: C = Goppa(defining_set, g, F)
+        sage: GoppaDecoder(C)
+        > Decoder for [10, 4] Goppa code
     \end{lstlisting}
-    \textcolor{red}{Completar ejemplo}
 
     \begin{description}[font=\ttfamily, style=nextline]
         \item[get\_syndrome(self, c)] Devuelve el polinomio síndrome asociado a la palabra código \texttt{c}.
@@ -168,17 +280,64 @@ En esta sección presentaremos la implementación del decodificador para los có
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: G = C.get_generator_matrix()
+            sage: E = GoppaEncoder(C)
+            sage: D = GoppaDecoder(C)
+            sage: word = random_word(G.nrows(), F)
+            sage: x = E.encode(word); x
+            > (z2 + 1, z2 + 1, z2, 1, z2 + 1, z2 + 1, z2, 0, 1, 1)
+            sage: D.get_syndrome(x)
+            > 0
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
+        \begin{lstlisting}[gobble=4]
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: G = C.get_generator_matrix()
+            sage: E = GoppaEncoder(C)
+            sage: D = GoppaDecoder(C)
+            sage: word = random_word(G.nrows(), F)
+            sage: x = E.encode(word); x
+            > (1, 0, z2, z2, z2, 0, 0, z2, 1, 0)
+            sage: num_errors = floor(g.degree()/2)
+            sage: e = random_error(len(x), num_errors, F)
+            sage: y = x + e
+            sage: D.get_syndrome(y)
+            > (z4^3 + 1)*x^2 + z4^3*x + z4^3
+        \end{lstlisting}
 
         \item[get\_generating\_pol(self)] Devuelve el polinomio generador del código asociado a \texttt{self}.
         
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: D = GoppaDecoder(C)
+            sage: D.get_generating_pol()
+            > x^3 + z4*x^2 + 1
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
 
         \item[decote\_to\_code(self, word)] Corrije los errores de \texttt{word} y devuelve una palabra código del código asociado a \texttt{self}.
          
@@ -194,8 +353,97 @@ En esta sección presentaremos la implementación del decodificador para los có
 
         \textsc{Ejemplos}
         \begin{lstlisting}[gobble=4]
-            % TODO
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: G = C.get_generator_matrix()
+            sage: E = GoppaEncoder(C)
+            sage: D = GoppaDecoder(C)
+            sage: word = random_word(G.nrows(), F)
+            sage: x = E.encode(word); x
+            > (1, 0, z2 + 1, 0, 1, 0, 0, z2 + 1, 1, z2)
+            sage: num_errors = floor(g.degree()/2)
+            sage: e = random_error(len(x), num_errors, F)
+            sage: y = x + e
+            sage: D.decode_to_code(y)
+            > (1, 0, z2 + 1, 0, 1, 0, 0, z2 + 1, 1, z2)
         \end{lstlisting}
-        \textcolor{red}{Completar ejemplo}
     \end{description}
+\end{description}
+
+\section{Funciones auxiliares}
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+    \item[get\_defining\_set(n, pol, field)]
+  
+    Obtiene un conjunto de definición a partir del polinomio \texttt{g}, con longitud \texttt{n} y pertenece al cuerpo finito \texttt{field}.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[n] Tamaño del conjunto de definición.
+        \item[pol] Polinomio generador del conjunto de definición. Sus raíces no pertenecen a dicho conjunto.
+        \item[field] Cuerpo finito sobre el que se define el conjunto de definición.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        sage: F = GF(2^6)
+        sage: a = F.gen()
+        sage: R.<x> = F[]
+        sage: g = x^5 + a*x^2 + 1
+        sage: n = 8
+        sage: get_defining_set(n, g, L)
+        > 
+    \end{lstlisting}
+    \[\left[z_{6}^{2} + z_{6}, z_{6}^{5} + z_{6}^{4} + z_{6}^{3} + z_{6}, z_{6}^{3} + z_{6}, z_{6}^{2} + 1, z_{6}^{5} + z_{6}^{4} + z_{6} + 1, z_{6}^{4} + 1, z_{6}^{5} + z_{6}^{4}, z_{6}\right]\]
+
+    \item[random\_word(n, field)]
+  
+    Obtiene una palabra aleatoria de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[n] Tamaño de la palabra.
+        \item[field] Cuerpo finito sobre el que se define el conjunto de definición.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        sage: n = 6
+        sage: field = GF(3^3)
+        sage: random_word(n, field)
+        > 
+    \end{lstlisting}
+    \[
+        \left(2 z_{3}^{2} + z_{3},\,2 z_{3}^{2} + z_{3} + 2,\,z_{3}^{2} + 2 z_{3},\,2 z_{3}^{2} + z_{3} + 2,\,2 z_{3}^{2} + 2 z_{3} + 2,\,2 z_{3} + 2\right)
+    \]
+
+    \item[random\_error(n, num\_errors, field)]
+  
+    Devuelve un vector aleatorio de errores de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.
+  
+    \textsc{Argumentos}
+    \begin{description}[font=\normalfont\ttfamily]
+        \item[n] Tamaño del vector.
+        \item[num\_errors] Número máximo de errores a añadir.
+        \item[field] Cuerpo finito al que pertenece la palabra \texttt{x}.
+    \end{description}
+
+    \textsc{Ejemplos}
+    \begin{lstlisting}[gobble=4]
+        sage: field = GF(2^6)
+        sage: n = 10
+        sage: num_errors = 3
+        sage: random_error(n, num_errors, field)
+        > 
+    \end{lstlisting}
+    \[
+        \left(0,\,0,\,0,\,0,\,0,\,z_{6}^{4} + z_{6}^{3} + z_{6}^{2} + 1,\,0,\,z_{6}^{2} + 1,\,0,\,0\right)
+    \]
 \end{description}
