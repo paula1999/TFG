@@ -11,3 +11,4 @@ _minted-main
 *.drawio
 *.txt
 .vscode
+bibliography/*
