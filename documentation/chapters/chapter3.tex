@@ -101,33 +101,121 @@ El siguiente resultado nos muestra los límites en la dimensión y la distancia 
 Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usaremos el código descrito en el apéndice \ref{annex:sage-Goppa} en los siguientes ejemplos.
 
 \begin{exampleth}
-    Sea $\mathbb{F}_2^6$ el cuerpo de extensión sobre $\mathbb{F}_2^2$. Definimos el polinomio $g(x) = x^5 + ax^2 + 1 \in \mathbb{F}_2^6$ y tomamos $n = 30$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
+    Sea $\mathbb{F}_2^4$ el cuerpo de extensión sobre $\mathbb{F}_2^2$. Definimos el polinomio $g(x) = x^3 + ax^2 + 1 \in \mathbb{F}_2^4$ y tomamos $n = 10$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
+
     \begin{lstlisting}[gobble=4]
         sage: F = GF(2^2)
-        sage: L = GF(2^6)
+        sage: L = GF(2^4)
         sage: a = L.gen()
         sage: b = F.gen()
         sage: R.<x> = L[]
-        sage: g = x^5 + a*x^2 + 1
-        sage: n = 30
-        sage: defining_set = []
-        sage: while len(defining_set) != n:
-                aux = L.random_element()
-                if g(aux) != 0 and aux not in defining_set:
-                    defining_set = defining_set + [aux]
+        sage: g = x^3 + a*x^2 + 1
+        sage: n = 10
+        sage: defining_set = get_defining_set(n, g, L)
         sage: C = Goppa(defining_set, g, F)
         sage: C
-        > [30, 15] Goppa code
+        > [10, 4] Goppa code
     \end{lstlisting}
-    Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+
+    Observamos que la longitud de este código es $10$ y la dimensión es $4$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+
     \begin{lstlisting}[gobble=4]
-        sage: C.parity_check_matrix()
+        sage: H = C.parity_check_matrix()
+        sage: show(H)
+        >
     \end{lstlisting}
-    % TODO: salida con la matriz
+    \[\left(\begin{array}{rrrrrrrrrr}
+            0 & z_{2} & 0 & z_{2} + 1 & 1 & z_{2} + 1 & 1 & 0 & 0 & 1 \\
+            1 & 1 & z_{2} + 1 & 1 & z_{2} + 1 & z_{2} + 1 & 0 & 0 & z_{2} + 1 & 0 \\
+            1 & 1 & 1 & z_{2} + 1 & z_{2} & z_{2} & z_{2} + 1 & 0 & 0 & z_{2} \\
+            1 & z_{2} & z_{2} + 1 & 0 & 1 & 0 & 1 & 0 & z_{2} & z_{2} \\
+            0 & 1 & z_{2} & 1 & z_{2} & z_{2} & z_{2} & 1 & 1 & 1 \\
+            z_{2} & z_{2} & 0 & z_{2} & z_{2} & 1 & z_{2} & 0 & 1 & z_{2}
+            \end{array}
+        \right)
+    \]
+
+    \begin{lstlisting}[gobble=4]
+        sage: G = C.get_generator_matrix()
+        sage: show(G)
+        >
+    \end{lstlisting}
+    \[\left(\begin{array}{rrrrrrrrrr}
+        1 & 0 & 0 & z_{2} + 1 & 0 & z_{2} + 1 & z_{2} & z_{2} + 1 & 0 & z_{2} \\
+        0 & 1 & 0 & 0 & 0 & z_{2} + 1 & 0 & 1 & 1 & 0 \\
+        0 & 0 & 1 & z_{2} & 0 & z_{2} + 1 & 0 & z_{2} + 1 & 1 & z_{2} + 1 \\
+        0 & 0 & 0 & 0 & 1 & 1 & z_{2} + 1 & 0 & 0 & 1
+        \end{array}\right)
+    \]
+
+    Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $4$.
+
+    Además, podemos comprobar efectivamente que se da la igualdad $H \cdot G^T = 0$:
+
+    \begin{lstlisting}[gobble=4]
+        sage: H*G.T == 0
+        > True
+    \end{lstlisting}
 \end{exampleth}
 
-% TODO: más ejemplos
-\textcolor{red}{Completar y añadir más ejemplos}
+\begin{exampleth}
+    Sea $\mathbb{F}_3^6$ el cuerpo de extensión sobre $\mathbb{F}_3^3$. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_3^6$ y tomamos $n = 20$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
+
+    \begin{lstlisting}[gobble=4]
+        sage: F = GF(3^3)
+        sage: L = GF(3^6)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^2 + a*x + 1 + a^2
+        sage: n = 10
+        sage: defining_set = get_defining_set(n, g, L)
+        sage: C = Goppa(defining_set, g, F)
+        sage: C
+        > [10, 6] Goppa code
+    \end{lstlisting}
+    
+    Observamos que la longitud de este código es $10$ y la dimensión es $6$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+
+    \begin{lstlisting}[gobble=4]
+        sage: H = C.parity_check_matrix()
+        sage: show(H)
+        >
+    \end{lstlisting}
+    \[\scriptsize
+        \left(\begin{array}{rrrrrrrrrr}
+        2 z_{3}^{2} + 2 z_{3} + 2 & z_{3}^{2} + 1 & 1 & z_{3}^{2} & 2 z_{3}^{2} + 2 z_{3} + 1 & 1 & 2 z_{3}^{2} + 2 z_{3} + 2 & z_{3} + 2 & z_{3}^{2} + 1 & z_{3}^{2} + 2 z_{3} + 1 \\
+        z_{3}^{2} + 2 z_{3} + 2 & z_{3}^{2} + 1 & 2 & z_{3}^{2} + z_{3} & z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} & z_{3}^{2} + 2 z_{3} + 2 & 1 & z_{3}^{2} & z_{3}^{2} + 1 \\
+        2 z_{3}^{2} + z_{3} + 1 & z_{3} + 1 & 1 & z_{3}^{2} + 2 z_{3} & z_{3}^{2} + 1 & z_{3}^{2} + z_{3} & z_{3}^{2} + z_{3} + 1 & 2 z_{3} + 2 & z_{3}^{2} & 2 \\
+        0 & z_{3} + 2 & 0 & z_{3}^{2} & z_{3}^{2} + 2 z_{3} & z_{3}^{2} + 2 z_{3} + 2 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} & z_{3}^{2} + z_{3} & 2 z_{3}^{2} + 2 z_{3} + 2
+        \end{array}\right)
+    \]
+
+    \begin{lstlisting}[gobble=4]
+        sage: G = C.get_generator_matrix()
+        sage: show(G)
+        >
+    \end{lstlisting}
+    \[ \footnotesize
+        \left(\begin{array}{rrrrrrrrrr}
+        1 & 0 & 0 & 0 & 0 & 0 & 2 z_{3} + 2 & 2 z_{3}^{2} + 1 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} + 1 \\
+        0 & 1 & 0 & 0 & 0 & 0 & 2 z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} + 2 z_{3} + 2 & 2 z_{3}^{2} + 2 & 2 z_{3}^{2} + 2 z_{3} \\
+        0 & 0 & 1 & 0 & 0 & 0 & 2 z_{3}^{2} + z_{3} + 2 & 2 z_{3}^{2} + 2 z_{3} & 2 z_{3} + 2 & 2 z_{3}^{2} + 2 z_{3} \\
+        0 & 0 & 0 & 1 & 0 & 0 & 2 z_{3}^{2} + z_{3} & z_{3} & 2 z_{3}^{2} + z_{3} & z_{3}^{2} + 2 z_{3} + 2 \\
+        0 & 0 & 0 & 0 & 1 & 0 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} & z_{3} + 2 & z_{3}^{2} + 2 \\
+        0 & 0 & 0 & 0 & 0 & 1 & z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} + 1 & z_{3}^{2} + 2 & 2 z_{3}^{2} + 1
+        \end{array}\right)
+    \]
+
+    Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $6$.
+
+    Además, podemos comprobar efectivamente que se da la igualdad $H \cdot G^T = 0$:
+
+    \begin{lstlisting}[gobble=4]
+        sage: H*G.T == 0
+        > True
+    \end{lstlisting}
+\end{exampleth}
 
 \begin{comment}
     Sea el cuerpo de extensión $\mathbb{F}_{2^3}$ de $\mathbb{F}_2$ y sea $g(x) = x^2 + x + 1 \in \mathbb{F}_{2^3}[x]$. Definimos $L$ como una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$ tales que sus elementos no son raíces de $g$. 
@@ -182,7 +270,6 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 Los códigos binarios de Goppa son códigos de corrección de errores que pertenecen a la clase de los códigos de Goppa que acabamos de estudiar. La estructura binaria le da más ventajas matemáticas sobre variantes no binarias y, además, tienen propiedades interesantes adecuadas para la construcción del criptosistema McEliece.
 
 \begin{definition}
-
     Fijada la extensión de cuerpos $\mathbb{F}_{2^m}$ de $\mathbb{F}_2$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \} \in \mathbb{F}_{2^m}^n$ una tupla de $n$ elementos distintos de $\mathbb{F}_{2^m}$ y sea $g(x) \in \mathbb{F}_{2^m}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código binario de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \{ 0, 1 \}^n$ tal que 
 
     \begin{equation}
@@ -194,14 +281,6 @@ Observemos que si $g(x)$ es un polinomio irreducible, todos los elementos $\gamm
 
 La importancia de estos códigos se debe a que pueden doblar la capacidad correctora de los códigos generales de Goppa.
 
-
-\begin{exampleth}
-    % TODO
-\end{exampleth}
-
-% TODO: más ejemplos
-\textcolor{red}{Completar y añadir más ejemplos}
-
 \subsection{Codificación de los códigos de Goppa}
 
 La codificación de un mensaje consiste en escribirlo como una palabra código de un código. Fijado un código de Goppa $\Gamma (L, g)$ sobre $\mathbb{F}_q$ con matriz generadora $G$. Dado el mensaje $\textbf{m} \in \mathbb{F}_q$, lo podemos codificar realizando la operación
@@ -210,12 +289,32 @@ $$\textbf{c} = \textbf{m} G.$$
 
 De esta forma obtenemos la palabra código $\textbf{c}$ que está en $\Gamma (L, g)$.
 
-\begin{exampleth}
-    % TODO
-\end{exampleth}
+En los siguientes ejemplos vamos a usar el código descrito en el apéndice \ref{annex:sage-Goppa} para mostrar la codificación de algunos mensajes.
 
-% TODO: más ejemplos
-\textcolor{red}{Completar y añadir más ejemplos}
+\begin{exampleth}
+    Sea $\mathbb{F}_2^6$ el cuerpo de extensión sobre $\mathbb{F}_2^2$. Definimos el polinomio $g(x) = x^5 + ax^2 + 1 \in \mathbb{F}_2^6$ y tomamos $n = 30$ como longitud del conjunto de definición. Dada la palabra
+    $$word := (0, 1, 0, 0, z_2, z_2 + 1, z_2, 0, 0, z_2, 0, z_2, z_2 + 1, 1, z_2 + 1) \in \mathbb{F}_2^2,$$ la podemos transformar en una palabra código del código definido por el conjunto de definición y el polinomio $g$:
+
+    \begin{lstlisting}[gobble=4]
+        sage: F = GF(2^2)
+        sage: L = GF(2^6)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^5 + a*x^2 + 1
+        sage: n = 30
+        sage: defining_set = get_defining_set(n, g, L)
+        sage: C = Goppa(defining_set, g, F)
+        sage: E = GoppaEncoder(C)
+        sage: word = vector(F, (0, 1, 0, 0, b, b + 1, b, 0, 0, b, 0, b, b + 1, 1, b + 1))
+        sage: x = E.encode(word)
+        sage: x
+        > (0, 1, 0, 0, z2, z2 + 1, z2, 0, 0, z2, 0, z2, z2 + 1, 1, z2 + 1, z2 + 1, 0, z2 + 1, 0, z2, z2, 1, 0, z2, z2, z2 + 1, z2, 0, z2 + 1, 1)
+    \end{lstlisting}
+
+    Por lo que la palabra $word$ codificada es la siguiente:
+    $$(0, 1, 0, 0, z_2, z_2 + 1, z_2, 0, 0, z_2, 0, z_2, z_2 + 1, 1, z_2 + 1, z_2 + 1, 0, z_2 + 1, 0, z_2, z_2, 1, 0, z_2, z_2, z_2 + 1, z_2, 0, z_2 + 1, 1).$$
+\end{exampleth}
 
 \subsection{Decodificación de los códigos de Goppa}
 
