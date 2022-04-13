@@ -4,3 +4,144 @@
 % Implementación en Sagemath de un supuesto ataque, a ver hasta que longitud puedes cargártelo (como mucho 512, la verdad)
 
 \chapter{Ataque usando algoritmos genéticos}
+
+% TODO introducción
+
+\textcolor{red}{Añadir introducción }
+
+\cite{Cuellar_etal}
+
+\section{Esquema basado en permutaciones}
+
+Sea $\mathbb{F}_q$ un cuerpo finito con $q$ elementos y sean $k,n$ dos números enteros tales que $0 < k \leq n$. Denotamos por $\mathcal{S}_n$ al conjunto de permutaciones de $n$ símbolos. Decimos que dos $[n, k]_q$-códigos lineales $\mathcal{C}_1$ y $\mathcal{C}_2$ son \emph{equivalentes permutacionalmente} si son iguales con una permutación fija de las coordenadas de una palabra código, esto es, si existe una permutación $x \in \mathcal{S}_n$ tal que $(c_0, ..., c_{n-1}) \in \mathcal{C}_1$ si y solo si $(c_{x(0)}, ..., c_{x(n-1)}) \in \mathcal{C}_2$. Observemos que $G$ es la matriz generadora de $\mathcal{C}_1$ si y solo si $GP$ es la matriz generadora de $\mathcal{C}_2$, donde $P$ es la matriz de permutaciones de $x$. Los códigos equivalentes permutacionalmente tienen en común la distancia mínima, ya que la permutación de sus componentes no modifica el peso del vector.
+
+El siguiente resultado nos proporciona un método para calcular la distancia mínima a partir de la matriz escalonada (\emph{reduced row echelon form}) de la matriz generadora del código equivalente.
+
+\begin{theorem}
+    Sea $G$ una matriz generadora de dimensión $k \times n$ de un $[n, k]_q$-código lineal $\mathcal{C}$ sobre el cuerpo finito $\mathbb{F}_q$. Existe una permutación $x \in \mathcal{S}_n$ tal que la matriz escalonada, $R$, de $GP_x$, donde $P_x$ es la matriz de permutaciones de $x$, cumple que el peso de alguna de sus filas alcanza la mínima distancia de $\mathcal{C}$. Por lo tanto, si $b$ es una fila de $R$ verificando esa propiedad, entonces $bP_x^{-1}$ es una palabra código no nula de $\mathcal{C}$ con peso mínimo.
+\end{theorem}
+
+\begin{proof}
+    Ver \cite[Página 4]{Cuellar_etal}.
+\end{proof}
+
+Este teorema expone que encontrar la distancia mínima de un $[n, k]_q$-código lineal se reduce a encontrar el mínimo de la aplicación $\mathfrak d : \mathcal{S}_n \rightarrow \mathbb{N}$ definida por
+
+$$\mathfrak d (x) = \min \left\{ \text{w}(b) \; : \; b \text{ es una fila de la matriz escalonada de } FP_x \right\}.$$
+
+para cualquier $x \in \mathcal{S}_n$, donde $G$ es la matriz generadora del código y $P_x$ representa la matriz de permutaciones de $x$.
+
+Sin embargo, existen pocas permutaciones que nos proporcionarán el mínimo de $\mathfrak{d}$. En concreto, supongamos que solo hay una palabra código que alcanza el mínimo peso $d$ de $\mathcal{C}$ salvo multiplicación escalar.
+
+En \cite{Cuellar_etal} se obtiene que la probabilidad de encontrar el mínimo de $\mathfrak{d}$ por una búsqueda aleatoria es
+
+$$\frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.$$
+
+\begin{exampleth}
+    Vamos a ilustrar el esquema descrito para obtener el peso mínimo de un código a partir de su matriz escalonada. Sea $\mathcal{C}$ un $[8, 4]_4$-código lineal sobre el cuerpo finito $\mathbb{F}_4 = \{ 0, 1, a, a + 1 \}$ con matriz generadora
+
+    \[ G =
+        \left(
+        \begin{array}{cccccccc} 
+            1 & 0 & a+1 & a+1 & a+1 & 0 & 0 & a  \\
+            a+1 & 0 & 0 & a+1 & a & a+1 & 1 & a+1  \\
+            1 & a+1 & 1 & a+1 & a & 0 & a & 0  \\
+            0 & 0 & 0 & a & a & a & a+1 & a
+        \end{array}
+        \right).
+    \]
+
+    Sea $x \in \mathcal{S}_8$ la permutación dada por $x(0) = 1$, $x(1) = 0$, $x(2) = 3$, $x(3) = 2$, $x(4) = 5$, $x(5) = 4$, $x(6) = 7$ y $x(7) = 6$. La matriz de permutaciones de $x$ es la siguiente:
+
+    \[ P_x =
+        \left(
+        \begin{array}{cccccccc} 
+            0 & 1 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 0 & 1 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 1 & 0 & 0 & 0 & 0 & 0  \\
+            0 & 0 & 0 & 0 & 0 & 1 & 0 & 0  \\
+            0 & 0 & 0 & 0 & 1 & 0 & 0 & 0  \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 1  \\
+            0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 
+        \end{array}
+        \right).
+    \]
+
+    Aplicamos esta permutación a la matriz generadora $G$ para obtener la matriz generadora $G^x$ del código equivalente permutacionalmente $\mathcal{C}_x$:
+
+    \[ G^x =
+        \left(
+        \begin{array}{cccccccc} 
+            0 & 1 & a+1 & a+1 & 0 & a+1 & a & 0  \\
+            0 & a+1 & a+1 & 0 & a+1 & a & a+1 & 1  \\
+            a+1 & 1 & a+1 & 1 & 0 & a & 0 & a  \\
+            0 & 0 & a & 0 & a & a & a & a+1
+        \end{array}
+        \right).
+    \]
+
+    La matriz escalonada de $G^x$ es
+
+    \[ G^x =
+        \left(
+        \begin{array}{cccccccc} 
+            1 & 0 & 0 & 0 & a+1 & 0 & a & a  \\
+            0 & 1 & 0 & 0 & 0 & a & 0 & 0  \\
+            0 & 0 & 1 & 0 & 1 & 1 & 1 & a  \\
+            0 & 0 & 0 & 1 & 1 & a+1 & a & a
+        \end{array}
+        \right),
+    \]
+
+    donde el peso de la primera fila es $4$, el de la segunda es $2$ y el de la tercera y cuarta es $5$. Como la segunda fila tiene peso mínimo entre todas las filas, tenemos que $\mathfrak{d} (x) = 2$. Realmente, la distancia de $\mathcal{C}$ es $2$, luego $x$ alcanza el mínimo de $\mathfrak{d}$.
+\end{exampleth}
+
+\section{Algoritmo}
+
+% TODO introducción
+% TODO duda: hablar de CHC?
+\textcolor{red}{He descrito el algoritmo GGA, tengo que estudiar también el CHC?}
+
+El algoritmo comienza con la inicialización de la población $P(t)$ y la evalúa con $N$ soluciones aleatorias en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de evaluaciones.
+
+El bucle principal empieza seleccionando $N$ padres según el operador de selección de torneo binario. Después, se le aplica el operador de cruce a dos padres para generar un nuevo par de soluciones con probabilidad $p_c$. Si no se combinan, se le aplica el operador de mutación a los padres para generar dos soluciones mutadas. En ambos casos, habrá que comprobar que las nuevas soluciones son válidas. De esta forma, todas las nuevas soluciones $N$ se habrán generado por cruce o mutación y formarán la población de la siguiente iteración $P(t+1)$. Finalmente, se evalúan las soluciones de $P(t+1)$. Se ha incluído una componente elitista antes de que comience la siguiente iteración: si la solución $P(t+1)$ no tiene un fitness igual o superior que la mejor en $P(t)$, entonces la peor solución de $P(t+1)$ es reemplazada por la mejor solución de $P(t)$. Además, si se alcanza un número fijo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada, se reinicializará $P(t+1)$ con $N$ nuevas soluciones aleatorias.
+
+En resumen, el algoritmo Generational Genetic Algorithm (GGA) consiste en:
+
+\begin{Ualgorithm}[H]
+    \DontPrintSemicolon
+    \KwIn{$N$: número par con el tamaño de la población}
+    \KwIn{$p_c$: probabilidad de cruce}
+    \KwIn{$MaxReinit$: número de evaluaciones de las soluciones sin mejorar el fitness antes de la reinicialización}
+    \KwOut{Mejor solución de $P(t)$}
+    $t \longleftarrow 0$\;
+    Inicializar la población $P(t)$ con $N$ soluciones aleatorias válidas\;
+    Evaluar las soluciones de $P(t)$\;
+    \While{no se cumpla la condición de parada}{
+        $P(t+1) \longleftarrow \emptyset$\;
+        $parents(1..N) \longleftarrow$ Seleccionar $N$ soluciones de $P(t)$ con selección de torneo binario\;
+        \For{$i$ in $0..N/2 - 1$}{
+            \eIf{número aleatorio de la distribución uniforme $[0,1]$ es menor que $p_c$]}{
+                $c_1, c_2 \longleftarrow$ soluciones generadar a partir del cruce de los padres $parents(2i + 1)$ y $parents(2i + 2)$\;
+            }
+            {
+                $c_1 \longleftarrow$ mutación del padre $parents(2i+1)$\;
+                $c_2 \longleftarrow$ mutación del padre $parents(2i+2)$\;
+            }
+            \If{$c_1$ (resp. $c_2$) no es válido}{
+                reemplazar $c_1$ (resp. $c_2$) con una solución aleatoria válida\;
+            }
+            $P(t+1) \longleftarrow P(t+1) \bigcup \{ c_1, c_2 \}$\;
+        }
+        Evaluar las soluciones de $P(t+1)$\;
+        \If{ningún fitness de $P(t+1)$ es igual o superior que el mejor fitness de $P(t)$}{
+            Reemplazar la peor solución de $P(t+1)$ con la mejor solución de $P(t)$\;
+        }
+        \If{MaxReinit soluciones han sido evaluadas sin mejorar la mejor solución de $P(t+1)$}{
+            Reemplazar las soluciones de $P(t+1)$ con $N-1$ soluciones aleatorias y la mejor solución de $P(t)$\;
+        }
+        $t \longleftarrow t + 1$\;
+    }
+    \caption{Generational Genetic Algorithm (GGA).}
+\end{Ualgorithm}
