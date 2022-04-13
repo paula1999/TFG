@@ -348,11 +348,11 @@ Como hemos visto, la distancia mínima es importante en un código lineal. Sin e
 
 \begin{Ualgorithm}[H]
     \DontPrintSemicolon
-    \KwIn{matriz generadora $G_1 = (I_k | A_1)$ de $\mathcal{C}$}
-    \KwOut{distancia mínima $\bar{d}_i$}
+    \KwIn{$G_1 = (I_k | A_1)$: matriz generadora de $\mathcal{C}$}
+    \KwOut{$\bar{d}_i$: distancia mínima}
     $m \longleftarrow 2$\;
     $k_1 \longleftarrow k$\;
-    \While{rank $(A_m) \neq 0$}{
+    \While{rango$(A_m) \neq 0$}{
         Aplicar la eliminación de Gauss y posibles permutaciones de las columnas de la matriz $A_{m-1}$ desde $G_{m-1} = \left( \begin{array}{c|c} A_{m-1}' & \begin{array}{c|c} I_{k_{m-1}} & A_{m-1} \\ \hline  0 & 0 \end{array} \end{array} \right)$ para obtener la matriz generadora $G_{m} = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right)$\;
     }
     $C_0 \longleftarrow \left\lbrace 0 \right\rbrace$\;
