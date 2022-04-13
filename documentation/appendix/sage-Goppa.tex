@@ -3,6 +3,8 @@
 
 En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que hereda de la clase \texttt{Encoder} y es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder}, que hereda de la clase \texttt{Decoder}, para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original.
 
+%TODO añadir enlace de github
+
 \section{Clase para códigos de Goppa}
 
 Esta clase simula el comportamiento básico de los códigos de Goppa, es decir, proporciona métodos para calcular el código de Goppa asociado a un conjunto de definición y un polinomio sobre un cuerpo finito. Además, proporciona métodos para obtener las matrices de paridad y generadora.
@@ -339,7 +341,7 @@ En esta sección presentaremos la implementación del decodificador para los có
             > x^3 + z4*x^2 + 1
         \end{lstlisting}
 
-        \item[decote\_to\_code(self, word)] Corrije los errores de \texttt{word} y devuelve una palabra código del código asociado a \texttt{self}.
+        \item[decode\_to\_code(self, word)] Corrige los errores de \texttt{word} y devuelve una palabra código del código asociado a \texttt{self}.
          
         \textsc{Argumentos}
         \begin{description}[font=\normalfont\ttfamily]
@@ -373,6 +375,43 @@ En esta sección presentaremos la implementación del decodificador para los có
             sage: y = x + e
             sage: D.decode_to_code(y)
             > (1, 0, z2 + 1, 0, 1, 0, 0, z2 + 1, 1, z2)
+        \end{lstlisting}
+
+        \item[decode\_to\_message(self, word)] Decodifica \texttt{word} al espacio de mensajes del código asociado a \texttt{self}.
+         
+        \textsc{Argumentos}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[word] Vector del espacio de entrada del código asociado a \texttt{self}.
+        \end{description}
+
+        \textsc{Salida}
+        \begin{description}[font=\normalfont\ttfamily]
+            \item[] Vector asociado a un mensaje del espacio del código asociado a \texttt{self}.
+        \end{description}
+
+        \textsc{Ejemplos}
+        \begin{lstlisting}[gobble=4]
+            sage: F = GF(2^2)
+            sage: L = GF(2^4)
+            sage: a = L.gen()
+            sage: b = F.gen()
+            sage: R.<x> = L[]
+            sage: g = x^3 + a*x^2 + 1
+            sage: n = 10
+            sage: defining_set = get_defining_set(n, g, L)
+            sage: C = Goppa(defining_set, g, F)
+            sage: G = C.get_generator_matrix()
+            sage: E = GoppaEncoder(C)
+            sage: D = GoppaDecoder(C)
+            sage: word = random_word(G.nrows(), F); word
+            > (z2 + 1, 0, 0, 0)
+            sage: x = E.encode(word); x
+            > (z2 + 1, 0, 0, 0, z2, 1, z2, z2 + 1, z2, z2 + 1)
+            sage: num_errors = floor(g.degree()/2)
+            sage: e = random_error(len(x), num_errors, F)
+            sage: y = x + e
+            sage: D.decode_to_message(y)
+            > (z2 + 1, 0, 0, 0)
         \end{lstlisting}
     \end{description}
 \end{description}
