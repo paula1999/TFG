@@ -6,35 +6,9 @@
 
 \chapter{Introducción a la teoría de códigos lineales}
 
-En este capítulo  introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definiendo básica de código para estudiar posteriormente el concepto de código lineal y algunas de sus propiedades más relevante, junto con otros conceptos relacionados. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular un concepto muy importante en la teoría de códigos. 
+En este capítulo introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definiendo básica de código para estudiar posteriormente el concepto de código lineal y algunas de sus propiedades más relevante, junto con otros conceptos relacionados. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular un concepto muy importante en la teoría de códigos. 
 
 El desarrollo de este capítulo se ha basado, principalmente, en \cite[Capítulo 1]{Huffman_Pless_2010}.
-
-\section{Introducción}
-
-Supongamos que queremos enviar un mensaje, por lo que habrá un emisor y un receptor que se comunican, en general, en una dirección. Este mensaje es una secuencia finita de elementos de un alfabeto dado y es enviado por un \emph{canal de comunicación}, a través del cual es posible que la información se altere por las interferencias y el ruido, lo que se conoce como \emph{ruido del canal}. Es por esto que hay que hacer una \emph{traducción} entre el mensaje original (o \emph{palabra fuente}) $x$ y el tipo de mensaje $c$ que el canal está capacitado para enviar (\emph{palabras código}). Esta manipulación consiste en proteger el mensaje original, ya sea por ejemplo añadiendo redundancia o repitiéndolo, para que posteriormente se pueda corregir el ruido hasta cierto punto. Este proceso se llama \emph{codificación}. Una vez codificado el mensaje, lo enviamos a través del canal, y nuestro intermediario (el receptor) recibe un mensaje codificado (\emph{palabra recibida}) posiblemente erróneo. Una vez recibido, empieza el proceso llamado \emph{corrección de errores}, que consiste en recuperar el mensaje original corrigiendo los errores que se hubieran producido. El mensaje recibido $c'$ es traducido nuevamente a términos originales $x'$, es decir, es \emph{decodificado}. La siguiente figura representa un esquema de este proceso.
-
-\begin{figure}[H]
-	\center
-	\includegraphics[scale=0.5]{figures/Diagrama_comunicacion.png}
-	\caption{Esquema del modelo de comunicación, \cite{Podesta_2006}.}
-\end{figure}
-
-Las flechas indican que la comunicación es en un solo sentido.
-
-En general, $x' \neq x$ y es deseable que este error sea detectado (lo cual permite pedir una retransmisión del mensaje) y en lo posible corregido.
-
-La \emph{Teoría de Códigos Autocorrectores} se ocupa del segundo y cuarto pasos del esquema anterior, es decir, de la codificación y decodificación de mensajes, junto con el problema de detectar y corregir errores. A veces no es posible pedir retransmisión de mensajes y es por eso que los códigos autocorrectores son tan útiles y necesarios.
-
-La calidad de un código con mensajes de longitud $k$ y palabras código de longitud $n$ vendrá dada por las siguientes características.
-
-\begin{itemize}
-    \item El cociente $\frac{k}{n}$, el \emph{ratio de información} del código, que mide el esfuerzo necesario para transmitir un mensaje codificado.
-    \item La \emph{distancia mínima relativa} $d$ que es aproximadamente el doble de la proporción de errores que se pueden corregir en cada mensaje codificado.
-    \item La \emph{complejidad} de los procedimientos de codificar y decodificar.
-\end{itemize}
-
-De esta forma, uno de los objetivos centrales de la teoría de códigos autocorrectores es construir códigos que sean de calidad. Esto es, códigos que permitan codificar muchos mensajes, que se puedan trasmitir rápida y eficientemente, que detecten y corrijan simultáneamente la mayor cantidad de errores posibles y que haya algoritmos de decodificación eficientes y efectivos. Por lo que habrá que encontrar un balance entre estas distintas metas, pues suelen ser contradictorias entre sí.
 
 \section{Códigos lineales}
 
@@ -69,8 +43,9 @@ Como un código lineal es un subespacio de un espacio vectorial, es el núcleo d
 
 \begin{definition}
     Una \emph{matriz de paridad} $H$ de dimensión $(n-k) \times n$ de un $\left[ n,k \right]$ código $\mathcal{C}$ es una matriz que verifica que
-
-    $$C = \left\lbrace \mathbf{x} \in \mathbb{F} _q^n : H\mathbf{x}^T = 0 \right\rbrace .$$
+    \[
+        C = \left\lbrace \mathbf{x} \in \mathbb{F} _q^n : H\mathbf{x}^T = 0 \right\rbrace .
+    \]
 \end{definition}
 
 Al igual que con la matriz generadora, la matriz de paridad no es única. Con el siguiente resultado podremos obtener una matriz de paridad cuando $\mathcal{C}$ tiene una matriz generadora en forma estándar.
@@ -87,7 +62,6 @@ Al igual que con la matriz generadora, la matriz de paridad no es única. Con el
 \begin{exampleth}
     \label{ex:generadora-paridad}
     Sea la matriz $G = \left( I_4 | A \right)$, donde 
-    
     \[
         G = \left( 
         \begin{array}{cccc|ccc}  
@@ -98,9 +72,7 @@ Al igual que con la matriz generadora, la matriz de paridad no es única. Con el
         \end{array} 
         \right)
     \]
-
     es una matriz generadora en forma estándar para un $[7, 4]$ código binario que denotaremos por $\mathcal{H}_3$. Por el Teorema \ref{th:generadora-paridad}, una matriz de paridad de $\mathcal{H}_3$ es
-
     \[ 
         H = 
         \left( 
@@ -123,7 +95,6 @@ Al igual que con la matriz generadora, la matriz de paridad no es única. Con el
         \end{array} 
         \right)
     \]
-
     Este código se denomina el $[7, 4]$ \emph{código de Hamming}.
 \end{exampleth}
 
@@ -133,11 +104,10 @@ Sabemos que $\mathcal{C}$ es un subespacio de un espacio vectorial, por lo que p
 
 \begin{definition}
     El \emph{espacio dual} de $\mathcal{C}$ viene dado por 
-    
-    $$\mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; \mathbf{c} \cdot \mathbf{x} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}$$
+    \[
+        \mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; \mathbf{c} \cdot \mathbf{x} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}.
+    \]
 \end{definition}
-
-
 
 El siguiente resultado nos muestra cómo obtener las matrices generadora y de paridad de $\mathcal{C} ^{\perp}$ a partir de las de $\mathcal{C}$.
 
@@ -147,9 +117,9 @@ El siguiente resultado nos muestra cómo obtener las matrices generadora y de pa
 
 \begin{proof}
     Sea $G$ una matriz generadora y $H$ una matriz de paridad de un código $\mathcal{C}$. Sabemos que $G \cdot H^T = 0$. Por otra parte, tenemos que
-    
-    $$\mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \;  \mathbf{c} \cdot \mathbf{x} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; G \cdot \mathbf{x}^T = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}.$$
-
+    \[
+        \mathcal{C} ^{\perp} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \;  \mathbf{c} \cdot \mathbf{x} = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\} = \left\{ \mathbf{x} \in \mathbb{F}_q^n \; : \; G \cdot \mathbf{x}^T = 0 \quad \forall \mathbf{c} \in \mathcal{C} \right\}.
+    \]
     Luego la matriz $H$ es una matriz generadora de $\mathcal{C} ^{\perp}$.
 
     Además, como $H \cdot G^T = 0$, entonces $G$ es una matriz de paridad de $\mathcal{C} ^{\perp}$.
@@ -163,9 +133,9 @@ De la proposición anterior se deduce lo siguiente.
 
 \begin{proof}
     Sabemos que, por ser $G$ una matriz de paridad de $\mathcal{C} ^{\perp}$, 
-
-    $$\mathcal{C} ^{\perp} = \left\{ x \in \mathbb{F}_q^k : Gx^T = 0 \right\},$$
-
+    \[
+        \mathcal{C} ^{\perp} = \left\{ x \in \mathbb{F}_q^k : Gx^T = 0 \right\},
+    \]
     o sea $\mathcal{C} ^{\perp}$ es el espacio solución de $k$ ecuaciones con $n$ incógnitas. Luego, como $G$ tiene rango $k$, hay $n - k$ variables libres, por lo tanto $\dim \mathcal{C} ^{\perp} = n - k$.
 \end{proof}
 
@@ -173,7 +143,6 @@ Diremos que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \s
 
 \begin{exampleth}
     Una matriz generadora para el $[7, 4]$ código de Hamming $\mathcal{H}_3$ se presenta en el Ejemplo \ref{ex:generadora-paridad}. Sea $\mathcal{H'}_3$ el código de longitud 8 y dimensión 4 obtenido de $\mathcal{H}_3$ añadiendo una coordenada de verificación de paridad general a cada vector de G y por lo tanto a cada palabra código de $\mathcal{H}_3$. Entonces 
-
     \[
         G' = \left( 
         \begin{array}{cccc|cccc}  
@@ -184,11 +153,9 @@ Diremos que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \s
         \end{array} 
         \right)
     \]
-
     es una matriz generadora para $\mathcal{H'}_3$. Además, veamos que $\mathcal{H'}_3$ es un código auto-dual.
 
     Tenemos que $G' = (I_4 | A')$, donde
-
     \[
         A' = \left( 
         \begin{array}{cccc}  
@@ -199,7 +166,6 @@ Diremos que un código $\mathcal{C}$ es \emph{auto-ortogonal} si $\mathcal{C} \s
         \end{array} 
         \right) .
     \]
-
     Como $A' (A')^T = I_4$, entonces $\mathcal{H'}_3$ es auto-dual.
 \end{exampleth}
 
@@ -235,18 +201,16 @@ Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distan
 
 \begin{exampleth}
     Sea $\mathcal{C} = \{010101, 212121, 111000\}$ un código ternario. Entonces
-
-    $$d(010101, 212121) = 3, \qquad d(010101, 111000) = 4, \qquad d(212121, 111000) = 5.$$
-
+    \[
+        d(010101, 212121) = 3, \qquad d(010101, 111000) = 4, \qquad d(212121, 111000) = 5.
+    \]
     Por lo que la distancia mínima del código $\mathcal{C}$ es $d(\mathcal{C}) = 3$.
 \end{exampleth}
 
 \begin{theorem}[Decodificación de máxima verosimilitud]
     \label{th:decodificacion_maxima_verosimilitud}
     Es posible corregir hasta
-
     $$t := \left\lfloor \frac{d(\mathcal{C}) - 1}{2} \right\rfloor$$
-
     errores, donde $d(\mathcal{C})$ denota la distancia mínima del código $\mathcal{C}$.
 \end{theorem}
 
@@ -259,15 +223,15 @@ Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distan
         \centering
         \includegraphics[scale=0.5]{figures/Diagrama_decodificacion_maxima_verosimilitud.png}
     \end{wrapfigure}
-
-    $$y = c + e \in \mathbb{F}^n,$$
-
+    \[
+        y = c + e \in \mathbb{F}^n,
+    \]
     donde $e$ denota al vector error.
     
     Esto satisface 
-
-    $$d(c,y) = d(e,0) \leq t,$$
-
+    \[
+        d(c,y) = d(e,0) \leq t,
+    \]
     y por lo tanto $c$ es el único elemento de $\mathcal{C}$ que se encuentra en una bola de radio $t$ alrededor de $y$. Un decodificador de máxima verosimilitud produce este elemento $c$, y así se obtiene el código correcto.
 \end{proof}
 
@@ -317,13 +281,13 @@ El problema \ref{pr:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas 
 Como hemos visto, las propiedades de un código dependen principalmente de las distancias de Hamming entre sus palabras y entre palabras codificadas y no codificadas. Además, puede ser que un código pueda relacionarse con otro por medio de una aplicación que conserve las distancias de Hamming. De esta forma, podemos definir una relación de equivalencia entre dos códigos que preservan la distancia de Hamming.
 
 Sean $C$ y $C'$ dos $[n,k]_q$ códigos, se dice que son de la \emph{misma cualidad} si existe una aplicación
-
-$$\iota : F^n_q \rightarrow F^n_q$$
-
+\[
+    \iota : F^n_q \rightarrow F^n_q,
+\]
 con $\iota(C) = C'$ que preserva la distancia de Hamming, es decir, 
-
-$$d(w,w') = d(\iota (w), \iota(w')), \qquad \forall w,w' \in H(n,q).$$
-
+\[
+    d(w,w') = d(\iota (w), \iota(w')), \qquad \forall w,w' \in H(n,q).
+\]
 Las aplicaciones con la propiedad anterior se llaman \emph{isometrías}.
 
 \begin{definition}
@@ -334,12 +298,13 @@ Las permutaciones de las coordenadas son isometrías, que se denominan \emph{iso
 
 \begin{definition}
     Sea $S_n$ el grupo isométrico en el conjunto $X = n = \left\{ 0,..., n-1 \right\}$. Dos códigos lineales $C, C' \subseteq H(n,q)$ son isométricos permutacionalmente si existe una isometría permutacional de $H(n,q)$ que aplica $C$ sobre $C'$. Esto es, hay una permutación $\pi$ en el grupo simétrico $S_n$ tal que 
-
-    $$ C' = \pi (C) = \left\{ \pi(c) : c \in C \right\}, \quad \text{ and } \quad d(c, \tilde{c}) = d(\pi(c), \pi(\tilde{c})), \qquad \forall c,\tilde{c} \in C,$$ 
-
+    \[
+        C' = \pi (C) = \left\{ \pi(c) : c \in C \right\}, \quad \text{ and } \quad d(c, \tilde{c}) = d(\pi(c), \pi(\tilde{c})), \qquad \forall c,\tilde{c} \in C,
+    \]
     donde
-    
-    $$\pi(c) = \pi(c_0,...,c_{n-1}) := \left( c_{\pi ^{-1} (0)}, ..., c_{\pi ^{-1} (n-1)} \right)$$
+    \[
+        \pi(c) = \pi(c_0,...,c_{n-1}) := \left( c_{\pi ^{-1} (0)}, ..., c_{\pi ^{-1} (n-1)} \right).
+    \]
 \end{definition}
 
 \section{Algoritmo para el cálculo de la distancia}
@@ -367,86 +332,81 @@ Como hemos visto, la distancia mínima es importante en un código lineal. Sin e
 \end{Ualgorithm}
 
 Veamos, en efecto, que este algoritmo determina la distancia mínima. Consideramos $\mathcal{C}$ un $[n, k]_q$ código lineal y $G$ una matriz generadora. Como el código es lineal, existen matrices $M \in M_n(q)$ y $B \in GL_k(q)$ tales que $B \cdot G \cdot M^T$ es una matriz generadora en forma estándar. De hecho, usando el método de Gauss, podemos obtener una matriz generadora en forma estándar mediante operaciones elementales en las filas y permutaciones de las columnas. En este caso para realizar las operaciones elementales en las filas multiplicaremos desde la izquierda por una matriz $B_1 \in GL_k(q)$, y para permutar las columnas multiplicaremos desde la derecha por la traspuesta de una matriz de permutaciones $M_{\pi_1}$, de tal forma que
-
 $$G_1 := B_1 \cdot G \cdot M_{\pi_1}^T = \left( I_{k_1} | A_1 \right),$$
-
 donde $k_1 = k$.
 
 Ahora que tenemos la matriz generadora en forma estándar, necesitaremos tranformarla de nuevo. Si $A_1$ no es una matriz nula ni vacía, su rango será $k_2$ con $0 < k_2 \leq k_1$. Aplicando la eliminación de Gauss, podemos obtener $k_2$ vectores unitarios diferentes en las $n - k_1$ columnas. Esto es, podemos multiplicar a $G_1$ desde la izquierda por una matriz $B_2 \in GL_k(q)$ y desde la derecha por la traspuesta de una matriz de permutaciones $M_{\pi_2}$ con $\pi_2(j) = j$ para $0 \leq j < k_1$, obteniendo
-
 $$G_2 := B_2 \cdot G_1 \cdot M_{\pi_2}^T = \left( \begin{array}{c|c} A_{2}' & \begin{array}{c|c} I_{k_{2}} & A_{2} \\ \hline  0 & 0 \end{array} \end{array} \right).$$
-
 De esta forma, obtenemos que la matriz $A_2'$ es una matriz $k \times k_1$ y la matriz $A_2$ es una matriz $k_2 \times (n - k_1 - k_2)$. Los ceros indican las matrices nulas.
 
 Una vez que tenemos la matriz generadora de esta forma, realizaremos un procedimiento iterativo aplicando la eliminación de Gauss y posibles permutaciones de las columnas de la matriz $A_2$ hasta que su rango sea 0. Esto es, sea $i \geq 2$, la matriz $A_i$ tiene rango $k_{i+1}$ con $0 < k_{i+1} \leq k_i$. En cada iteración, obtendremos matrices regulares $B_{i+1} \in GL_k(q)$, matrices de permutación $M_{\pi+1} \in M_n(q)$ con $\pi_{i+1}(j) = j$ para $0 \leq j < k_1 + \cdots + k_i$ y matrices generadoras
-
-$$G_{i+1} := B_{i+1} \cdot G_i \cdot M_{\pi_{i+1}}^T = \left( \begin{array}{c|c} A_{i+1}' & \begin{array}{c|c} I_{k_{i+1}} & A_{i+1} \\ \hline  0 & 0 \end{array} \end{array} \right),$$
-
+\[
+    G_{i+1} := B_{i+1} \cdot G_i \cdot M_{\pi_{i+1}}^T = \left( \begin{array}{c|c} A_{i+1}' & \begin{array}{c|c} I_{k_{i+1}} & A_{i+1} \\ \hline  0 & 0 \end{array} \end{array} \right),
+\]
 donde $A_{i+1}'$ es una matriz $k \times (k_1 + \cdots + k_i)$ y $A_{i+1}$ es una matriz $k_{i+1} \times (n - k_1 - \cdots - k_{i+1})$. Repitiendo este procedimiento, finalmente obtendremos una matriz generadora $G_m$ tal que 
-
-$$G_{m} = B_m \cdot G_{m-1} \cdot M_{\pi_m}^T = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right),$$
-
+\[
+    G_{m} = B_m \cdot G_{m-1} \cdot M_{\pi_m}^T = \left( \begin{array}{c|c}  A_{m}' & \begin{array}{c|c}   I_{k_{m}} & A_{m} \\  \hline 0 & 0  \end{array}  \end{array} \right),
+\]
 donde $A_m$ es una matriz vacía (que significa que no tiene columnas) o es una matriz nula. Entonces, $k_1 + \cdots + k_m \leq n$ y $A_m$ tiene $n - k_1 - \cdots - k_m$ columnas. En consecuencia, la matriz generadora $G_m$ tiene $n - k_1 - \cdots - k_m$ columnas nulas y por lo cual todos los elementos del código generado por $G_m$ tiene peso menor que $k_1 + \cdots + k_m$.
 
 Definimos para $1 \leq i \leq k$ los siguientes conjuntos:
-
-$$C_i := \bigcup_{j=1}^m \left\{ v \cdot G_j : v \in \mathbb{F}_q^k, \; wt(v) \leq i \right\}$$
-
+\[
+    C_i := \bigcup_{j=1}^m \left\{ v \cdot G_j : v \in \mathbb{F}_q^k, \; wt(v) \leq i \right\}.
+\]
 Claramente, estos conjuntos forman una cadena ascendente
-
-$$C_1 \subseteq \cdots \subseteq C_k,$$
-
+\[
+    C_1 \subseteq \cdots \subseteq C_k,
+\]
 y por lo tanto los pesos mínimos
-
-$$\bar{d}_i := \min \left\{ wt(c) : c \in C_i, \; c \neq 0 \right\}$$
-
+\[
+    \bar{d}_i := \min \left\{ wt(c) : c \in C_i, \; c \neq 0 \right\}
+\]
 forman una secuencia decreciente
-
-$$\bar{d}_1 \geq \cdots \geq \bar{d}_k = dist(C).$$
-
+\[
+    \bar{d}_1 \geq \cdots \geq \bar{d}_k = dist(C).
+\]
 En la mayoría de los casos, no será necesario calcular todos estos valores. En efecto, primero calcularemos $\bar{d}_1$. Después, si $\bar{d}_i$ ya ha sido calculada para algún $i \geq 1$, lo compararemos con $\underline{d}_i$, que es un límite inferior para el peso de los elementos en $C \setminus C_i$. Si $\bar{d}_i \leq \underline{d}_i$, hemos terminado. Si no, repetiremos el mismo proceso para $\bar{d}_{i+1}$.
 
 Para calcular los límites inferiores para los pesos en los complementos $C \setminus C_i$, elegimos un elemento $c \in C \setminus C_i$. Como $c \notin C_i$, entonces existe, para cada $j$, un vector $v^{(j)} \in \mathbb{F}_q^k$ tal que
-
-$$c = v^{(j)} \cdot G_j, \quad 1 \leq j \leq m, \; \text{ y } \; wt(v^{(j)}) \geq i + 1.$$
-
+\[
+    c = v^{(j)} \cdot G_j, \quad 1 \leq j \leq m, \; \text{ y } \; wt(v^{(j)}) \geq i + 1.
+\]
 Para estimar el peso de $c$, nos basaremos en los distintos lugares de información en $G_i$, es decir, las columnas que contienen la matriz identidad $I_{k_j}$. Estas son las columnas de índice $r$ para $k_i + \cdots + k_{j-1} \leq r < k_1 + \cdots + k_j$. Nos interesan las $k_j$ coordenadas $c_r$ de $c = v^{(j)} \cdot G_j$ correspondientes a estas $k_j$ columnas. Como $v^{(j)}$ tiene longitud $k$, estas entradas de $c$ contribuyen al menos el valor de $i + 1 - (k - k_j)$ al peso de $c$. Además, como los conjuntos son disjuntos, para diferentes $j$, tenemos que 
-
-$$wt(c) \geq \sum_{j=1}^m \left( i + 1 - (k - k_j) \right).$$
-
+\[
+    wt(c) \geq \sum_{j=1}^m \left( i + 1 - (k - k_j) \right).
+\]
 Restringiendo esta suma a sumandos positivos, obtenemos el límite inferior
-
-$$wt(c) \geq \sum_{j \; : \: k - k_j \leq i} \left( i + 1 - (k - k_j) \right) =: \underline{d}_i.$$
-
+\[
+    wt(c) \geq \sum_{j \; : \: k - k_j \leq i} \left( i + 1 - (k - k_j) \right) =: \underline{d}_i.
+\]
 La secuencia de estos límites es incremental, pues el primer sumando es $i + 1$:
-
-$$2 \leq \underline{d}_1 < \cdots < \underline{d}_k.$$
-
+\[
+    2 \leq \underline{d}_1 < \cdots < \underline{d}_k.
+\]
 Además,
-
-$$\underline{d}_k = m + \sum_{j=1}^m k_j.$$
-
+\[
+    \underline{d}_k = m + \sum_{j=1}^m k_j.
+\]
 Finalmente, como $wt(c) \leq k_1 + \cdots + k_m$ para todo $c \in C$, existe un índice $i_0$ tal que
-
-$$\bar{d}_{i_0} \leq \underline{d}_{i_0}.$$
-
+\[
+    \bar{d}_{i_0} \leq \underline{d}_{i_0}.
+\]
 Para este $i_0$ se cumple que
-
-$$\bar{d}_{i_0} := \min \left\{ wt(c) : c \in C_{i_0}, \; c \neq 0 \right\},$$
-
+\[
+    \bar{d}_{i_0} := \min \left\{ wt(c) : c \in C_{i_0}, \; c \neq 0 \right\},
+\]
 y se sigue cumpliendo que 
-
-$$\underline{d}_{i_0} \leq \min \left\{ wt(c) : c \in C \setminus C_{i_0} \right\}.$$
-
+\[
+    \underline{d}_{i_0} \leq \min \left\{ wt(c) : c \in C \setminus C_{i_0} \right\}.
+\]
 Por lo que
-
-$$\bar{d}_{i_0} = dist(C),$$
-
+\[
+    \bar{d}_{i_0} = dist(C),
+\]
 y la palabra código de peso $dist(C)$ se encuentra en $C_{i_0}$.
 
 \begin{exampleth}
     Consideramos el $[7, 3]$ código binario $\mathcal{C}$ con matriz generadora 
-
     \[
         G_1 = \left( 
             \begin{array}{ccc|cccc}
@@ -456,15 +416,13 @@ y la palabra código de peso $dist(C)$ se encuentra en $C_{i_0}$.
             \end{array}
             \right) .
     \]
-
     Aplicaremos el algoritmo de BZ para calcular la distancia mínima de este código.
 
     Observamos que la matriz generadora $G_1$ ya está en forma estándar y su conjunto de información es $\{ 0,1,2 \}$. Luego lo primero que haremos será aplicar el método de Gauss y permutaciones de las columnas para transformar esta matriz generadora en una matriz generadora de la forma
-
-    $$\left( \begin{array}{c|c} A_{2}' & \begin{array}{c|c} I_{k_{2}} & A_{2} \\ \hline  0 & 0 \end{array} \end{array} \right),$$
-
+    \[
+        \left( \begin{array}{c|c} A_{2}' & \begin{array}{c|c} I_{k_{2}} & A_{2} \\ \hline  0 & 0 \end{array} \end{array} \right),
+    \]
     para alguna matriz $A_2'$ de dimensión $3 \times k_1$ y alguna matriz $A_2$ de dimensión $k_2 \times (7 - k_1 - k_2)$. En nuestro caso, tenemos que
-
     \[
         G_2 := \left( 
             \begin{array}{ccc|ccc|c}
@@ -474,9 +432,7 @@ y la palabra código de peso $dist(C)$ se encuentra en $C_{i_0}$.
             \end{array}
             \right) .
     \]
-
     Esta matriz generadora tiene conjunto de información $\{3,4,5\}$. El siguiente paso será realizar de nuevo la eliminación de Gauss y posibles permutaciones de las columnas de la matriz $A_2$ hasta que su rango sea $0$. El algoritmo nos dará la siguiente matriz generadora
-
     \[
         G_3 := \left( 
             \begin{array}{cccccc|c}
@@ -486,7 +442,6 @@ y la palabra código de peso $dist(C)$ se encuentra en $C_{i_0}$.
             \end{array}
             \right) .
     \]
-
     Esta matriz generadora tiene conjunto de información $\{6\}$. El conjunto $C_1$ está formado por las filas de las tres matrices generadoras $G_1$, $G_2$ y $G_3$. Ahora, calculamos el peso de cada uno de ellos, esto es, el número de coordenadas no nulas de cada elemento y obtenemos que todos tienen peso $4$, por lo que $\bar{d}_1 = 4$. El límite inferior del peso mínimo de los vectores que no pertenecen a $C_1$ es $\underline{d}_1 = 1 + 1 - (3-3) + 1 + 1 - (3-3) = 4$. Concluimos que $d = \bar{d}_1 = 4$ es la mínima distancia de $C$.
 \end{exampleth}
 

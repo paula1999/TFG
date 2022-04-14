@@ -26,20 +26,20 @@ El siguiente resultado nos proporciona un método para calcular la distancia mí
 \end{proof}
 
 Este teorema expone que encontrar la distancia mínima de un $[n, k]_q$-código lineal se reduce a encontrar el mínimo de la aplicación $\mathfrak d : \mathcal{S}_n \rightarrow \mathbb{N}$ definida por
-
-$$\mathfrak d (x) = \min \left\{ \text{w}(b) \; : \; b \text{ es una fila de la matriz escalonada de } FP_x \right\}.$$
-
+\[
+    \mathfrak d (x) = \min \left\{ \text{w}(b) \; : \; b \text{ es una fila de la matriz escalonada de } FP_x \right\}.
+\]
 para cualquier $x \in \mathcal{S}_n$, donde $G$ es la matriz generadora del código y $P_x$ representa la matriz de permutaciones de $x$.
 
 Sin embargo, existen pocas permutaciones que nos proporcionarán el mínimo de $\mathfrak{d}$. En concreto, supongamos que solo hay una palabra código que alcanza el mínimo peso $d$ de $\mathcal{C}$ salvo multiplicación escalar.
 
 En \cite{Cuellar_etal} se obtiene que la probabilidad de encontrar el mínimo de $\mathfrak{d}$ por una búsqueda aleatoria es
-
-$$\frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.$$
+\[
+    \frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.
+\]
 
 \begin{exampleth}
     Vamos a ilustrar el esquema descrito para obtener el peso mínimo de un código a partir de su matriz escalonada. Sea $\mathcal{C}$ un $[8, 4]_4$-código lineal sobre el cuerpo finito $\mathbb{F}_4 = \{ 0, 1, a, a + 1 \}$ con matriz generadora
-
     \[ G =
         \left(
         \begin{array}{cccccccc} 
@@ -50,9 +50,7 @@ $$\frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.$$
         \end{array}
         \right).
     \]
-
     Sea $x \in \mathcal{S}_8$ la permutación dada por $x(0) = 1$, $x(1) = 0$, $x(2) = 3$, $x(3) = 2$, $x(4) = 5$, $x(5) = 4$, $x(6) = 7$ y $x(7) = 6$. La matriz de permutaciones de $x$ es la siguiente:
-
     \[ P_x =
         \left(
         \begin{array}{cccccccc} 
@@ -67,9 +65,7 @@ $$\frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.$$
         \end{array}
         \right).
     \]
-
     Aplicamos esta permutación a la matriz generadora $G$ para obtener la matriz generadora $G^x$ del código equivalente permutacionalmente $\mathcal{C}_x$:
-
     \[ G^x =
         \left(
         \begin{array}{cccccccc} 
@@ -80,9 +76,7 @@ $$\frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.$$
         \end{array}
         \right).
     \]
-
     La matriz escalonada de $G^x$ es
-
     \[ G^x =
         \left(
         \begin{array}{cccccccc} 
@@ -93,21 +87,37 @@ $$\frac{d! (n-d)!}{n!} = {n \choose d}^{-1}.$$
         \end{array}
         \right),
     \]
-
     donde el peso de la primera fila es $4$, el de la segunda es $2$ y el de la tercera y cuarta es $5$. Como la segunda fila tiene peso mínimo entre todas las filas, tenemos que $\mathfrak{d} (x) = 2$. Realmente, la distancia de $\mathcal{C}$ es $2$, luego $x$ alcanza el mínimo de $\mathfrak{d}$.
 \end{exampleth}
 
-\section{Algoritmo}
+\section{Algoritmos}
 
 % TODO introducción
-% TODO duda: hablar de CHC?
-\textcolor{red}{He descrito el algoritmo GGA, tengo que estudiar también el CHC?}
 
-El algoritmo comienza con la inicialización de la población $P(t)$ y la evalúa con $N$ soluciones aleatorias en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de evaluaciones.
+\textcolor{red}{Añadir introducción}
 
-El bucle principal empieza seleccionando $N$ padres según el operador de selección de torneo binario. Después, se le aplica el operador de cruce a dos padres para generar un nuevo par de soluciones con probabilidad $p_c$. Si no se combinan, se le aplica el operador de mutación a los padres para generar dos soluciones mutadas. En ambos casos, habrá que comprobar que las nuevas soluciones son válidas. De esta forma, todas las nuevas soluciones $N$ se habrán generado por cruce o mutación y formarán la población de la siguiente iteración $P(t+1)$. Finalmente, se evalúan las soluciones de $P(t+1)$. Se ha incluído una componente elitista antes de que comience la siguiente iteración: si la solución $P(t+1)$ no tiene un fitness igual o superior que la mejor en $P(t)$, entonces la peor solución de $P(t+1)$ es reemplazada por la mejor solución de $P(t)$. Además, si se alcanza un número fijo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada, se reinicializará $P(t+1)$ con $N$ nuevas soluciones aleatorias.
+En ambos algoritmos, la función fitness consistirá en minimizar el peso que producen las soluciones que componen la población.
 
-En resumen, el algoritmo Generational Genetic Algorithm (GGA) consiste en:
+\subsection{Algoritmo Genético Generacional (GGA)}
+
+El algoritmo comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y la evalúa en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones. 
+
+El bucle principal empieza seleccionando $N$ padres según el operador de selección de torneo binario. Este operador consiste en seleccionar dos individuos de la población aleatorios y seleccionar como padre al individuo que tenga mejor fitness.
+
+Después, comienza la etapa de generación de una nueva población. De esta forma, se le aplica el operador de cruce a dos padres elegidos aleatoriamente para generar un nuevo par de soluciones con probabilidad $p_c$. Este operador consiste en componer ambos padres, es decir, sean $p_1$ y $p_2$ dos padres, el operador de cruce generará dos descencientes $d_1$ y $d_2$ a partir de la composición de cada uno en distintos órdenes:
+\[
+    d_1 = p_1 \circ p_2,
+\]
+\[
+    d_2 = p_2 \circ p_1.
+\]
+Si no se combinan, se le aplica el operador de mutación a cada padre para generar una solución mutada. Este operador elige una columna de las primeras $k$ columnas y otra de las $n-k$ columnas restantes de la matriz generadora y las permuta para crear un nuevo descendiente.
+
+En ambos casos, habrá que comprobar que las nuevas soluciones son válidas. Esto es, una solución no válida en el algoritmo GGA es la solución nula $(0,...,0)$. De esta forma, todas las nuevas soluciones $N$ se habrán generado por cruce o mutación y formarán la población de la siguiente iteración $P(t+1)$. Finalmente, se evalúan las soluciones de $P(t+1)$.
+
+Se ha incluído una componente elitista antes de que comience la siguiente iteración: si la solución $P(t+1)$ no tiene un fitness igual o superior que la mejor en $P(t)$, entonces la peor solución de $P(t+1)$ es reemplazada por la mejor solución de $P(t)$. Además, si se alcanza un número fijo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada, se reinicializará $P(t+1)$ con $N$ nuevas soluciones aleatorias.
+
+En resumen, el Algoritmo Genético Generacional (GGA) consiste en:
 
 \begin{Ualgorithm}[H]
     \DontPrintSemicolon
@@ -143,5 +153,10 @@ En resumen, el algoritmo Generational Genetic Algorithm (GGA) consiste en:
         }
         $t \longleftarrow t + 1$\;
     }
-    \caption{Generational Genetic Algorithm (GGA).}
+    \caption{Algoritmo Genético Generacional (GGA).}
 \end{Ualgorithm}
+
+
+\subsection{Algoritmo de Mutación Clataclísmico (CHC)}
+
+\textcolor{red}{Añadir}

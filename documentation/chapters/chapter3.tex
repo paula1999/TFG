@@ -11,7 +11,6 @@ En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corr
 \section{Códigos clásicos de Goppa}
 
 Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
-
 \begin{equation}
     \label{def:goppa}
     \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}.
@@ -21,10 +20,11 @@ De esta forma, cuando la parte de la izquierda está escrita como una función r
 
 A continuación, buscaremos una matriz de paridad para $\Gamma(L,g)$. Para ello, observamos que
 
-$$\frac{1}{x - \gamma_i} \equiv - \frac{1}{g(\gamma_i)} \frac{g(x) - g(\gamma_i)}{x - \gamma_i} \pmod{ g(x)}$$
+\[
+    \frac{1}{x - \gamma_i} \equiv - \frac{1}{g(\gamma_i)} \frac{g(x) - g(\gamma_i)}{x - \gamma_i} \pmod{ g(x)}
+\]
 
 ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\gamma_i) \right) \pmod{g(x)}$. Así que por \eqref{def:goppa} $\textbf{c} = c_0 \cdots c_{n-1} \in \Gamma(L,g)$ si y solo si
-
 \begin{equation}
     \label{congruencia_goppa}
     \sum_{i=0}^{n-1} c_i \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} \equiv 0 \pmod{g(x)}.
@@ -32,10 +32,11 @@ ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\ga
 
 Supongamos que $g(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = \gr(g(x))$. Entonces
 
-$$\frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} = g(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = g(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)$$
+\[
+    \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} = g(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = g(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)
+\]
 
 Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $x^k$ iguales a $0$, en el orden $k = w - 1, w - 2, ..., 0$, tenemos que $\textbf{c} \in \Gamma(L,g)$ si y solo si $Hc^T = 0$, donde 
-
 \begin{equation}
     H = \left(
         \begin{array}{ccc} 
@@ -54,7 +55,6 @@ con $h_i = g(\gamma_i)^{-1}$.
 
 \begin{proposition}
     La matriz $H$ se puede reducir a una matriz $H'$ de dimensión $w \times n$, donde 
-
     \begin{equation}
         H' = \left(
             \begin{array}{ccc} 
@@ -82,26 +82,27 @@ El siguiente resultado nos muestra los límites en la dimensión y la distancia 
 
 \begin{corollary}
     Si $\Gamma(L,g)$ es un código de Goppa tal que $\gr(g(x)) = w$, entonces puede corregir hasta
-
-    $$\left\lfloor \frac{w}{2} \right\rfloor $$
-
+    \[
+        \left\lfloor \frac{w}{2} \right\rfloor
+    \]
     errores.
 \end{corollary}
 
 \begin{proof}
     El teorema \ref{th:decodificacion_maxima_verosimilitud} afirma que es posible corregir hasta 
-    
-    $$\left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor$$
-
+    \[
+        \left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor
+    \]
     errores. Además, por el teorema \ref{th:dist_min_Goppa} sabemos que la distancia mínima de un código de Goppa $\Gamma(L,g)$ tal que $\gr(g(x)) = w$ es $d(\Gamma(L,g)) = w + 1$. Por lo que
-
-    $$\left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor = \left\lfloor \frac{(w + 1) - 1}{2} \right\rfloor = \left\lfloor \frac{w}{2} \right\rfloor .$$
+    \[
+        \left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor = \left\lfloor \frac{(w + 1) - 1}{2} \right\rfloor = \left\lfloor \frac{w}{2} \right\rfloor .
+    \]
 \end{proof}
 
 Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usaremos el código descrito en el apéndice \ref{annex:sage-Goppa} en los siguientes ejemplos.
 
 \begin{exampleth}
-    Sea $\mathbb{F}_2^4$ el cuerpo de extensión sobre $\mathbb{F}_2^2$. Definimos el polinomio $g(x) = x^3 + ax^2 + 1 \in \mathbb{F}_2^4$ y tomamos $n = 10$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
+    Sea $\mathbb{F}_{2^4}$ el cuerpo de extensión sobre $\mathbb{F}_{2^2}$. Definimos el polinomio $g(x) = x^3 + ax^2 + 1 \in \mathbb{F}_{2^4}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Podemos obtener el código de Goppa asociado a dicho conjunto de definición y polinomio $g$ escribiendo lo siguiente:
 
     \begin{lstlisting}[gobble=4]
         sage: F = GF(2^2)
@@ -117,14 +118,16 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
         > [10, 4] Goppa code
     \end{lstlisting}
 
-    Observamos que la longitud de este código es $10$ y la dimensión es $4$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+    Observamos que el código es un $[10, 4]$-código de Goppa, esto es, la longitud de este código es $10$ y la dimensión es $4$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
 
     \begin{lstlisting}[gobble=4]
         sage: H = C.parity_check_matrix()
         sage: show(H)
-        >
     \end{lstlisting}
-    \[\left(\begin{array}{rrrrrrrrrr}
+
+    La matriz de paridad $H$ que nos devuelve el código anterior es la siguiente:
+    \[
+        H = \left(\begin{array}{rrrrrrrrrr}
             0 & z_{2} & 0 & z_{2} + 1 & 1 & z_{2} + 1 & 1 & 0 & 0 & 1 \\
             1 & 1 & z_{2} + 1 & 1 & z_{2} + 1 & z_{2} + 1 & 0 & 0 & z_{2} + 1 & 0 \\
             1 & 1 & 1 & z_{2} + 1 & z_{2} & z_{2} & z_{2} + 1 & 0 & 0 & z_{2} \\
@@ -132,22 +135,24 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
             0 & 1 & z_{2} & 1 & z_{2} & z_{2} & z_{2} & 1 & 1 & 1 \\
             z_{2} & z_{2} & 0 & z_{2} & z_{2} & 1 & z_{2} & 0 & 1 & z_{2}
             \end{array}
-        \right)
+        \right).
     \]
+    Análogamente, podemos calcular la matriz generadora $G$ como se indica a continuación.
 
     \begin{lstlisting}[gobble=4]
         sage: G = C.get_generator_matrix()
         sage: show(G)
-        >
     \end{lstlisting}
-    \[\left(\begin{array}{rrrrrrrrrr}
+
+    Este código devuelve la siguiente matriz generadora:
+    \[
+        G = \left(\begin{array}{rrrrrrrrrr}
         1 & 0 & 0 & z_{2} + 1 & 0 & z_{2} + 1 & z_{2} & z_{2} + 1 & 0 & z_{2} \\
         0 & 1 & 0 & 0 & 0 & z_{2} + 1 & 0 & 1 & 1 & 0 \\
         0 & 0 & 1 & z_{2} & 0 & z_{2} + 1 & 0 & z_{2} + 1 & 1 & z_{2} + 1 \\
         0 & 0 & 0 & 0 & 1 & 1 & z_{2} + 1 & 0 & 0 & 1
-        \end{array}\right)
+        \end{array}\right).
     \]
-
     Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $4$.
 
     Además, podemos comprobar efectivamente que se da la igualdad $H \cdot G^T = 0$:
@@ -159,7 +164,8 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 \end{exampleth}
 
 \begin{exampleth}
-    Sea $\mathbb{F}_3^6$ el cuerpo de extensión sobre $\mathbb{F}_3^3$. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_3^6$ y tomamos $n = 20$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
+    \label{ex:goppa-3_3}
+    Sea $\mathbb{F}_{3^6}$ el cuerpo de extensión sobre $\mathbb{F}_{3^3}$. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Obtengamos el código de Goppa asociado a dicho conjunto de definición y polinomio $g$.
 
     \begin{lstlisting}[gobble=4]
         sage: F = GF(3^3)
@@ -175,28 +181,34 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
         > [10, 6] Goppa code
     \end{lstlisting}
     
-    Observamos que la longitud de este código es $10$ y la dimensión es $6$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+    Observamos que el código es un $[10, 6]$-código de Goppa, esto es, la longitud de este código es $10$ y la dimensión es $6$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
 
     \begin{lstlisting}[gobble=4]
         sage: H = C.parity_check_matrix()
         sage: show(H)
-        >
     \end{lstlisting}
+
+    La matriz de paridad $H$ que nos devuelve el código anterior es la siguiente:
     \[\scriptsize
+        H = 
         \left(\begin{array}{rrrrrrrrrr}
         2 z_{3}^{2} + 2 z_{3} + 2 & z_{3}^{2} + 1 & 1 & z_{3}^{2} & 2 z_{3}^{2} + 2 z_{3} + 1 & 1 & 2 z_{3}^{2} + 2 z_{3} + 2 & z_{3} + 2 & z_{3}^{2} + 1 & z_{3}^{2} + 2 z_{3} + 1 \\
         z_{3}^{2} + 2 z_{3} + 2 & z_{3}^{2} + 1 & 2 & z_{3}^{2} + z_{3} & z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} & z_{3}^{2} + 2 z_{3} + 2 & 1 & z_{3}^{2} & z_{3}^{2} + 1 \\
         2 z_{3}^{2} + z_{3} + 1 & z_{3} + 1 & 1 & z_{3}^{2} + 2 z_{3} & z_{3}^{2} + 1 & z_{3}^{2} + z_{3} & z_{3}^{2} + z_{3} + 1 & 2 z_{3} + 2 & z_{3}^{2} & 2 \\
         0 & z_{3} + 2 & 0 & z_{3}^{2} & z_{3}^{2} + 2 z_{3} & z_{3}^{2} + 2 z_{3} + 2 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} & z_{3}^{2} + z_{3} & 2 z_{3}^{2} + 2 z_{3} + 2
-        \end{array}\right)
+        \end{array}\right).
     \]
+    Análogamente, podemos calcular la matriz generadora $G$ como se indica a continuación.
 
     \begin{lstlisting}[gobble=4]
         sage: G = C.get_generator_matrix()
         sage: show(G)
-        >
     \end{lstlisting}
-    \[ \footnotesize
+
+    Este código devuelve la siguiente matriz generadora:
+    \[ 
+        \footnotesize
+        G = 
         \left(\begin{array}{rrrrrrrrrr}
         1 & 0 & 0 & 0 & 0 & 0 & 2 z_{3} + 2 & 2 z_{3}^{2} + 1 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} + 1 \\
         0 & 1 & 0 & 0 & 0 & 0 & 2 z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} + 2 z_{3} + 2 & 2 z_{3}^{2} + 2 & 2 z_{3}^{2} + 2 z_{3} \\
@@ -204,9 +216,8 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
         0 & 0 & 0 & 1 & 0 & 0 & 2 z_{3}^{2} + z_{3} & z_{3} & 2 z_{3}^{2} + z_{3} & z_{3}^{2} + 2 z_{3} + 2 \\
         0 & 0 & 0 & 0 & 1 & 0 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} & z_{3} + 2 & z_{3}^{2} + 2 \\
         0 & 0 & 0 & 0 & 0 & 1 & z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} + 1 & z_{3}^{2} + 2 & 2 z_{3}^{2} + 1
-        \end{array}\right)
+        \end{array}\right).
     \]
-
     Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $6$.
 
     Además, podemos comprobar efectivamente que se da la igualdad $H \cdot G^T = 0$:
@@ -271,7 +282,6 @@ Los códigos binarios de Goppa son códigos de corrección de errores que perten
 
 \begin{definition}
     Fijada la extensión de cuerpos $\mathbb{F}_{2^m}$ de $\mathbb{F}_2$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \} \in \mathbb{F}_{2^m}^n$ una tupla de $n$ elementos distintos de $\mathbb{F}_{2^m}$ y sea $g(x) \in \mathbb{F}_{2^m}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código binario de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \{ 0, 1 \}^n$ tal que 
-
     \begin{equation}
         \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
     \end{equation}
@@ -284,76 +294,78 @@ La importancia de estos códigos se debe a que pueden doblar la capacidad correc
 \subsection{Codificación de los códigos de Goppa}
 
 La codificación de un mensaje consiste en escribirlo como una palabra código de un código. Fijado un código de Goppa $\Gamma (L, g)$ sobre $\mathbb{F}_q$ con matriz generadora $G$. Dado el mensaje $\textbf{m} \in \mathbb{F}_q$, lo podemos codificar realizando la operación
-
-$$\textbf{c} = \textbf{m} G.$$
-
+\[
+    \textbf{c} = \textbf{m} G.  
+\]
 De esta forma obtenemos la palabra código $\textbf{c}$ que está en $\Gamma (L, g)$.
 
 En los siguientes ejemplos vamos a usar el código descrito en el apéndice \ref{annex:sage-Goppa} para mostrar la codificación de algunos mensajes.
 
 \begin{exampleth}
-    Sea $\mathbb{F}_2^6$ el cuerpo de extensión sobre $\mathbb{F}_2^2$. Definimos el polinomio $g(x) = x^5 + ax^2 + 1 \in \mathbb{F}_2^6$ y tomamos $n = 30$ como longitud del conjunto de definición. Dada la palabra
-    $$word := (0, 1, 0, 0, z_2, z_2 + 1, z_2, 0, 0, z_2, 0, z_2, z_2 + 1, 1, z_2 + 1) \in \mathbb{F}_2^2,$$ la podemos transformar en una palabra código del código definido por el conjunto de definición y el polinomio $g$:
+    Sea $\mathbb{F}_{3^6}$ el cuerpo de extensión sobre $\mathbb{F}_{3^3}$. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Sabemos que, por el ejemplo \ref{ex:goppa-3_3}, los mensajes deben tener longitud $6$. Dada la palabra
+    \[
+        word := (1, 0, b, b + 1, b, 0, b + 1) \in \mathbb{F}_2^2,
+    \]
+    la podemos transformar en una palabra código del código Goppa definido por el conjunto de definición y el polinomio $g$:
 
     \begin{lstlisting}[gobble=4]
-        sage: F = GF(2^2)
-        sage: L = GF(2^6)
+        sage: F = GF(3^3)
+        sage: L = GF(3^6)
         sage: a = L.gen()
         sage: b = F.gen()
         sage: R.<x> = L[]
-        sage: g = x^5 + a*x^2 + 1
-        sage: n = 30
+        sage: g = x^2 + a*x + 1 + a^2
+        sage: n = 10
         sage: defining_set = get_defining_set(n, g, L)
         sage: C = Goppa(defining_set, g, F)
         sage: E = GoppaEncoder(C)
-        sage: word = vector(F, (0, 1, 0, 0, b, b + 1, b, 0, 0, b, 0, b, b + 1, 1, b + 1))
+        sage: word = vector(F, (1, 0, b + 1, b, 0, b + 1))
         sage: x = E.encode(word)
         sage: x
-        > (0, 1, 0, 0, z2, z2 + 1, z2, 0, 0, z2, 0, z2, z2 + 1, 1, z2 + 1, z2 + 1, 0, z2 + 1, 0, z2, z2, 1, 0, z2, z2, z2 + 1, z2, 0, z2 + 1, 1)
+        > (1, 0, z3 + 1, z3, 0, z3 + 1, 2*z3, z3^2, z3 + 1, 0)
     \end{lstlisting}
 
     Por lo que la palabra $word$ codificada es la siguiente:
-    $$(0, 1, 0, 0, z_2, z_2 + 1, z_2, 0, 0, z_2, 0, z_2, z_2 + 1, 1, z_2 + 1, z_2 + 1, 0, z_2 + 1, 0, z_2, z_2, 1, 0, z_2, z_2, z_2 + 1, z_2, 0, z_2 + 1, 1).$$
+    \[
+        (1, 0, z_3 + 1, z_3, 0, z_3 + 1, 2z_3, z_3^2, z_3 + 1, 0).
+    \]
 \end{exampleth}
 
 \subsection{Decodificación de los códigos de Goppa}
 
 Como hemos visto, al transmitir una palabra código a un receptor, éste podría recibir la palabra alterada. Para que el receptor pueda determinar el mensaje original, necesitaremos decodificar el mensaje recibido, \cite{Goppa_codes_1973}. Sea $\Gamma(L,g)$ un código de Goppa, donde $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ es una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$. Supongamos que $e$ es el vector de errores que se añade a la palabra código $c$ transmitida, entonces la palabra recibida $y$ está dada por
-
-$$y = c + e,$$
-
+\[
+    y = c + e,
+\]
 de donde 
-
-$$\sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{c_\gamma}{x - \gamma} + \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma}.$$
-
+\[
+    \sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{c_\gamma}{x - \gamma} + \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma}.
+\]
 Como $c$ es una palabra código, la primera sumatoria de la parte derecha desaparece al aplicar el módulo $g(x)$, y tenemos que
-
-$$\sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.$$
-
+\[
+    \sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} = \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.
+\]
 Definiremos su síndrome como el polinomio $S(x)$ de grado menos que $\gr(g(x))$ tal que 
-
-$$S(x) = \sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} \pmod{g(x)}.$$
-
+\[
+    S(x) = \sum_{\gamma \in L} \frac{y_\gamma}{x - \gamma} \pmod{g(x)}.
+\]
 Acabamos de ver que 
-
-$$S(x) = \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.$$
-
+\[
+    S(x) = \sum_{\gamma \in L} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.
+\]
 Sea $M$ un subconjunto de $L$ tal que $e_{\gamma} \neq 0$ si y solo si $\gamma \in M$. Entonces
-
 \begin{equation}
     \label{def:sindrome}
     S(x) = \sum_{\gamma \in M} \frac{e_\gamma}{x - \gamma} \pmod{g(x)}.
 \end{equation}
 
 De esta forma, ahora podemos introducir el polinomio cuyas raíces son las ubicaciones de los errores,
-
 \begin{equation}
     \label{def:localizaciones}
     \sigma (x) = \prod_{\gamma \in M} (x - \gamma).
 \end{equation}
 
 Sin embargo, para los códigos de Goppa es más conveniente definir una variante de este polinomio de la siguiente forma.
-
 \begin{equation}
     \label{def:eta}
     \eta (x) = \sum_{\gamma \in M} e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial)
@@ -362,19 +374,17 @@ Sin embargo, para los códigos de Goppa es más conveniente definir una variante
 Observemos que de esta forma $\sigma(x)$ y $\eta(x)$ deben ser primos relativos.
 
 Derivando la expresión de $\sigma(x)$, tenemos que 
-
 \begin{equation}
     \label{def:localizaciones_derivada}
     \sigma'(x) = \sum_{\gamma \in M} \prod_{\partial \in M \setminus \{ \gamma \} } (x - \partial),
 \end{equation}
 
-
 de donde, para cada $\gamma \in M$,
-
-$$\eta (\gamma) = e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = e_\gamma \sigma'(\gamma),$$
+\[
+    \eta (\gamma) = e_\gamma \prod_{\partial \in M \setminus \{ \gamma \} } (\gamma - \partial) = e_\gamma \sigma'(\gamma),
+\]
 
 por lo que $e_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una vez que hemos calculado los polinomios $\sigma$ y $\eta$, las coordenadas del vector error vienen dadas por 
-
 \[
     e_\gamma = \left\{ \begin{array}{lcc}
     0 &   \text{si}  & \sigma(\gamma) \neq 0 \\
@@ -382,11 +392,9 @@ por lo que $e_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una
     \end{array}
     \right.
 \]
-
 donde $\sigma'(x)$ es la derivada de $\sigma(x)$.
 
 Lo esencial para decodificar los códigos de Goppa es determinar los coeficientes de los polinomios $\sigma$ y $\eta$. Para ello, tenemos que relacionar $\sigma$ y $\eta$ al síndrome de la ecuación \eqref{def:sindrome}. Esto se consigue multiplicando las ecuaciones \eqref{def:sindrome} y \eqref{def:localizaciones}, obteniendo
-
 \begin{equation}
     \label{prop:key_equation}
     S(x) \cdot \sigma(x) \equiv \eta(x) \pmod{g(x)}.
@@ -397,34 +405,30 @@ La ecuación \eqref{prop:key_equation} es la \emph{ecuación clave} para decodif
 Reduciendo cada potencia de $x \pmod{g(x)}$ e igualando coeficientes de $1, x, ..., x^{\gr(g) - 1}$, tenemos que \eqref{prop:key_equation} es un sistema de $\gr(G)$ ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$. Por lo tanto, para probar que el decodificador es capaz de corregir todos los patrones hasta $t$ errores, basta con probar que \eqref{prop:key_equation} tiene una única solución con grados de $\sigma$ y de $\eta$ suficientemente pequeños. Esto equivale a que el conjunto de ecuaciones lineales correspondientes sean linealmente independientes.
 
 Supongamos que existen dos pares diferentes de soluciones a \eqref{prop:key_equation}:
-
 \begin{equation}
     \label{prop:key_equation_1}
     S(x) \sigma^{(1)}(x) \equiv \eta^{(1)}(x) \pmod{g(x)},
 \end{equation}
-
 \begin{equation}
     \label{prop:key_equation_2}
     S(x) \sigma^{(2)}(x) \equiv \eta^{(2)}(x) \pmod{g(x)},
 \end{equation}
 
 donde $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos, al igual que $\sigma^{(2)}(x)$ y $\eta^{(2)}(x)$. Además, $\sigma^{(1)}(x)$ y $g(x)$ no pueden tener ningún factor en común, pues en ese caso ese factor podría dividir a $\eta^{(1)}(x)$, contradiciendo que $\sigma^{(1)}(x)$ y $\eta^{(1)}(x)$ son primos relativos. Así, podemos dividir \eqref{prop:key_equation_1} por $\sigma^{(1)}(x)$ y obtenemos
-
-$$S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{g(x)}.$$
-
+\[
+    S(x) \equiv \frac{\eta^{(1)}(x)}{\sigma^{(1)}(x)} \pmod{g(x)}.
+\]
 De la misma forma para \eqref{prop:key_equation_2},
-
-$$S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{g(x)}$$
-
+\[
+    S(x) \equiv \frac{\eta^{(2)}(x)}{\sigma^{(2)}(x)} \pmod{g(x)}
+\]
 de donde,
-
 \begin{equation}
     \label{prop:key_equation_12}
     \sigma^{(1)}(x) \eta^{(2)}(x) \equiv \sigma^{(2)}(x) \eta^{(1)}(x) \pmod{g(x)}.
 \end{equation}
 
 Si $\gr(G) = 2t$ y $\gr(\sigma^{(1)}) \leq t$, $\gr(\sigma^{(2)}) \leq t$, $\gr(\eta^{(2)}) < t$ y $\gr(\eta^{(1)}) < t$, entonces se da la siguiente igualdad
-
 \begin{equation}
     \label{prop:key_equation_caso1}
     \sigma^{(1)}(x) \eta^{(2)}(x) = \sigma^{(2)}(x) \eta^{(1)}(x).
@@ -437,24 +441,23 @@ Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y
 \end{theorem}
 
 Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $e_\gamma$ distintos de cero son iguales a 1, entonces \eqref{def:eta} y \eqref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \eqref{prop:key_equation_12} ahora pasa a ser
-
-$$\sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{g(x)}$$
-
+\[
+    \sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{g(x)}
+\]
 Ahora, cuando $\sigma$ sea par escribiremos en su lugar $\hat{\sigma}$, mientras que cuando $\sigma$ sea impar escribiremos en su lugar $x \sigma '$. Así, tenemos que
-
 \begin{align*} 
     \left( \hat{\sigma}^{(1)} + x \sigma^{(1)'} \right) \sigma^{(2)'} &\equiv \left( \hat{\sigma}^{(2)} + x \sigma^{(2)'} \right) \sigma^{(1)'}\\ 
     \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} &\equiv 0 \pmod{g(x)}.
 \end{align*}
 
 El lado izquierdo es un cuadrado perfecto, pues todos los polinomios de ese lado son pares. Esto implica que
-
-$$\hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} \equiv 0 \pmod{\bar{G}(x)}$$
-
+\[
+    \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} \equiv 0 \pmod{\bar{G}(x)}
+\]
 donde $\bar{G}(x)$ es múltiplo de $g(x)$ de menor grado ya que $\bar{G}$ es un cuadrado perfecto. Por lo que, si $\gr(\bar{G}) = 2t$, $\gr(\sigma^{(1)}) \leq t$ y $\gr(\sigma^{(2)}) \leq t$, entonces 
-
-$$\hat{\sigma}^{(1)} \left( \sigma^{(2)} \right) ' = \hat{\sigma}^{(2)} \sigma^{(1)'}.$$
-
+\[
+    \hat{\sigma}^{(1)} \left( \sigma^{(2)} \right) ' = \hat{\sigma}^{(2)} \sigma^{(1)'}.
+\]
 Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teorema se concluye este resultado.
 
 \begin{theorem}
@@ -466,7 +469,6 @@ Por la primalidad relativa, $\sigma^{(1)} = \sigma^{(2)}$. En el siguiente teore
 El algoritmo de Sugiyama, descrito en \cite{Sugiyama_1975}, es una aplicación simple del algoritmo de Euclides para determinar el polinomio localizador de errores de una manera más eficiente.
 
 A continuación vamos a describir alguna de las propiedades el algoritmo de Euclides que están relacionadas con el método para resolver la ecuación clave para decodificar los códigos de Goppa. El algoritmo de Euclides que presentamos en \ref{th:alg-euclides}, en este caso aplicado a los polinomios $r_{-1}(x)$ y $r_0(x)$ donde $\gr(r_{-1}) > \gr(r_0)$, se puede reescribir en forma de matriz como sigue:
-
 \begin{equation}
     \label{alg:euclides-matriz}
     \left( 
@@ -491,16 +493,15 @@ A continuación vamos a describir alguna de las propiedades el algoritmo de Eucl
 \end{equation}
 
 Definimos los polinomios $U_i(x)$ y $V_i(x)$ como
-
 \begin{equation}
     \label{alg:euclides-u}
     U_i(x) = q_i(x)U_{i-1}(x) + U_{i-2}(x)
 \end{equation}
 y
-$$V_i(x) = q_i(x)V_{i-1}(x) + V_{i-2}(x),$$
-
+\[
+    V_i(x) = q_i(x)V_{i-1}(x) + V_{i-2}(x),
+\]
 donde $U_0(x) = 1$, $U_{-1}(x) = 0$, $V_0(x) = 0$ y $V_{-1}(x) = 1$, tenemos que
-
 \begin{equation}
     \label{alg:euclides-u-v}
     \left( 
@@ -526,7 +527,6 @@ donde $U_0(x) = 1$, $U_{-1}(x) = 0$, $V_0(x) = 0$ y $V_{-1}(x) = 1$, tenemos que
 \end{equation}
 
 De \eqref{alg:euclides-matriz} y \eqref{alg:euclides-u-v}, obtenemos
-
 \[
     \left( 
         \begin{array}{c}  
@@ -548,9 +548,7 @@ De \eqref{alg:euclides-matriz} y \eqref{alg:euclides-u-v}, obtenemos
         \end{array} 
     \right).
 \]
-
 Como el determinante de la matriz de la izquierda de \ref{alg:euclides-u-v} es $(-1)^i$, tenemos que
-
 \[
     \left( 
         \begin{array}{c}  
@@ -573,16 +571,13 @@ Como el determinante de la matriz de la izquierda de \ref{alg:euclides-u-v} es $
         \end{array} 
     \right).
 \]
-
 Esta ecuación nos permite relacionar el resto $r_i(x)$ de la iteración $i$-ésima con los polinomios $r_{-1}(x)$ y $r_0(x)$ de la siguiente manera
-
 \begin{equation}
     \label{prop:relacion-r_i}
     r_i(x) = (-1)^i \left( -V_i(x) r_{-1}(x) + U_i(x) r_0(x) \right).
 \end{equation}
 
-Como consecuencia, podemos observar que $r_{-1}(x)$ divide al polinomio $\left( -r_{-1}(x) + (-1)^i U_i(x) r_0(x) \right)$. Esto conlleva a la siguiente relación:
-
+Como consecuencia, observamos que $r_{-1}(x)$ divide al polinomio $\left( -r_{-1}(x) + (-1)^i U_i(x) r_0(x) \right)$. Esto conlleva a la siguiente relación:
 \begin{equation}
     \label{prop:euclides-resto}
     r_i(x) \equiv (-1)^i U_i(x) r_0(x) \pmod{r_{-1}(x)}.
@@ -591,21 +586,18 @@ Como consecuencia, podemos observar que $r_{-1}(x)$ divide al polinomio $\left( 
 Observamos que esta relación es similar a la ecuación clave para decodificar los códigos de Goppa. Veamos otras propiedades del algoritmo de Euclides que también están relacionadas con dicha ecuación clave.
 
 Aplicando \ref{th:alg-euclides} a los polinomios $r_{-1}(x)$ y $r_0(x)$, sabemos que en cada iteración $i$-ésima se cumple la siguiente relación:
-
 \begin{equation}
     \label{prop:euclides-grados}
     \gr(r_i) < \gr(r_{i-1}).
 \end{equation}
 
 Por \eqref{alg:euclides-u}, se tiene que $\gr(U_i) = \sum_{j=1}^i \gr(q_j)$. Como $\gr(r_{i-1}) = \gr(r_{-1}) - \sum_{j=1}^i \gr(q_j)$, aplicando \ref{th:alg-euclides}, es claro que
-
 \begin{equation}
     \label{prop:euclides-grado-u}
     \gr(U_i) = \gr(r_{-1}) - \gr(r_{i-1}).
 \end{equation}
 
 A partir de \eqref{alg:euclides-u-v}, obtenemos
-
 \begin{equation}
     \label{prop:euclides-primos-rel}
     U_i(x) V_{i-1}(x) = U_{i-1}(x) V_i(x) = (-1)^i.
@@ -618,11 +610,12 @@ A continuación se describe el teorema fundamental para resolver la ecuación cl
 \begin{theorem}[Algoritmo de Sugiyama]
     \label{th:alg-Sugiyama}
     Fijado un código de Goppa $\Gamma(L, g)$ sobre el cuerpo $\mathbb{F}_q$ y sean $S(x)$ su síndrome, $\sigma(x)$ el polinomio localizador de errores y $\eta(x)$ el polinomio evaluador de errores. Definimos $r_{-1}(x) = g(x)$ y $r_0(x) = S(x)$. Empezamos las divisiones \ref{th:alg-euclides} del algoritmo de Euclides para calcular el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ desde $i = 0$ hasta $i = k$, de tal forma que se cumpla que $\gr(r_{k-1}) \geq t$ y $\gr(r_k) \leq t - 1$. Entonces la solución viene dada por
-
     \begin{equation}
         \label{th:sol-Goppa}
-        \sigma_s(x) = \delta U_k (x),
-        \eta_s(x) = (-1)^k \delta r_k(x)
+        \begin{split}
+            \sigma_s(x) &= \delta U_k (x), \\
+            \eta_s(x) &= (-1)^k \delta r_k(x)
+        \end{split}
     \end{equation}
 
     donde $\delta$ es una constante no nula que hace que $\sigma_s(x)$ sea mónico.
@@ -632,13 +625,12 @@ A continuación se describe el teorema fundamental para resolver la ecuación cl
     Comenzamos viendo que el número de iteraciones $k$ cuando se satisfacen $\gr(r_{k-1}) \geq t$ y $\gr(r_k) \leq t - 1$ es único. Tenemos que $\gr(r_0) = \gr(S) \leq t$ \cite[Lema 1]{Sugiyama_1975}. Sea $p(x)$ el máximo común divisor de $g(x)$ y $S(x)$, existe la iteración $i$ en la que se cumple que $\gr(p) \leq \gr(r_i) \leq t - 1$. Por \eqref{prop:euclides-grados}, es claro que la secuencia de $\gr(r_i)$ para $i = 0, 1, 2$ decrece monótonamente conforme $i$ se incrementa. Concluimos que el número de iteraciones $k$ es único.
 
     Por otra parte, como $U_k(x) S(x) \equiv (-1)^k r_k(x) \pmod{g(x)}$ se satisface por \eqref{prop:euclides-resto}, tenemos que $\sigma_s(x)$ y $\eta_s(x)$ dados por \eqref{th:sol-Goppa} satisfacen la relación
-
-    $$\sigma_s(x) S(x) \equiv \eta_s(x) \pmod{g(x)}.$$
-
+    \[
+        \sigma_s(x) S(x) \equiv \eta_s(x) \pmod{g(x)}.
+    \]
     Deduzcamos ahora el grado de los polinomios $\sigma_s$ y $\eta_s$. Sabemos que $\gr(r_k) \leq t - 1$, luego $\eta$ cumple que $\gr(\eta_s) \leq t - 1$. En cuanto a $\sigma$, por \eqref{prop:euclides-grado-u} tenemos que $\gr(U_k) = \gr(g) - \gr(r_{k-1})$ y como $\gr(r_{k-1}) \geq t$, entonces $\gr(\sigma_s) \leq t$.
 
     Veamos ahora que $\sigma_s(x)$ y $\eta_s(x)$ son primos relativos. Para ello, supongamos que no lo son. Entonces estos polinomios satisfacen
-
     \begin{equation}\label{prop:sigma-eta-no-primos-relativos}
         \begin{split}
             \sigma_s(x)     &=   \mu(x) \sigma(x)\\
@@ -649,7 +641,6 @@ A continuación se describe el teorema fundamental para resolver la ecuación cl
     donde $\mu(x)$ es un polinomio conveniente \cite[Página 92]{Sugiyama_1975}.
     
     Por \eqref{prop:relacion-r_i} y \eqref{prop:sigma-eta-no-primos-relativos}, tenemos que
-
     \begin{align*}
         \mu(x) \eta(x)  &=   \mu(x) \sigma(x) S(x) - \delta V_k(x) g(x)\\
         \eta(x)         &=  \sigma(x) S(x) + \phi(x) g(x),
@@ -666,8 +657,9 @@ A continuación se describe el teorema fundamental para resolver la ecuación cl
 
 \begin{proof}
     Como el número de errores que se produjeron es $e$, entonces $\gr(\sigma) = e$. Por \eqref{alg:euclides-u} y \eqref{th:sol-Goppa},
-    $$\gr(\sigma_s) = \sum_{i=1}^k \gr(q_i).$$
-
+    \[
+        \gr(\sigma_s) = \sum_{i=1}^k \gr(q_i).
+    \]
     Como $\gr(q_i) \geq 1$ para todo $i$, concluimos que $k \leq e$.
 \end{proof}
 
@@ -677,12 +669,20 @@ En resumen, el algoritmo de Sugiyama consiste en:
     \item[I.] Calcular el síndrome $S(x)$.
     \item[II.] Sean $r_{-1}(x) = g(x)$, $r_0(x) = S(x)$, $U_{-1}(x) = 0$, $U_0(x) = 1$, $V_0(x)$ y $V_{-1}(x) = 1$.
     \item[III.] Buscar $U_i(x)$, $V_i(x)$, $q_i(x)$ y $r_i(x)$ aplicando el algoritmo de Euclides para encontrar el máximo común divisor de $r_{-1}(x)$ y $r_0(x)$ para $i = 1,..., k$, hasta que $k$ cumpla que $\gr(r_{k-1}(x)) \geq t$ y $\gr(r_k(x)) < t$:
-        $$r_{i-2}(x) = r_{i-1}(x) q_i(x) + r_i(x), \qquad \gr(r_i(x)) < \gr(r_{i-1})(x)$$
-        $$U_i(x) = q_i(x) U_{i-1}(x) + U_{i-2}(x)$$
-        $$V_i(x) = q_i(x) V_{i-1}(x) + V_{i-2}(x)$$  
+        \begin{equation*}
+            \begin{split}
+                r_{i-2}(x) &= r_{i-1}(x) q_i(x) + r_i(x), \qquad \gr(r_i(x)) < \gr(r_{i-1})(x)\\
+                U_i(x) &= q_i(x) U_{i-1}(x) + U_{i-2}(x)\\
+                V_i(x) &= q_i(x) V_{i-1}(x) + V_{i-2}(x)
+            \end{split}
+        \end{equation*}
     \item[IV.] La solución viene dada por:
-        $$\sigma_s(x) = \delta U_k(x)$$ 
-        $$\eta_s(x) = (-1)^k \delta r_k(x)$$   
+        \begin{equation*}
+            \begin{split}
+                \sigma_s(x) &= \delta U_k (x), \\
+                \eta_s(x) &= (-1)^k \delta r_k(x)
+            \end{split}
+        \end{equation*}  
     \item[V.] Calcular las raíces de $\sigma(x)_s$.
     \item[VI.] Para cada raíz $P$, buscar la posición en la que se encuentra en el conjunto de definición y el error en esa posición tendrá el valor:
         $$\frac{\eta(P)}{\sigma'(P)}.$$

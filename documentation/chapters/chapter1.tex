@@ -5,10 +5,9 @@
 
 \chapter{Preliminares}
 
-En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando concepto de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en la población para introducir los algoritmos genéticos.
+En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando concepto de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en la población para introducir los algoritmos genéticos, que podrán ser de utilidad para realizar un ataque al criptosistema de McEliece.
 
 \section{Anillos}
-
 En esta sección introduciremos el concepto de anillo para poder definir el concepto de cuerpo, así como las principales propiedades de esta estructura algebraica.
 
 \begin{definition}
@@ -27,14 +26,15 @@ En esta sección introduciremos el concepto de anillo para poder definir el conc
         $$ a \cdot (b \cdot c) = (a \cdot b) \cdot c \qquad \forall a,b,c \in A $$
         \item Propiedad distributiva del producto:
         $$ a \cdot (b + c) = a \cdot b + a \cdot c, \quad (b + c) \cdot a = b \cdot a + c \cdot a \qquad \forall a,b,c \in A $$
-        
     \end{itemize}
 
     Un anillo de llama \emph{conmutativo o abeliano} si se verifica la propiedad conmutativa del producto 
-    $$ ab = ba \qquad \forall a,b \in A $$
+    \[ 
+        ab = ba \qquad \forall a,b \in A 
+    \]
 \end{definition}
 
-Es fácil comprobar que en todo anillo se verifica $0 \cdot x = x \cdot 0 = 0$ (obsérvese que $0 \cdot = (0 + 0) \cdot x = 0 \cdot x + 0 \cdot x$ y simplifíquese por el simétrico de $0 \cdot x$).
+Es fácil comprobar que en todo anillo se verifica $0 \cdot x = x \cdot 0 = 0$ (obsérvese que $0 \cdot x = (0 + 0) \cdot x = 0 \cdot x + 0 \cdot x$ y simplifíquese por el simétrico de $0 \cdot x$).
 
 Además del anillo conmutativo, existen otros casos particulares de anillos. Diremos que un anillo es \emph{unitario} si es un anillo cuyo producto tiene elemento neutro, esto es, $\exists 1 \in A \; : \; x \cdot 1 = 1 \cdot x = x$, para todo $x \in A$.
 
@@ -44,7 +44,6 @@ Cuando se da la igualdad $1 = 0$, diremos que el anillo es \emph{trivial} y tend
 
 \begin{definition}
     Sea $A$ un anillo, $1 \in A$ el elemento neutro del producto y $n \geq 1$ un número natural, definimos la cardinalidad de $A$ como:
-
     \[
         Car(A) = \left\{ \begin{array}{lc}
         0 &   \textit{si } n \cdot 1 \neq 0 \textit{ para cualquier } n \geq 1 \\
@@ -67,11 +66,11 @@ Para presentar el concepto de cuerpo finito, necesitaremos definir previamente e
     Un \emph{cuerpo} $(K, +, \cdot)$ es un anillo conmutativo no trivial en el que todo elemento no nulo tiene un inverso multiplicativo. Se dice que un cuerpo es \emph{finito} si tiene un número finito de elementos.
 \end{definition}
 
-Sea $(K, +, \cdot)$ un cuerpo y $E \subset K$, diremos que $E$ es un \emph{subcuerpo} de $K$ o $K$ es una \emph{extensión} de $E$ si se cumple que $(E, +, \cdot)$ es un cuerpo cuando las operaciones $+$ y $\cdot$ se restringen a $E$.
+Sea $(K, +, \cdot)$ un cuerpo y $E \subset K$, diremos que $E$ es un \emph{subcuerpo} de $K$ o que $K$ es una \emph{extensión} de $E$ si se cumple que $(E, +, \cdot)$ es un cuerpo cuando las operaciones $+$ y $\cdot$ se restringen a $E$.
 
 Diremos que la \emph{característica} de un cuerpo es el número de elementos que tiene.
 
-Todos los cuerpos finitos tienen un número de elementos $q = p^n$, para algún número primo $p$ y algún entero positivo $n$. Denotaremos por $\mathbb{F}_q$ a los cuerpos finitos con característica $q$, aunque otra común notación es $GF(q)$.
+Todos los cuerpos finitos tienen un número de elementos $q = p^n$, para algún número primo $p$ y algún entero positivo $n$. Denotaremos por $\mathbb{F}_q$ a los cuerpos finitos con característica $q$, aunque otra notación común es $GF(q)$.
 
 Observemos que si $p$ un número primo y $q$ es un número entero tal que $q = p^n$, entonces $\mathbb{F}_q$ es un espacio vectorial sobre $\mathbb{F}_p$ de dimensión $n$. Además, hay $q$ vectores en el espacio vectorial de dimensión $n$ sobre $\mathbb{F}_p$.
 
@@ -80,20 +79,23 @@ Notemos que todos los cuerpos finitos de orden $q$ son isomorfos, aunque cada cu
 \begin{proposition}
     \label{prop:multiplo-p}
     Sea $\mathbb{F}_q$ un cuerpo finito con $q = p^n$ elementos, entonces 
-
-    $$p \cdot \alpha = 0, \qquad \forall \alpha \in \mathbb{F}_q.$$
+    \[
+        p \cdot \alpha = 0, \qquad \forall \alpha \in \mathbb{F}_q.
+    \]
 \end{proposition}
 
 \begin{proof}
     La característica del cuerpo finito $\mathbb{F}_q$ es $p$, luego $p1 = 0$, donde $1$ es el elemento neutro para la multiplicación. Por la propiedad distributiva tenemos que
-
-    $$p \cdot \alpha = \underbrace{\alpha + \cdots + \alpha}_{p\ veces} = a \underbrace{(1 + \cdots + 1)}_{p\ veces} = a0 = 0.$$
+    \[
+        p \cdot \alpha = \underbrace{\alpha + \cdots + \alpha}_{p\ veces} = a \underbrace{(1 + \cdots + 1)}_{p\ veces} = a0 = 0.
+    \]
 \end{proof}
 
 \begin{proposition}
     Sea $\mathbb{F}_q$ un cuerpo finito con característica $p$, se cumple que
-
-    $$( \alpha + \beta )^p = \alpha^p + \beta^p, \qquad \forall \alpha, \beta \in \mathbb{F}_q.$$
+    \[
+        ( \alpha + \beta )^p = \alpha^p + \beta^p, \qquad \forall \alpha, \beta \in \mathbb{F}_q.
+    \]
 \end{proposition}
 
 \begin{proof}
@@ -106,16 +108,16 @@ Notemos que todos los cuerpos finitos de orden $q$ son isomorfos, aunque cada cu
     \end{equation}
 
     Por otra parte, sabemos que
-    $${p \choose i} = \frac{n!}{i! (p-i)!}.$$
-
+    \[
+        {p \choose i} = \frac{n!}{i! (p-i)!}. 
+    \]
     En consecuencia, ${p \choose i}$ es divisible por $p$ para $1 \leq i \leq p-1$.
 
     Por lo tanto, los coeficientes de la parte de la derecha de \eqref{eq:binomio}, salvo el primero y el último, son múltiplos de $p$. Por \ref{prop:multiplo-p}, estos términos se anulan y concluimos que
 
-    \begin{equation}
+    \begin{equation*}
         ( \alpha + \beta )^p = \alpha^p + \beta^p.
-    \end{equation}
-    
+    \end{equation*}
 \end{proof}
 
 % TODO: homomorfismo de cuerpos
@@ -128,19 +130,20 @@ En esta sección vamos a introducir el concepto de polinomio junto con sus opera
 
 \begin{definition}
     Sea $A$ un anillo conmutativo. El \emph{conjunto de polinomios} en la variable $x$ con coeficientes en $A$ está compuesto por el siguiente conjunto
-    $$\{ a_n x^n  + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \; : \; a_0, ..., a_n \in A \}.$$
-    Este conjunto se representa por $A[X]$.
+    \[
+        A[x] := \{ a_n x^n  + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \; : \; a_0, ..., a_n \in A \}. 
+    \]
 \end{definition}
 
 En el conjunto de polinomios definimos una suma y un producto. 
 
 Sean $f = a_n x^n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0$ y $g = b_m x^m + b_{m-1} x^{m-1} + \cdots + b_1 x + b_0$ dos polinomios. Supongamos que $m \leq n$, tomando $b_i = 0$ para todo $n \geq i > m$, definimos las operaciones de suma y producto de polinomios:
-
 \begin{align*}
     f + g       &= (a_n + b_n)x^n + (a_{n-1} + b_{n-1})x^{n-1} + \cdots + (a_1 + b_1)x + (a_0 + b_0).\\
     f \cdot g   &= a_n b_m x^{n+m} + (a_n b_{m+1} + a_{n-1} b_m) x^{n+m-1} + \cdots + (a_1 b_0 + a_0 b_1)x + a_0 b_0.
 \end{align*} 
-De esta forma, diremos que el conjunto $A[X]$ con las operaciones anteriores es un \emph{anillo de polinomios en X con coeficientes en A}.
+
+De esta forma, diremos que el conjunto $A[x]$ con las operaciones anteriores es un \emph{anillo de polinomios en X con coeficientes en A}.
 
 \begin{definition}
     Para un polinomio $f = a_n + a_{n-1} x^{n-1} + \cdots + a_1 x + a_0 \neq 0$ el mayor índice $n$ tal que $a_n \neq 0$ se llama \emph{grado de f} y se representa por $\gr(f)$. Si $f = 0$ definimos $\gr(f) = - \infty$.
@@ -151,18 +154,23 @@ De esta forma, diremos que el conjunto $A[X]$ con las operaciones anteriores es 
 A continuación tenemos algunas propiedades de los polinomios.
 
 \begin{proposition}
-    Sea $A$ un anillo conmutativo y sean $f,g \in A[X]$ dos polinomios, tenemos que 
-    $$\gr(f + g) \leq \max{(\gr(f), \; \gr(g))},$$
-    $$\gr(f \cdot g) \leq \gr(f) + \gr(g)$$
-    Si $\gr(f) \neq \gr(g)$, se verifica 
-    $$\gr(f + g) = \max{(\gr(f), \; \gr(g))}$$
+    Sea $A$ un anillo conmutativo y sean $f,g \in A[x]$ dos polinomios, tenemos que 
+    \begin{align*}
+        \gr(f + g) &\leq \max{(\gr(f), \; \gr(g))},\\
+        \gr(f \cdot g) &\leq \gr(f) + \gr(g)
+    \end{align*}
+
+    Si $\gr(f) \neq \gr(g)$, se verifica
+    \[
+        \gr(f + g) = \max{(\gr(f), \; \gr(g))}
+    \]
 \end{proposition}
 
 Podemos trasladar estos resultados al caso de los cuerpos finitos. Sea $\mathbb{F}_q$ un cuerpo finito, un polinomio $f(x)$ estará definido sobre dicho cuerpo si es de la forma $f(x) = \sum_{i = 0}^{n} a_i \cdot x^i$, donde $a_i \in \mathbb{F}_q$ para todo $i = 0, ..., n$. Análogamente, diremos que $f(x) \in \mathbb{F}_q$.
 
 Sean $f(x)$ y $g(x)$ polinomios en $\mathbb{F}_q[x]$, diremos que $f(x)$ divide a $g(x)$ si existe un polinomio $h(x) \in \mathbb{F}_q[x]$ tal que $g(x) = f(x) h(x)$ y lo denotaremos por $f(x) \vert g(x)$. El polinomio $f(x)$ se llama \emph{divisor} o \emph{factor} de $g(x)$.
 
-El \emph{mayor común divisor} de $f(x)$ y $g(x)$ es el polinomio mónico en $\mathbb{F}_q[x]$ con mayor grado que divide a $f(x)$ y a $g(x)$. Este polinomio es único y se denota por $\mcd(f(x), \; g(x))$. Diremos que los polinomios $f(x)$ y $g(x)$ son \emph{primos relativos} si $\mcd(f(x), \; g(x)) = 1$.
+El \emph{máximo común divisor} de $f(x)$ y $g(x)$ es el polinomio mónico en $\mathbb{F}_q[x]$ con mayor grado que divide a $f(x)$ y a $g(x)$. Este polinomio es único y se denota por $\mcd(f(x), \; g(x))$. Diremos que los polinomios $f(x)$ y $g(x)$ son \emph{primos relativos} si se satisface que $\mcd(f(x), \; g(x)) = 1$.
 
 El siguiente resultado es de gran utilidad, pues sirve para calcular los divisores de un polinomio e incluso para calcular el máximo común divisor. Nos dará las bases para definir posteriormente el Algoritmo de Euclides.
 
@@ -171,7 +179,9 @@ El siguiente resultado es de gran utilidad, pues sirve para calcular los divisor
     Sean $f(x)$ y $g(x)$ polinomios en $\mathbb{F}_q[x]$ con $g(x)$ no nulo.
     \begin{itemize}
         \item Existen dos polinomios únicos $c(x), r(x) \in \mathbb{F}_q[x]$ tales que
-        $$f(x) = g(x) c(x) + r(x), \qquad \textit{donde } \gr(r(x)) < \gr(g(x)) \textit{ o } r(x) = 0.$$
+        \[
+            f(x) = g(x) c(x) + r(x), \qquad \textit{donde } \gr(r(x)) < \gr(g(x)) \textit{ o } r(x) = 0.
+        \]
         \item Si $f(x) = g(x) c(x) + r(x)$, entonces $\mcd(f(x), \; g(x)) = \mcd(g(x), \; r(x))$.
     \end{itemize}
 \end{theorem}
@@ -233,9 +243,9 @@ Para realizar la construcción de cuerpos finitos, previamente necesitaremos con
 
 \begin{theorem}
     Sea $f(x)$ un polinomio no constante. Entonces
-
-    $$f(x) = p_1(x)^{a_1} \cdots p_k(x)^{a_k},$$
-
+    \[
+        f(x) = p_1(x)^{a_1} \cdots p_k(x)^{a_k},
+    \]
     donde cada $p_i(x)$ es irreducible y único salvo orden, y los elementos $a_i$ son únicos.
 \end{theorem}
 
@@ -248,29 +258,26 @@ El siguiente resultado nos muestra cómo construir un cuerpo finito de caracter�
 \end{proposition}
 
 Escribiremos los elementos del anillo cociente, que son las clases laterales $g(x) + (f(x))$ como vectores en $\mathbb{F}_p^m$ con la siguiente correspondencia:
-
 \begin{equation}
     \label{pr:correspondencia}
     g_{m-1} x^{m-1} + g_{m-2} x^{m-2} + \cdots + g_{1} x + g_0 + (f(x)) \leftrightarrow (g_{m-1}, g_{m-2}, ..., g_1, g_0).
 \end{equation}
 
-Esta notación facilita la operación de sumar dos elementos. Sin embargo, la multiplicación es algo más complicada. Supongamos que queremos multiplicar $g_1(x) + (f(x))$ por $g_2(x) + (f(x))$. Para ello, usaremos el resultado \ref{th:div_alg} para obtener
-
+Esta notación facilita la operación de sumar dos elementos. Sin embargo, la multiplicación es algo más complicada. Supongamos que queremos multiplicar $g_1(x) + (f(x))$ por $g_2(x) + (f(x))$. Para ello, usaremos el resultado \ref{th:div_alg} y obtenemos
 \begin{equation}
     \label{pr:multiplicacion_clase_lateral}
     g_1(x) g_2(x) = f(x) h(x) + r(x),
 \end{equation}
 
 donde $\gr(r(x)) \leq m - 1$ o $r(x) = 0$. Entonces 
-
-$$(g_1(x) + (f(x))) (g_2(x) + (f(x))) = r(x) + (f(x)).$$
-
+\[
+    (g_1(x) + (f(x))) (g_2(x) + (f(x))) = r(x) + (f(x)).
+\]
 Podemos simplificar la notación si reemplazamos $x$ por $\alpha$ donde $f(\alpha) = 0$. Por \eqref{pr:multiplicacion_clase_lateral}, se cumple que $g_1(\alpha) g_2(\alpha) = r(\alpha)$ y la correspondencia \eqref{pr:correspondencia} queda como sigue
-
-$$g_{m-1} g_{m-2} \cdots g_1 g_0 \leftrightarrow  g_{m-1} \alpha^{m-1} g_{m-2} \alpha^{m-2}\cdots g_1 \alpha g_0.$$
-
+\[
+    g_{m-1} g_{m-2} \cdots g_1 g_0 \leftrightarrow  g_{m-1} \alpha^{m-1} g_{m-2} \alpha^{m-2}\cdots g_1 \alpha g_0.
+\]
 De esta forma, multiplicamos los polinomios en $\alpha$ de forma usual y aplicamos al resultado que $f(\alpha) = 0$ para reducir las potencias de $\alpha$ mayores que $m-1$ a polinomios en $\alpha$ de grado menor que $m$.
-
 
 \section{Teoría de la complejidad}
 
@@ -290,8 +297,9 @@ Con esta notación podemos analizar el tiempo esperado que va a tardar un algori
 
 \begin{proposition}
     Para cualquier $\lambda \in \mathbb{R}^+$ y $g : \mathbb{N}^r \longrightarrow \mathbb{R}$, tenemos que
-
-    $$\mathcal{O}(g(n)) = \mathcal{O}(\lambda g(n)), \qquad \forall n \in \mathbb{N}^r.$$
+    \[
+        \mathcal{O}(g(n)) = \mathcal{O}(\lambda g(n)), \qquad \forall n \in \mathbb{N}^r.
+    \]
 \end{proposition}
 
 A continuación presentaremos algunos conceptos importantes para especificar la complejidad de los algoritmos que nos serán de utilidad más adelante.
@@ -347,8 +355,9 @@ El esquema de este procedimiento se muestra a continuación.
     \small
     \DontPrintSemicolon
     \KwOut{Mejor solución encontrada}
-    $P \longleftarrow P_0$ \tcp{Generación de la población inicial}
     $t \longleftarrow 0$\;
+    $P_t \longleftarrow P_0$ \tcp{Generación de la población inicial}
+    
     \While{No se cumpla la condición de parada}{
         Generar($P_t'$) \tcp{Generación de la nueva población}
         $P_{t+1} \longleftarrow $ SeleccionarPoblación($P_t \cup P_t'$) \tcp{Selección de la nueva población}
@@ -360,7 +369,7 @@ Vamos a estudiar en detalle este procedimiento concretando los conceptos en los 
 
 \begin{enumerate}
     \item \textbf{Generación de la población inicial}. Las metaheurísticas basadas en la población comienzan con una población inicial de soluciones. Este paso juega un papel fundamental en la efectividad del algoritmo y su eficiencia. El principal criterio para generar la población es que haya diversidad.
-    \item \textbf{Generación de una nueva población}. En este paso, se genera una nueva población de soluciones. Se puede realizar de varias formas, sin embargo la que estudiaremos será la que se basa en la evolución. En esta categoría, las soluciones que componen la población se seleccionan y se reproducen usando operadores de variación (por ejemplo, mutación, recombinación) y actúan directamente sobre sus representaciones. Una nueva solución surge a partir de los diferentes atributos de las soluciones de la población actual.
+    \item \textbf{Generación de una nueva población}. En este paso, se genera una nueva población de soluciones. Se puede realizar de varias formas, sin embargo en este trabajo estudiaremos la que se basa en la evolución. En esta categoría, las soluciones que componen la población se seleccionan y se reproducen usando operadores de variación (por ejemplo, mutación o cruce) y actúan directamente sobre sus representaciones. Una nueva solución surge a partir de los diferentes atributos de las soluciones de la población actual.
     \item \textbf{Selección de la nueva población}. Este último paso consiste en seleccionar las nuevas soluciones y reemplazar a la población actual. Este reemplazamiento se puede realizar de varias maneras, por ejemplo una estrategia se basa en seleccionar la nueva población generada como la población actual, otra estrategia se fundamenta en el escoger las dos mejores soluciones de la nueva población y reemplazarlas por las dos peores de la población actual, etc.
 \end{enumerate}
 
@@ -370,7 +379,7 @@ El criterio de parada suele ser un número máximo de iteraciones (generaciones)
 
 Los \emph{algoritmos evolutivos} son algoritmos basados en poblaciones. Estos se fundamentan en el concepto de \emph{competición}. Se representan como una clase de algoritmos de optimización iterativos que simulan la evolución de las especies, en este caso, la evolución de la población de soluciones.
 
-Inicialmente, tenemos una población de soluciones que suele ser generada aleatoriamente. También tenemos una función objetivo, que es la que queremos optimizar, que evalúa cada individuo perteneciente a la población indicando la idoneidad de pertenencia al problema (\emph{fitness}). En cada paso, los individuos se seleccionan para formar los padres. En esta selección los individuos con mayor fitness tendrán altas probabilidades de ser escogidos. Luego, los individuos seleccionados se reproducen usando operadores de variación (por ejemplo, cruce, mutación) para generar nuevos descendientes, de forma que nos permite explorar el espacio de búsqueda y obtendremos soluciones diversas. Finalmente, el esquema de reemplazamiento se basa en determinar los individuos que sobrevivirán entre los descendientes y los padres. Esta iteración representa una generación. Este proceso es iterativo hasta que se cumpla el criterio de parada.
+Inicialmente, tenemos una población de soluciones que se suele generar aleatoriamente. También tenemos una función objetivo, que es la que queremos optimizar, que evalúa cada individuo perteneciente a la población indicando la idoneidad de pertenencia al problema (\emph{fitness}). En cada paso, los individuos se seleccionan para formar los padres. En esta selección los individuos con mejor fitness tendrán altas probabilidades de ser escogidos. Luego, los individuos seleccionados se reproducen usando operadores de variación (por ejemplo, cruce, mutación) para generar nuevos descendientes, de forma que nos permite explorar el espacio de búsqueda y obtendremos soluciones diversas. Finalmente, el esquema de reemplazamiento se basa en determinar los individuos que sobrevivirán entre los descendientes y los padres. Esta iteración representa una generación. Este proceso es iterativo hasta que se cumpla el criterio de parada.
 
 Cada solución que forma parte de la población se suele llamar \emph{cromosoma}. A su vez, cada cromosoma está formado por \emph{genes}.
 
@@ -388,10 +397,11 @@ El algoritmo \ref{alg:ev} ilustra este procedimiento.
     \small
     \DontPrintSemicolon
     \KwOut{Mejor solución encontrada}
-    Generar$(P_0)$ \tcp{Generación de la población inicial}
     $t \longleftarrow 0$\;
+    $P_t \longleftarrow$ Generar$(P_0)$ \tcp{Generación de la población inicial}
+
     \While{No se cumpla la condición de parada}{
-        Evaluar($P_t$)
+        Evaluar($P_t$)\;
         $P_t' \longleftarrow$ Seleccionar($P_t$)\;
         $P_t' \longleftarrow$ Reproducción($P_t'$)\;
         Evaluar($P_t'$)\;
@@ -404,11 +414,11 @@ El algoritmo \ref{alg:ev} ilustra este procedimiento.
 
 Los \emph{algoritmos genéticos} son algoritmos de optimización, búsqueda y aprendizaje inspirados en los procesos de evolución natural y evolución genética.
 
-Estos algoritmos suelen aplicar como operador de variación un operador de cruce a las dos soluciones (cromosomas) que juegan un papel importante, además de un operador de mutación que modifica aleatoriamente el contenido del individuo (gen) para fomentar la diversidad. Los algoritmos genéticos usan una selección probabilística. El reemplazamiento es generacional, esto es, los padres serán reemplazados por sus descendientes. El operador de cruce se basa en un cruce uniforme o por segmento fijo, mientras que la mutación, con cierta probabilidad, determinará si algún gen puede mutar.
+Estos algoritmos suelen aplicar como operador de variación un operador de cruce a las dos soluciones (cromosomas) que juegan un papel importante, además de un operador de mutación que modifica aleatoriamente el contenido del individuo (gen) para fomentar la diversidad. Los algoritmos genéticos usan una selección probabilística. El reemplazamiento es generacional, esto es, los padres serán reemplazados por sus descendientes.
 
-El operador de cruce es un operador binario y, a veces, $n$-ario. Este operador se basa en adquirir las características de los dos padres y generar un descendiente. La principal característica de este operador es la \emph{heredabilidad}, pues crea un cromosoma a partir de los genes heredados de los padres. Esto es, el descendiente tendrá una recombinación de las características de sus padres. Los padres cruzarán con una cierta probabilidad $p_c$. El operador de cruce debe producir soluciones válidas.
+El operador de cruce es un operador binario y, a veces, $n$-ario. Este operador se basa en adquirir las características de los dos padres y generar un descendiente. La principal característica de este operador es la \emph{heredabilidad}, pues crea un cromosoma a partir de los genes heredados de los padres. Esto es, el descendiente tendrá una recombinación de las características de sus padres. Los padres cruzarán con una cierta probabilidad $p_c$. Es importante que el operador de cruce debe producir soluciones válidas.
 
-El operador de mutación es un operador unario que actúa sobre un solo individuo. Las mutaciones representan pequeños cambios de los individuos seleccionados. La probabilidad $p_m$ define la probabilidad de mutar cada elemento (gen) de la representación. Este operador debe garantizar que cualquier solución estará en el espacio de búsqueda y que sea válida. Con la mutación conseguimos introducir diversidad en los individuos de una población.
+El operador de mutación es un operador unario que actúa sobre un solo individuo. Las mutaciones representan pequeños cambios de los individuos seleccionados. La probabilidad $p_m$ define la probabilidad de mutar cada elemento (gen) de la representación. Este operador debe garantizar que cualquier solución estará en el espacio de búsqueda y que sea válida. Con la mutación conseguimos introducir diversidad en los individuos de una población. Al igual que con el operador de cruce, el de mutación también debe producir soluciones válidas.
 
 El algoritmo \ref{alg:gen} ilustra este procedimiento.
 
@@ -417,10 +427,11 @@ El algoritmo \ref{alg:gen} ilustra este procedimiento.
     \small
     \DontPrintSemicolon
     \KwOut{Mejor solución encontrada}
-    Generar$(P_0)$ \tcp{Generación de la población inicial}
     $t \longleftarrow 0$\;
+    $P_t \longleftarrow$ Generar$(P_0)$ \tcp{Generación de la población inicial}
+
     \While{No se cumpla la condición de parada}{
-        Evaluar($P_t$)
+        Evaluar($P_t$)\;
         $P_t' \longleftarrow$ Seleccionar($P_t$)\;
         $P_t' \longleftarrow$ OperadorCruce($P_t'$)\;
         $P_t' \longleftarrow$ OperadorMutación($P_t'$)\;
