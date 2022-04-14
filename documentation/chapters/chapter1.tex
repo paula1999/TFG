@@ -49,7 +49,7 @@ Cuando se da la igualdad $1 = 0$, diremos que el anillo es \emph{trivial} y tend
         0 &   \textit{si } n \cdot 1 \neq 0 \textit{ para cualquier } n \geq 1 \\
         \\ n & \textit{si n es el menor número natural no nulo para el que } n \cdot 1 = 0
         \end{array}
-        \right.
+        \right. .
     \]
 \end{definition}
 
@@ -57,6 +57,15 @@ Cuando se da la igualdad $1 = 0$, diremos que el anillo es \emph{trivial} y tend
 % - Añadir homomorfismo de anillos? (apuntes de álgebra I)
 % - Añadir subestructuras de anillos e ideales? (apuntes de álgebra I)
 % - Añadir propiedades de los dominios de integridad? (apuntes de álgebra I)
+
+\begin{exampleth}
+    Veamos algunos ejemplos de anillos.
+    \begin{itemize}
+        \item Los conjuntos $\mathbb{Z}, \mathbb{R}, \mathbb{Q}$ y $\mathbb{C}$ con las operaciones de suma y producto usuales son anillos conmutativos.
+        \item El conjunto $M$ de las matrices reales de orden $2$ con las operaciones de adición y multiplicación de matrices es un anillo no conmutativo.
+        \item Sea $A = \{ a \}$ un conjunto con un único elemento. La suma y el producto coinciden, pues solo hay una operación binaria posible: $a + a = a = aa$ y $0 = a = 1$. Este conjunto con estas operaciones es un anillo trivial y es el más pequeño posible.
+    \end{itemize}
+\end{exampleth}
 
 \section{Cuerpos finitos}
 
@@ -68,9 +77,13 @@ Para presentar el concepto de cuerpo finito, necesitaremos definir previamente e
 
 Sea $(K, +, \cdot)$ un cuerpo y $E \subset K$, diremos que $E$ es un \emph{subcuerpo} de $K$ o que $K$ es una \emph{extensión} de $E$ si se cumple que $(E, +, \cdot)$ es un cuerpo cuando las operaciones $+$ y $\cdot$ se restringen a $E$.
 
-Diremos que la \emph{característica} de un cuerpo es el número de elementos que tiene.
+Diremos que la \emph{característica} de un cuerpo finito $\mathbb{F}_p$ es $p$, con $p$ primo.
 
 Todos los cuerpos finitos tienen un número de elementos $q = p^n$, para algún número primo $p$ y algún entero positivo $n$. Denotaremos por $\mathbb{F}_q$ a los cuerpos finitos con característica $q$, aunque otra notación común es $GF(q)$.
+
+\begin{exampleth}
+    El cuerpo finito $\mathbb{F}_{3^4}$ tiene $81$ elementos y su característica es $3$.
+\end{exampleth}
 
 Observemos que si $p$ un número primo y $q$ es un número entero tal que $q = p^n$, entonces $\mathbb{F}_q$ es un espacio vectorial sobre $\mathbb{F}_p$ de dimensión $n$. Además, hay $q$ vectores en el espacio vectorial de dimensión $n$ sobre $\mathbb{F}_p$.
 
