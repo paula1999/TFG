@@ -125,33 +125,46 @@ El criptosistema RSA consiste en multiplicar dos números primos muy grandes y p
 Cada usuario del criptosistema RSA posee una clave pública y otra privada. Para generar este par de claves, se siguen los siguientes tres pasos:
 
 \begin{enumerate}
-    \item Se eligen aleatoriamente dos grandes números primos distintos $p$ y $q$ y se calcula su producto $n = p \cdot q$.
-    \item Se elige un entero $e$ tal que $1 < e < \phi(n)$ y sea primo con $\phi(n)$. La clave pública será $(n, e)$.
-    \item Se calcula $d$ que verifique $ed \equiv 1 \pmod{\phi(n)}$. La clave privada será $(n, d)$.
+    \item Se eligen aleatoriamente dos grandes números primos distintos $p$ y $q$ y se calcula su producto $n = p \cdot q$. También calculamos $\phi(n) = n + 1 - (p + q)$.
+    \item Se elige un entero $e$ tal que $1 < e < \phi(n)$ y sea primo con $\phi(n)$.
+    \item Se calcula $d$ que verifique $ed \equiv 1 \pmod{\phi(n)}$, es decir, $d \equiv e^{-1} \pmod{\phi(n)}$. 
+    \item La clave privada es $(p, q, d)$.
+    \item La clave pública es $(n, e)$.
 \end{enumerate}
 
 Los números $n$, $e$ y $d$ se denominan \emph{módulo}, \emph{exponente de cifrado} y \emph{exponente de descifrado}, respectivamente. El exponente de descifrado $d$ se puede obtener con el algoritmo extendido de Euclides. Con este exponente es posible descifrar un texto cifrado y generar una firma digital.
 
 \subsubsection{Cifrado y descifrado}
 
-Supongamos que queremos cifrar un mensaje para Bob. Para ello, usaremos la clave pública $(n, e)$ de Bob. Los mensajes que podemos encriptar $m \in \{ 0, ..., n-1 \}$ se pueden considerar elementos de $\mathbb{Z}_n$.
-
-Para cifrar un texto plano $m \in \mathbb{Z}_n$, podemos usar la función RSA
-\[
-    RSA_{n, e} : \mathbb{Z}_n \longrightarrow \mathbb{Z}_n
-\]
+Supongamos que queremos cifrar un mensaje. Para ello, usaremos la clave pública $(n, e)$. Para cifrar un texto plano $m$ podemos usar la función de cifrado:
 \[
     RSA_{n, e}(m) = m^e \pmod{n},
 \]
 es decir, el texto cifrado $c$ es $m^e$ módulo $n$.
 
-Para que Bob descifre el texto cifrado $c$, puede usar la función RSA
+Para descifrar el criptograma $c$, se usa la función de descifrado:
 \[
-    RSA_{n, d} : \mathbb{Z}_n \longrightarrow \mathbb{Z}_n, \; c \longmapsto c^d,
+    RSA_{n, d}(c) = c^d \pmod{n}.
 \]
-donde $(n, d)$ es su clave secreta. De esta forma, Bob puede recuperar el texto plano, es decir, $m = c^d$ módulo $n$, pues las funciones de cifrado y descifrado $RSA_{n, e}$ y $RSA_{n, d}$ son inversas entre sí.
+De esta forma, se puede recuperar el texto plano, es decir, $m = c^d$ módulo $n$, pues las funciones de cifrado y descifrado $RSA_{n, e}$ y $RSA_{n, d}$ son inversas entre sí.
 
 Con este procedimiento de cifrado, podemos cifrar secuencias de bit hasta $k := \lfloor \log_2{n} \rfloor$ bits. Si los mensajes son más largos, podemos dividirlos en bloques de longitud $k$ y cifrar cada uno por separado.
+
+\begin{exampleth}
+    Consideremos dos números primos $p = 7$ y $q = 11$, tenemos que $n = p \cdot q = 77$ y $\phi(n) = 60$. Busquemos ahora un número $e$ mayor que $1$ y menor que $60$ y que sea primo con $\phi(n) = 60$, elegimos $e = 13$. Por lo que el exponente de descifrado es
+    \[
+        d \equiv e^{-1} \equiv 37 \mod{\phi(n)}.
+    \]
+    La clave pública es $(e, n) = (13, 77)$ y la clave privada es $(d, n) = (37, 77)$. Vamos a cifrar el mensaje $m = 42$ con la función de cifrado:
+    \[
+        RSA_{n, e}(m) = m^e \equiv 42^{13} \equiv 14 \pmod{n}.
+    \]
+    Luego el mensaje cifrado $m$ es $14$. Ahora, si queremos descifrarlo, calcularemos lo siguiente:
+    \[
+        RSA_{n, d}(c) = c^d \equiv 14^{37} \equiv 42 \pmod{n}.
+    \]
+    Observamos que efectivamente coincide con el mensaje original $m$.
+\end{exampleth}
 
 \subsubsection{Firma digital}
 
