@@ -217,12 +217,12 @@ Diremos que la \emph{distancia mínima} de un código $\mathcal{C}$ es la distan
 \begin{proof}
     Usando la decodificación de máxima verosimilitud, un vector $y \in \mathbb{F}^n$ es decodificado en una palabra código $c  \in \mathcal{C}$, que es cercana a $y$ con respecto a la distancia de Hamming. Formalmente, $y$ es decodificado en una palabra código $c \in \mathcal{C}$ tal que $d(c,y) \leq d(c',y)$, $\forall c' \in \mathcal{C}$. Si hay varios $c \in \mathcal{C}$ con esta propiedad, se elige uno arbitrariamente.
 
-    Si la palabra código $c \in \mathcal{C}$ fue enviada y no han ocurrido más de $t$ errores durante la transmisión, el vector recibido es 
-
     \begin{wrapfigure}{r}{0.25\textwidth}
         \centering
         \includegraphics[scale=0.5]{figures/Diagrama_decodificacion_maxima_verosimilitud.png}
     \end{wrapfigure}
+
+    Si la palabra código $c \in \mathcal{C}$ fue enviada y no han ocurrido más de $t$ errores durante la transmisión, el vector recibido es 
     \[
         y = c + e \in \mathbb{F}^n,
     \]
