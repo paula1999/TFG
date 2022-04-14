@@ -98,9 +98,9 @@ En \cite{Cuellar_etal} se obtiene que la probabilidad de encontrar el mínimo de
 
 En ambos algoritmos, la función fitness consistirá en minimizar el peso que producen las soluciones que componen la población.
 
-\subsection{Algoritmo Genético Generacional (GGA)}
+\subsection{Algoritmo GGA}
 
-El algoritmo comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y la evalúa en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones. 
+El algoritmo GGA comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y la evalúa en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones. 
 
 El bucle principal empieza seleccionando $N$ padres según el operador de selección de torneo binario. Este operador consiste en seleccionar dos individuos de la población aleatorios y seleccionar como padre al individuo que tenga mejor fitness.
 
@@ -117,7 +117,9 @@ En ambos casos, habrá que comprobar que las nuevas soluciones son válidas. Est
 
 Se ha incluído una componente elitista antes de que comience la siguiente iteración: si la solución $P(t+1)$ no tiene un fitness igual o superior que la mejor en $P(t)$, entonces la peor solución de $P(t+1)$ es reemplazada por la mejor solución de $P(t)$. Además, si se alcanza un número fijo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada, se reinicializará $P(t+1)$ con $N$ nuevas soluciones aleatorias.
 
-En resumen, el Algoritmo Genético Generacional (GGA) consiste en:
+En resumen, el Algoritmo GGA consiste en:
+
+% TODO: he corregido los indices??
 
 \begin{Ualgorithm}[H]
     \DontPrintSemicolon
@@ -125,38 +127,98 @@ En resumen, el Algoritmo Genético Generacional (GGA) consiste en:
     \KwIn{$p_c$: probabilidad de cruce}
     \KwIn{$MaxReinit$: número de evaluaciones de las soluciones sin mejorar el fitness antes de la reinicialización}
     \KwOut{Mejor solución de $P(t)$}
+    
     $t \longleftarrow 0$\;
     Inicializar la población $P(t)$ con $N$ soluciones aleatorias válidas\;
     Evaluar las soluciones de $P(t)$\;
+    
     \While{no se cumpla la condición de parada}{
         $P(t+1) \longleftarrow \emptyset$\;
-        $parents(1..N) \longleftarrow$ Seleccionar $N$ soluciones de $P(t)$ con selección de torneo binario\;
+        $padres(1, ..., N) \longleftarrow$ Seleccionar $N$ soluciones de $P(t)$ con selección de torneo binario\;
+        
         \For{$i$ in $0..N/2 - 1$}{
-            \eIf{número aleatorio de la distribución uniforme $[0,1]$ es menor que $p_c$]}{
-                $c_1, c_2 \longleftarrow$ soluciones generadar a partir del cruce de los padres $parents(2i + 1)$ y $parents(2i + 2)$\;
+            \eIf{número aleatorio de la distribución uniforme $[0,1]$ es menor que $p_c$}{
+                $c_1, c_2 \longleftarrow$ soluciones generadas a partir del cruce de los padres $padres(2i + 1)$ y $padres(2i + 2)$\;
             }
             {
-                $c_1 \longleftarrow$ mutación del padre $parents(2i+1)$\;
-                $c_2 \longleftarrow$ mutación del padre $parents(2i+2)$\;
+                $c_1 \longleftarrow$ mutación del padre $padres(2i+1)$\;
+                $c_2 \longleftarrow$ mutación del padre $padres(2i+2)$\;
             }
             \If{$c_1$ (resp. $c_2$) no es válido}{
                 reemplazar $c_1$ (resp. $c_2$) con una solución aleatoria válida\;
             }
             $P(t+1) \longleftarrow P(t+1) \bigcup \{ c_1, c_2 \}$\;
         }
+        
         Evaluar las soluciones de $P(t+1)$\;
+        
         \If{ningún fitness de $P(t+1)$ es igual o superior que el mejor fitness de $P(t)$}{
             Reemplazar la peor solución de $P(t+1)$ con la mejor solución de $P(t)$\;
         }
+        
         \If{MaxReinit soluciones han sido evaluadas sin mejorar la mejor solución de $P(t+1)$}{
             Reemplazar las soluciones de $P(t+1)$ con $N-1$ soluciones aleatorias y la mejor solución de $P(t)$\;
         }
+        
         $t \longleftarrow t + 1$\;
     }
-    \caption{Algoritmo Genético Generacional (GGA).}
+    \caption{Algoritmo GGA.}
 \end{Ualgorithm}
 
+% TODO introducción
 
-\subsection{Algoritmo de Mutación Clataclísmico (CHC)}
+\textcolor{red}{Añadir ejemplos usando la implementación}
 
-\textcolor{red}{Añadir}
+\subsection{Algoritmo CHC}
+
+% TODO
+\textcolor{red}{Completar}
+
+El algoritmo CHC es un algoritmo evolutivo cuya versión inicial fue propuesta para codificación binaria \cite{CHC_1991}.
+
+En resumen, el Algoritmo CHC consiste en:
+
+\begin{Ualgorithm}[H]
+    \DontPrintSemicolon
+    \KwIn{$N$: número par con el tamaño de la población}
+    \KwIn{$\tau$: frecuencia de actualización del umbral de cruce}
+    \KwOut{Mejor solución de $P(t)$}
+    
+    $t \longleftarrow 0$\;
+    Inicializar la población $P(t)$ con $N$ soluciones aleatorias válidas\;
+    Evaluar las soluciones de $P(t)$\;
+    $d \longleftarrow$ Media de la distancia de las soluciones de $P(t)$\;
+    $dec \longleftarrow \tau \cdot$ Distancia máxima de las soluciones de $P(t)$\;
+
+    \While{no se cumpla la condición de parada}{
+        $C(t) \longleftarrow \emptyset$\;
+        $padres(1, ..., N) \longleftarrow$ Seleccionar $N$ soluciones aleatorias de $P(t)$\;
+        
+        \For{$i$ in $0..N/2 - 1$}{
+            \If{$distancia(padres(2i + 1), padres(2i+2)) < d$}{
+                $c_1, c_2 \longleftarrow$ soluciones generadas a partir del cruce de los padres $padres(2i + 1)$ y $padres(2i + 2)$\;
+                $C(t) \longleftarrow C(t) \bigcup \{ c_1, c_2 \}$\;
+            }    
+        }
+        
+        Evaluar las soluciones de $C(t)$\;
+        $P(t+1) \longleftarrow $ Mejores $N$ soluciones de $C(t) \cup P(t)$\;
+
+        \If{$P(t) = P(t+1)$}{
+            $d \longleftarrow d - dec$\;
+            \If{$d \leq 0$}{
+                Inicializar $P(t+1)$ con la mejor solución de $P(t)$ y $N-1$ soluciones aleatorias\;
+                Evaluar las nuevas soluciones de $P(t+1)$\;
+                $d \longleftarrow$ Media de la distancia de las soluciones de $P(t+1)$\;
+                $dec \longleftarrow \tau \cdot$ Distancia máxima de las soluciones de $P(t+1)$\;
+            }
+        }
+        
+        $t \longleftarrow t + 1$\;
+    }
+    \caption{Algoritmo CHC.}
+\end{Ualgorithm}
+
+% TODO introducción
+
+\textcolor{red}{Añadir ejemplos usando la implementación}
