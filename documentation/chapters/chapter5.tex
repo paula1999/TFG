@@ -5,13 +5,12 @@
 
 \chapter{Ataque usando algoritmos genéticos}
 
-% TODO introducción
+En el capítulo \ref{cap:2} vimos que la capacidad de corrección de un código depende de la distancia de un código. Sin embargo, encontrar una palabra con distancia mínima de un código lineal no es una tarea fácil. Recordemos que el problema de decisión asociado al cálculo de la distancia mínima de un código lineal binario es NP-completo. 
 
-\textcolor{red}{Añadir introducción }
-
-\cite{Cuellar_etal}
+En esta sección estudiaremos varios ataques usando algoritmos genéticos basados en el cálculo de la distancia de un código propuestos en \cite{Cuellar_etal}. Probaremos que, dada una matriz generadora, existe una permutación de las columnas lo que lleva a una matriz escalonada que contiene una fila cuyo peso es la distancia del código. Los algoritmos trabajarán con un espacio de soluciones que serán representaciones de permutaciones para encontrar la distancia mínima. En concreto, adaptaremos e implementaremos los algoritmos GGA y CHC para revolver este problema.
 
 \section{Esquema basado en permutaciones}
+\label{sec:perm}
 
 Sea $\mathbb{F}_q$ un cuerpo finito con $q$ elementos y sean $k,n$ dos números enteros tales que $0 < k \leq n$. Denotamos por $\mathcal{S}_n$ al conjunto de permutaciones de $n$ símbolos. Decimos que dos $[n, k]_q$-códigos lineales $\mathcal{C}_1$ y $\mathcal{C}_2$ son \emph{equivalentes permutacionalmente} si son iguales con una permutación fija de las coordenadas de una palabra código, esto es, si existe una permutación $x \in \mathcal{S}_n$ tal que $(c_0, ..., c_{n-1}) \in \mathcal{C}_1$ si y solo si $(c_{x(0)}, ..., c_{x(n-1)}) \in \mathcal{C}_2$. Observemos que $G$ es la matriz generadora de $\mathcal{C}_1$ si y solo si $GP$ es la matriz generadora de $\mathcal{C}_2$, donde $P$ es la matriz de permutaciones de $x$. Los códigos equivalentes permutacionalmente tienen en común la distancia mínima, ya que la permutación de sus componentes no modifica el peso del vector.
 
@@ -90,17 +89,17 @@ En \cite{Cuellar_etal} se obtiene que la probabilidad de encontrar el mínimo de
     donde el peso de la primera fila es $4$, el de la segunda es $2$ y el de la tercera y cuarta es $5$. Como la segunda fila tiene peso mínimo entre todas las filas, tenemos que $\mathfrak{d} (x) = 2$. Realmente, la distancia de $\mathcal{C}$ es $2$, luego $x$ alcanza el mínimo de $\mathfrak{d}$.
 \end{exampleth}
 
-\section{Algoritmos}
+\section{Algoritmos genéticos}
 
-% TODO introducción
+El teorema de la sección \ref{sec:perm} tiene una consecuencia inmediata: nos permite cambiar el problema de encontrar la distancia mínima, para que la búsqueda de la palabra código con peso mínimo equivale a encontrar una permutación adecuada de las columnas de una matriz generadora.
 
-\textcolor{red}{Añadir introducción}
+En esta sección estudiaremos las adaptaciones de los algoritmos GGA y CHC propuestos en \cite{Cuellar_etal}. Además, implementaremos ambos algoritmos y analizaremos los resultados.
 
-En ambos algoritmos, la función fitness consistirá en minimizar el peso que producen las soluciones que componen la población.
+La función fitness, en ambos algoritmos, consistirá en minimizar el peso que producen las soluciones que componen la población.
 
 \subsection{Algoritmo GGA}
 
-El algoritmo GGA comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y la evalúa en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones. 
+El algoritmo GGA comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y las evalúa en la iteración $t = 0$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones. 
 
 El bucle principal empieza seleccionando $N$ padres según el operador de selección de torneo binario. Este operador consiste en seleccionar dos individuos de la población aleatorios y seleccionar como padre al individuo que tenga mejor fitness.
 
@@ -115,11 +114,9 @@ Si no se combinan, se le aplica el operador de mutación a cada padre para gener
 
 En ambos casos, habrá que comprobar que las nuevas soluciones son válidas. Esto es, una solución no válida en el algoritmo GGA es la solución nula $(0,...,0)$. De esta forma, todas las nuevas soluciones $N$ se habrán generado por cruce o mutación y formarán la población de la siguiente iteración $P(t+1)$. Finalmente, se evalúan las soluciones de $P(t+1)$.
 
-Se ha incluído una componente elitista antes de que comience la siguiente iteración: si la solución $P(t+1)$ no tiene un fitness igual o superior que la mejor en $P(t)$, entonces la peor solución de $P(t+1)$ es reemplazada por la mejor solución de $P(t)$. Además, si se alcanza un número fijo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada, se reinicializará $P(t+1)$ con $N$ nuevas soluciones aleatorias.
+Se ha incluído una componente elitista antes de que comience la siguiente iteración: si la solución $P(t+1)$ no tiene un fitness igual o superior que la mejor en $P(t)$, entonces la peor solución de $P(t+1)$ es reemplazada por la mejor solución de $P(t)$. Además, si se alcanza un número fijo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada, se reiniciará $P(t+1)$ con $N$ nuevas soluciones aleatorias.
 
 En resumen, el Algoritmo GGA consiste en:
-
-% TODO: he corregido los indices??
 
 \begin{Ualgorithm}[H]
     \DontPrintSemicolon
@@ -138,11 +135,11 @@ En resumen, el Algoritmo GGA consiste en:
         
         \For{$i$ in $0..N/2 - 1$}{
             \eIf{número aleatorio de la distribución uniforme $[0,1]$ es menor que $p_c$}{
-                $c_1, c_2 \longleftarrow$ soluciones generadas a partir del cruce de los padres $padres(2i + 1)$ y $padres(2i + 2)$\;
+                $c_1, c_2 \longleftarrow$ soluciones generadas a partir del cruce de los padres $padres(2i)$ y $padres(2i + 1)$\;
             }
             {
-                $c_1 \longleftarrow$ mutación del padre $padres(2i+1)$\;
-                $c_2 \longleftarrow$ mutación del padre $padres(2i+2)$\;
+                $c_1 \longleftarrow$ mutación del padre $padres(2i)$\;
+                $c_2 \longleftarrow$ mutación del padre $padres(2i + 1)$\;
             }
             \If{$c_1$ (resp. $c_2$) no es válido}{
                 reemplazar $c_1$ (resp. $c_2$) con una solución aleatoria válida\;
@@ -165,20 +162,25 @@ En resumen, el Algoritmo GGA consiste en:
     \caption{Algoritmo GGA.}
 \end{Ualgorithm}
 
-% TODO introducción
-
+% TODO
 \textcolor{red}{Añadir ejemplos usando la implementación}
 
 \subsection{Algoritmo CHC}
 
-% TODO
-\textcolor{red}{Completar}
+El algoritmo CHC es un algoritmo evolutivo cuya versión inicial fue propuesta para codificación binaria \cite{CHC_1991}. Este algoritmo mantiene un equilibrio entre la diversidad de los genotipos en las soluciones de la población y la convergencia a óptimos locales. Se basa en cuatro componentes similares: la selección elitista, el operador de recombinador de soluciones HUX, una verificación de prevención de incesto para evitar la recombinación de soluciones similares y un método de reiniciación de la población cuando se encuentra un óptimo local. En \cite{Cuellar_etal} se propone una adaptación de este algoritmo, que es la que vamos a estudiar.
 
-El algoritmo CHC es un algoritmo evolutivo cuya versión inicial fue propuesta para codificación binaria \cite{CHC_1991}.
+Para calcular la distancia entre dos soluciones de la población usaremos la distancia de Hamming (líneas 4-5 y 22-23 del algoritmo \ref{alg:CHC}). En cuanto al decremento $dec$ del cruce (líneas 5 y 21), se actualiza como un porcentaje $\tau$ de la máxima distancia de Hamming entre los individuos de la población, donde $\tau \in [0,1]$ es la tasa de actualización, un parámetro de entrada al algoritmo. Si se produce una solución no válida en el cruce, se le asignará un fitness igual a infinito para asegurarnos de que no se incluirá en la población de la siguiente generación.
+
+El algoritmo CHC comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y las evalúa en la iteración $t = 0$. Luego, se calcula la distancia media y la máxima entre todas las solcuiones. Así, la variable $d$ se inicializará a la distancia media y $dec$ se inicializará a la máxima distancia multiplicada por $\tau$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones.
+
+El bucle principal empieza seleccionando $N$ padres aleatorios entre las soluciones de $P(t)$.
+
+Después, comienza la etapa de generación de una nueva población. De esta forma, se le aplica el operador de cruce a los padres que estén a una distancia menor que el umbral de distancia $d$. Este operador es análogo al operador de cruce del algoritmo GGA. Una vez generados todos los descendientes y se evaluarán. A continuaciónm, se formará la población de la siguiente iteración $P(t+1)$ que contendrá a las mejores $N$ soluciones de $P(t)$ y de las nuevas soluciones generadas por el cruce. Sin embargo, puede que $P(t+1)$ y $P(t)$ sean iguales, en este caso el umbral de distancia $d$ se decrementa en $dec$. Si este umbral $d$ alcanza un valor negativo o nulo, la población se reinicializará. Para ello, conservaremos la mejor solución de $P(t)$ en la siguiente población y el resto la reemplazaremos por $N-1$ soluciones aleatorias. Los valores $d$ y $dec$ se recalcularán para esta nueva población.
 
 En resumen, el Algoritmo CHC consiste en:
 
 \begin{Ualgorithm}[H]
+    \label{alg:CHC}
     \DontPrintSemicolon
     \KwIn{$N$: número par con el tamaño de la población}
     \KwIn{$\tau$: frecuencia de actualización del umbral de cruce}
@@ -195,8 +197,8 @@ En resumen, el Algoritmo CHC consiste en:
         $padres(1, ..., N) \longleftarrow$ Seleccionar $N$ soluciones aleatorias de $P(t)$\;
         
         \For{$i$ in $0..N/2 - 1$}{
-            \If{$distancia(padres(2i + 1), padres(2i+2)) < d$}{
-                $c_1, c_2 \longleftarrow$ soluciones generadas a partir del cruce de los padres $padres(2i + 1)$ y $padres(2i + 2)$\;
+            \If{$distancia(padres(2i), padres(2i + 1)) < d$}{
+                $c_1, c_2 \longleftarrow$ soluciones generadas a partir del cruce de los padres $padres(2i)$ y $padres(2i + 1)$\;
                 $C(t) \longleftarrow C(t) \bigcup \{ c_1, c_2 \}$\;
             }    
         }
@@ -220,5 +222,4 @@ En resumen, el Algoritmo CHC consiste en:
 \end{Ualgorithm}
 
 % TODO introducción
-
 \textcolor{red}{Añadir ejemplos usando la implementación}
