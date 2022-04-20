@@ -7,17 +7,17 @@
 
 En el capítulo \ref{cap:2} vimos que la capacidad de corrección de un código depende de la distancia de un código. Sin embargo, encontrar una palabra con distancia mínima de un código lineal no es una tarea fácil. Recordemos que el problema de decisión asociado al cálculo de la distancia mínima de un código lineal binario es NP-completo. 
 
-En esta sección estudiaremos varios ataques usando algoritmos genéticos basados en el cálculo de la distancia de un código propuestos en \cite{Cuellar_etal}. Probaremos que, dada una matriz generadora, existe una permutación de las columnas lo que lleva a una matriz escalonada que contiene una fila cuyo peso es la distancia del código. Los algoritmos trabajarán con un espacio de soluciones que serán representaciones de permutaciones para encontrar la distancia mínima. En concreto, adaptaremos e implementaremos los algoritmos GGA y CHC para revolver este problema.
+En esta sección estudiaremos varios ataques usando algoritmos genéticos basados en el cálculo de la distancia de un código propuestos en \cite{Cuellar_etal}. Probaremos que, dada una matriz generadora, existe una permutación de las columnas cuya matriz escalonada contiene una fila cuyo peso es la distancia del código. Los algoritmos trabajarán con un espacio de soluciones igual al conjunto de posibles permutaciones de las columnas de la matriz generadora. En concreto, adaptaremos e implementaremos algoritmos genéticos generacionales (GGA) y CHC para revolver este problema.
 
 \section{Esquema basado en permutaciones}
 \label{sec:perm}
 
-Sea $\mathbb{F}_q$ un cuerpo finito con $q$ elementos y sean $k,n$ dos números enteros tales que $0 < k \leq n$. Denotamos por $\mathcal{S}_n$ al conjunto de permutaciones de $n$ símbolos. Decimos que dos $[n, k]_q$-códigos lineales $\mathcal{C}_1$ y $\mathcal{C}_2$ son \emph{equivalentes permutacionalmente} si son iguales con una permutación fija de las coordenadas de una palabra código, esto es, si existe una permutación $x \in \mathcal{S}_n$ tal que $(c_0, ..., c_{n-1}) \in \mathcal{C}_1$ si y solo si $(c_{x(0)}, ..., c_{x(n-1)}) \in \mathcal{C}_2$. Observemos que $G$ es la matriz generadora de $\mathcal{C}_1$ si y solo si $GP$ es la matriz generadora de $\mathcal{C}_2$, donde $P$ es la matriz de permutaciones de $x$. Los códigos equivalentes permutacionalmente tienen en común la distancia mínima, ya que la permutación de sus componentes no modifica el peso del vector.
+Sea $\mathbb{F}_q$ un cuerpo finito con $q$ elementos y sean $k,n$ dos números enteros tales que $0 < k \leq n$. Denotamos por $\mathcal{S}_n$ al conjunto de permutaciones de $n$ símbolos. Decimos que dos $[n, k]_q$-códigos lineales $\mathcal{C}_1$ y $\mathcal{C}_2$ son \emph{equivalentes permutacionalmente} si son iguales con una permutación fija de las coordenadas de una palabra código, esto es, si existe una permutación $x \in \mathcal{S}_n$ tal que $(c_0, ..., c_{n-1}) \in \mathcal{C}_1$ si y solo si $(c_{x(0)}, ..., c_{x(n-1)}) \in \mathcal{C}_2$. Observemos que $G$ es la matriz generadora de $\mathcal{C}_1$ si y solo si $GP$ es la matriz generadora de $\mathcal{C}_2$, donde $P$ es la matriz asociada a la permutación $x$. Los códigos equivalentes permutacionalmente tienen en común la distancia mínima, ya que la permutación de sus componentes no modifica el peso del vector.
 
 El siguiente resultado nos proporciona un método para calcular la distancia mínima a partir de la matriz escalonada (\emph{reduced row echelon form}) de la matriz generadora del código equivalente.
 
 \begin{theorem}
-    Sea $G$ una matriz generadora de dimensión $k \times n$ de un $[n, k]_q$-código lineal $\mathcal{C}$ sobre el cuerpo finito $\mathbb{F}_q$. Existe una permutación $x \in \mathcal{S}_n$ tal que la matriz escalonada, $R$, de $GP_x$, donde $P_x$ es la matriz de permutaciones de $x$, cumple que el peso de alguna de sus filas alcanza la mínima distancia de $\mathcal{C}$. Por lo tanto, si $b$ es una fila de $R$ verificando esa propiedad, entonces $bP_x^{-1}$ es una palabra código no nula de $\mathcal{C}$ con peso mínimo.
+    Sea $G$ una matriz generadora de dimensión $k \times n$ de un $[n, k]_q$-código lineal $\mathcal{C}$ sobre el cuerpo finito $\mathbb{F}_q$. Existe una permutación $x \in \mathcal{S}_n$ tal que la matriz escalonada, $R$, de $GP_x$, donde $P_x$ es la matriz asociada a la permutación $x$, cumple que el peso de alguna de sus filas alcanza la mínima distancia de $\mathcal{C}$. Por lo tanto, si $b$ es una fila de $R$ verificando esa propiedad, entonces $bP_x^{-1}$ es una palabra código no nula de $\mathcal{C}$ con peso mínimo.
 \end{theorem}
 
 \begin{proof}
@@ -28,7 +28,7 @@ Este teorema expone que encontrar la distancia mínima de un $[n, k]_q$-código 
 \[
     \mathfrak d (x) = \min \left\{ \text{w}(b) \; : \; b \text{ es una fila de la matriz escalonada de } FP_x \right\}.
 \]
-para cualquier $x \in \mathcal{S}_n$, donde $G$ es la matriz generadora del código y $P_x$ representa la matriz de permutaciones de $x$.
+para cualquier $x \in \mathcal{S}_n$, donde $G$ es la matriz generadora del código y $P_x$ representa la matriz asociada a la permutación $x$.
 
 Sin embargo, existen pocas permutaciones que nos proporcionarán el mínimo de $\mathfrak{d}$. En concreto, supongamos que solo hay una palabra código que alcanza el mínimo peso $d$ de $\mathcal{C}$ salvo multiplicación escalar.
 
@@ -49,7 +49,7 @@ En \cite{Cuellar_etal} se obtiene que la probabilidad de encontrar el mínimo de
         \end{array}
         \right).
     \]
-    Sea $x \in \mathcal{S}_8$ la permutación dada por $x(0) = 1$, $x(1) = 0$, $x(2) = 3$, $x(3) = 2$, $x(4) = 5$, $x(5) = 4$, $x(6) = 7$ y $x(7) = 6$. La matriz de permutaciones de $x$ es la siguiente:
+    Sea $x \in \mathcal{S}_8$ la permutación dada por $x(0) = 1$, $x(1) = 0$, $x(2) = 3$, $x(3) = 2$, $x(4) = 5$, $x(5) = 4$, $x(6) = 7$ y $x(7) = 6$. La matriz asociada a la permutación $x$ es la siguiente:
     \[ P_x =
         \left(
         \begin{array}{cccccccc} 

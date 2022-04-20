@@ -7,7 +7,7 @@
 \chapter{Introducción a la teoría de códigos lineales}
 \label{cap:2}
 
-En este capítulo introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definiendo básica de código para estudiar posteriormente el concepto de código lineal y algunas de sus propiedades más relevante, junto con otros conceptos relacionados. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular un concepto muy importante en la teoría de códigos. 
+En este capítulo introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definiendo básica de código para estudiar posteriormente la idea de código lineal y algunas de sus propiedades más relevante, junto con otras nociones relacionadas. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular la distancia de un código lineal, muy importante en la teoría de códigos. 
 
 El desarrollo de este capítulo se ha basado, principalmente, en \cite[Capítulo 1]{Huffman_Pless_2010}.
 
@@ -53,7 +53,7 @@ Al igual que con la matriz generadora, la matriz de paridad no es única. Con el
 
 \begin{theorem}
     \label{th:generadora-paridad}
-    Si $G = \left( I_k | A \right)$ es una matriz generadora para el $\left[ n,k \right]$ código $\mathcal{C}$ en forma estándar, entonces $H = \left( -A^T | I_{n-k} \right)$ es una matriz de paridad de $\mathcal{C}$.
+    Si $G = \left( I_k | A \right)$ es una matriz generadora para un $\left[ n,k \right]$ código $\mathcal{C}$ en forma estándar, entonces $H = \left( -A^T | I_{n-k} \right)$ es una matriz de paridad de $\mathcal{C}$.
 \end{theorem}
 
 \begin{proof}
@@ -270,7 +270,7 @@ El problema \ref{pr:min-dist} es un problema NP-completo. Veamos un esquema de l
     Dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
 \end{problemth}
 
-El problema \ref{pr:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión de campo finito de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-duro, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
+El problema \ref{pr:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión para cuerpos finitos de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-duro, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 
 
 \begin{definition}
@@ -310,7 +310,7 @@ Las permutaciones de las coordenadas son isometrías, que se denominan \emph{iso
 
 \section{Algoritmo para el cálculo de la distancia}
 
-Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar laborioso. A continuación presentaremos el algoritmo de BZ para el cálculo de la distancia, que tiene eficiencia exponencial \cite[Sección 1.8]{Wassermann_2006}. Este algoritmo destaca por ser el algoritmo más rápido para calcular la distancia mínima de un código lineal. En particular, si el código es binario se considera eficaz.
+Como hemos visto, la distancia mínima es importante en un código lineal. Sin embargo, calcular este parámetro para un código dado puede resultar laborioso. A continuación presentaremos el algoritmo de Brouwer-Zimmermann (BZ) para el cálculo de la distancia, que tiene eficiencia exponencial \cite[Sección 1.8]{Wassermann_2006}. Este algoritmo destaca por ser el algoritmo más conocido para calcular la distancia mínima de un código lineal. En particular, si el código es binario se considera eficaz.
 
 \begin{Ualgorithm}[H]
     \DontPrintSemicolon

@@ -10,7 +10,7 @@ En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corr
 
 \section{Códigos clásicos de Goppa}
 
-Fijado el cuerpo de extensión $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
+Sea $q = p^r$ con $p$ primo y $r > 0$ y $t > 0$. Consideramos la extensión de cuerpos $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \}$ una tupla de $n$ elementos distintos de $\mathbb{F}_{q^t}$ y sea $g(x) \in \mathbb{F}_{q^t}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \mathbb{F}_q^n$ tal que 
 \begin{equation}
     \label{def:goppa}
     \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}.
@@ -89,11 +89,11 @@ El siguiente resultado nos muestra los límites en la dimensión y la distancia 
 \end{corollary}
 
 \begin{proof}
-    El teorema \ref{th:decodificacion_maxima_verosimilitud} afirma que es posible corregir hasta 
+    El Teorema \ref{th:decodificacion_maxima_verosimilitud} afirma que es posible corregir hasta 
     \[
         \left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor
     \]
-    errores. Además, por el teorema \ref{th:dist_min_Goppa} sabemos que la distancia mínima de un código de Goppa $\Gamma(L,g)$ tal que $\gr(g(x)) = w$ es $d(\Gamma(L,g)) = w + 1$. Por lo que
+    errores. Además, por el Teorema \ref{th:dist_min_Goppa} sabemos que la distancia mínima de un código de Goppa $\Gamma(L,g)$ tal que $\gr(g(x)) = w$ es $d(\Gamma(L,g)) = w + 1$. Por lo que
     \[
         \left\lfloor \frac{d(\Gamma(L,g)) - 1}{2} \right\rfloor = \left\lfloor \frac{(w + 1) - 1}{2} \right\rfloor = \left\lfloor \frac{w}{2} \right\rfloor .
     \]
@@ -102,7 +102,7 @@ El siguiente resultado nos muestra los límites en la dimensión y la distancia 
 Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usaremos el código descrito en el apéndice \ref{annex:sage-Goppa} en los siguientes ejemplos.
 
 \begin{exampleth}
-    Sea $\mathbb{F}_{2^4}$ el cuerpo de extensión sobre $\mathbb{F}_{2^2}$. Definimos el polinomio $g(x) = x^3 + ax^2 + 1 \in \mathbb{F}_{2^4}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Podemos obtener el código de Goppa definido por dicho conjunto de definición y polinomio $g$ escribiendo lo siguiente:
+    Sea $\mathbb{F}_{2^2} \subset \mathbb{F}_{2^4}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{2^4}$ y $\mathbb{F}_{2^2}$, respectivamente. Definimos el polinomio $g(x) = x^3 + ax^2 + 1 \in \mathbb{F}_{2^4}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Podemos obtener el código de Goppa definido por dicho conjunto de definición y polinomio $g$ escribiendo lo siguiente:
 
     \begin{lstlisting}[gobble=4]
         sage: F = GF(2^2)
@@ -165,7 +165,7 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 
 \begin{exampleth}
     \label{ex:goppa-3_3}
-    Sea $\mathbb{F}_{3^6}$ el cuerpo de extensión sobre $\mathbb{F}_{3^3}$. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Obtengamos el código de Goppa definidor por dicho conjunto de definición y polinomio $g$.
+    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Obtengamos el código de Goppa definidor por dicho conjunto de definición y polinomio $g$.
 
     \begin{lstlisting}[gobble=4]
         sage: F = GF(3^3)
@@ -278,10 +278,10 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 
 \subsection{Códigos binarios de Goppa}
 
-Los códigos binarios de Goppa son códigos de corrección de errores que pertenecen a la clase de los códigos de Goppa que acabamos de estudiar. La estructura binaria le da más ventajas matemáticas sobre variantes no binarias y, además, tienen propiedades interesantes adecuadas para la construcción del criptosistema McEliece.
+Los códigos binarios de Goppa son códigos de corrección de errores que pertenecen a la clase de los códigos de Goppa que acabamos de estudiar. La estructura binaria le da más ventajas matemáticas sobre variantes no binarias y, además, tienen propiedades interesantes para la construcción del criptosistema de McEliece.
 
 \begin{definition}
-    Fijada la extensión de cuerpos $\mathbb{F}_{2^m}$ de $\mathbb{F}_2$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \} \in \mathbb{F}_{2^m}^n$ una tupla de $n$ elementos distintos de $\mathbb{F}_{2^m}$ y sea $g(x) \in \mathbb{F}_{2^m}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código binario de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \{ 0, 1 \}^n$ tal que 
+    Sea $m$ un entero positivo. Consideramos la extensión de cuerpos $\mathbb{F}_{2^m}$ de $\mathbb{F}_2$, sea $L = \{ \gamma_0, ..., \gamma_{n-1} \} \in \mathbb{F}_{2^m}^n$ una tupla de $n$ elementos distintos de $\mathbb{F}_{2^m}$ y sea $g(x) \in \mathbb{F}_{2^m}[x]$ con $g(\gamma_i) \neq 0$ para $0 \leq i \leq n - 1$. Entonces el \emph{código binario de Goppa} $\Gamma(L,g)$ es el conjunto de vectores $c_0 \cdots c_{n-1} \in \{ 0, 1 \}^n$ tal que 
     \begin{equation}
         \sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}
     \end{equation}
@@ -302,9 +302,9 @@ De esta forma obtenemos la palabra código $\textbf{c}$ que está en $\Gamma (L,
 En los siguientes ejemplos vamos a usar el código descrito en el apéndice \ref{annex:sage-Goppa} para mostrar la codificación de algunos mensajes.
 
 \begin{exampleth}
-    Sea $\mathbb{F}_{3^6}$ el cuerpo de extensión sobre $\mathbb{F}_{3^3}$. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Sabemos que, por el ejemplo \ref{ex:goppa-3_3}, los mensajes deben tener longitud $6$. Dada la palabra
+    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Consideramos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Sabemos que, por el ejemplo \ref{ex:goppa-3_3}, los mensajes deben tener longitud $6$. Dada la palabra
     \[
-        word := (1, 0, b, b + 1, b, 0, b + 1) \in \mathbb{F}_2^2,
+        word := (1, 0, b, b + 1, b, 0, b + 1) \in \mathbb{F}_3^3,
     \]
     la podemos transformar en una palabra código del código Goppa definido por el conjunto de definición y el polinomio $g$:
 
@@ -327,7 +327,7 @@ En los siguientes ejemplos vamos a usar el código descrito en el apéndice \ref
 
     Por lo que la palabra $word$ codificada es la siguiente:
     \[
-        (1, 0, z_3 + 1, z_3, 0, z_3 + 1, 2z_3, z_3^2, z_3 + 1, 0).
+        (1, 0, b + 1, b, 0, b + 1, 2b, b^2, b + 1, 0).
     \]
 \end{exampleth}
 

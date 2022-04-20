@@ -5,7 +5,7 @@
 
 \chapter{Preliminares}
 
-En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando concepto de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en la población para introducir los algoritmos genéticos, que podrán ser de utilidad para realizar un ataque al criptosistema de McEliece.
+En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando la idea de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en poblaciones para introducir los algoritmos genéticos, que podrán ser de utilidad para realizar un ataque al criptosistema de McEliece.
 
 \section{Anillos}
 En esta sección introduciremos el concepto de anillo para poder definir el concepto de cuerpo, así como las principales propiedades de esta estructura algebraica.
@@ -43,7 +43,7 @@ Diremos que un elemento $a$ del anillo $A$ es \emph{invertible} si existe un ele
 Cuando se da la igualdad $1 = 0$, diremos que el anillo es \emph{trivial} y tendrá un solo elemento.
 
 \begin{definition}
-    Sea $A$ un anillo, $1 \in A$ el elemento neutro del producto y $n \geq 1$ un número natural, definimos la cardinalidad de $A$ como:
+    Sea $A$ un anillo, $1 \in A$ el elemento neutro del producto y $n \geq 1$ un número natural, definimos la característica de $A$ como:
     \[
         Car(A) = \left\{ \begin{array}{lc}
         0 &   \textit{si } n \cdot 1 \neq 0 \textit{ para cualquier } n \geq 1 \\
@@ -77,9 +77,9 @@ Para presentar el concepto de cuerpo finito, necesitaremos definir previamente e
 
 Sea $(K, +, \cdot)$ un cuerpo y $E \subset K$, diremos que $E$ es un \emph{subcuerpo} de $K$ o que $K$ es una \emph{extensión} de $E$ si se cumple que $(E, +, \cdot)$ es un cuerpo cuando las operaciones $+$ y $\cdot$ se restringen a $E$.
 
-Diremos que la \emph{característica} de un cuerpo finito $\mathbb{F}_p$ es $p$, con $p$ primo.
+Diremos que la \emph{característica} de un cuerpo finito $\mathbb{F}_q$ con $q = p^t$ es $p$, con $p$ primo.
 
-Todos los cuerpos finitos tienen un número de elementos $q = p^n$, para algún número primo $p$ y algún entero positivo $n$. Denotaremos por $\mathbb{F}_q$ a los cuerpos finitos con característica $q$, aunque otra notación común es $GF(q)$.
+Todos los cuerpos finitos tienen un número de elementos $q = p^n$, para algún número primo $p$ y algún entero positivo $n$. Denotaremos por $\mathbb{F}_q$ al cuerpo finito de $q$ elementos, aunque otra notación común es $GF(q)$.
 
 \begin{exampleth}
     El cuerpo finito $\mathbb{F}_{3^4}$ tiene $81$ elementos y su característica es $3$.
@@ -112,7 +112,7 @@ Notemos que todos los cuerpos finitos de orden $q$ son isomorfos, aunque cada cu
 \end{proposition}
 
 \begin{proof}
-    Por el teorema del binomio, podemos desarrollar la $n$-ésima potencia de un binomio. En este caso tenemos que
+    Por el Teorema del binomio, podemos desarrollar la $n$-ésima potencia de un binomio. En este caso tenemos que
     \begin{equation}
         \label{eq:binomio}
         ( \alpha + \beta )^p
@@ -178,8 +178,6 @@ A continuación tenemos algunas propiedades de los polinomios.
         \gr(f + g) = \max{(\gr(f), \; \gr(g))}
     \]
 \end{proposition}
-
-Podemos trasladar estos resultados al caso de los cuerpos finitos. Sea $\mathbb{F}_q$ un cuerpo finito, un polinomio $f(x)$ estará definido sobre dicho cuerpo si es de la forma $f(x) = \sum_{i = 0}^{n} a_i \cdot x^i$, donde $a_i \in \mathbb{F}_q$ para todo $i = 0, ..., n$. Análogamente, diremos que $f(x) \in \mathbb{F}_q$.
 
 Sean $f(x)$ y $g(x)$ polinomios en $\mathbb{F}_q[x]$, diremos que $f(x)$ divide a $g(x)$ si existe un polinomio $h(x) \in \mathbb{F}_q[x]$ tal que $g(x) = f(x) h(x)$ y lo denotaremos por $f(x) \vert g(x)$. El polinomio $f(x)$ se llama \emph{divisor} o \emph{factor} de $g(x)$.
 
@@ -294,7 +292,7 @@ De esta forma, multiplicamos los polinomios en $\alpha$ de forma usual y aplicam
 
 \section{Teoría de la complejidad}
 
-El objetivo de esta sección se basa en clasificar los problemas de acuerdo a su dificultad. Nos centraremos en estudiar la complejidad de los problemas decidibles, es decir, los problemas que pueden tener algoritmos para resolverlos.
+El objetivo de esta sección se basa en clasificar los problemas de acuerdo a su dificultad. Nos centraremos en estudiar la complejidad de los problemas decidibles, es decir, los problemas que tienen algoritmos para resolverlos.
 
 \subsection{Complejidad de los algoritmos}
 
@@ -302,7 +300,7 @@ A la hora de resolver un problema con un algoritmo, tendrán gran importancia lo
 
 La siguiente definición nos proporciona la notación más importante en el análisis de los algoritmos.
 
-\begin{definition}[Notación $\mathcal{O}$-grande]
+\begin{definition}[Notación big-$\mathcal{O}$]
     Sean $f, g : \mathbb{N}^r \longrightarrow \mathbb{R}$. Decimos que $f(n) = O(g(n))$ si existen dos constantes $c \in \mathbb{R}^+$ y $n_0 \in \mathbb{N}^r$ tales que $\forall n \geq n_0$, $f(n) \leq c \cdot g(n)$.
 \end{definition}
 
@@ -338,11 +336,11 @@ La teoría de la complejidad de los problemas se ocupa de los \emph{problemas de
     \label{fg:complexity}
 \end{figure}
 
-Con la teoría computacional podemos clasificar los problemas en sus clases de complejidad. Existen dos clases importantes de problemas: P y NP (Figura \ref{fg:complexity}).
+Existen dos clases importantes de problemas: P y NP (Figura \ref{fg:complexity}).
 
 La clase de complejidad P representa a la familia de problemas de decisión que se pueden resolver mediante un algoritmo en tiempo polinomial. Los problemas que pertenecen a esta clase son \emph{fáciles} de resolver.
 
-La clase de compejidad NP representa a la familia de problemas de decisión que se pueden resolver por un algoritmo no determinista en tiempo polinomial. Un algoritmo no determinista tiene algunos puntos en los que hay múltiples combinaciones diferentes sin ninguna especificación de cuál se tomará. Estos problemas se dicen que son más \emph{difíciles} de resolver.
+La clase de compejidad NP representa a la familia de problemas de decisión que se pueden resolver por un algoritmo no determinista en tiempo polinomial. Estos problemas se dicen que son más \emph{difíciles} de resolver, ya que no se conoce un algoritmo polinomial que los resuelva.
 
 Para definir la clase de los problemas NP-completos, necesitaremos previamente definir el concepto de reducción.
 
@@ -354,13 +352,13 @@ Un problema de decisión es \emph{NP-completo} si es NP y cualquier otro problem
 
 La figura \ref{fg:complexity} muestra la relación entre los problemas P, NP y NP-completos.
 
-Los problemas \emph{NP-duros} son problemas de optimización cuyo problema de decisión asociado es NP-completo. Las metaheurísticas constituyen una importante alternativa para resolver esta clase de problemas.
+Los problemas \emph{NP-duros} son problemas para los que existe una reducción desde todo problema NP. Por tanto, los problemas NP-completos son NP-duros, pero lo contrario no tiene por qué ser cierto. Un problema de optimización cuyo problema de decisión asociado es NP-completo es NP-duro.
 
-\section{Metaheurísticas basadas en la población}
+\section{Metaheurísticas basadas en poblaciones}
 
 Las \emph{metaheurísticas} representan una familia de técnicas de optimización aproximada. Proporcionan soluciones aceptables en un tiempo razonable para resolver problemas difíciles y complejos, esto es, problemas que no pertenecen a la clase de complejidad P o que no se conoce que pertenezcan a dicha clase. Sin embargo, no garantizan la optimalidad de las soluciones obtenidas.
 
-Las \emph{metaheurísticas basadas en la población} se pueden ver como una mejora iterativa en una población de soluciones. Estas metaheurísticas consisten en inicializar la población, posteriormente generan una nueva población de soluciones y finalmente esta nueva población reemplaza a la actual usando algunos procedimientos de selección. Una vez se alcanza la condición dada, el proceso de búsqueda finaliza y obtenemos una solución.
+Las \emph{metaheurísticas basadas poblaciones} se pueden ver como una mejora iterativa en una población de soluciones. Estas metaheurísticas consisten en inicializar la población, posteriormente generan una nueva población de soluciones y finalmente esta nueva población reemplaza a la actual usando algunos procedimientos de selección. Una vez se alcanza la condición dada, el proceso de búsqueda finaliza y obtenemos una solución.
 
 El esquema de este procedimiento se muestra a continuación.
 
@@ -381,7 +379,7 @@ El esquema de este procedimiento se muestra a continuación.
 Vamos a estudiar en detalle este procedimiento concretando los conceptos en los que se basa.
 
 \begin{enumerate}
-    \item \textbf{Generación de la población inicial}. Las metaheurísticas basadas en la población comienzan con una población inicial de soluciones. Este paso juega un papel fundamental en la efectividad del algoritmo y su eficiencia. El principal criterio para generar la población es que haya diversidad.
+    \item \textbf{Generación de la población inicial}. Las metaheurísticas basadas en poblaciones comienzan con una población inicial de soluciones. Este paso juega un papel fundamental en la efectividad del algoritmo y su eficiencia. El principal criterio para generar la población es que haya diversidad.
     \item \textbf{Generación de una nueva población}. En este paso, se genera una nueva población de soluciones. Se puede realizar de varias formas, sin embargo en este trabajo estudiaremos la que se basa en la evolución. En esta categoría, las soluciones que componen la población se seleccionan y se reproducen usando operadores de variación (por ejemplo, mutación o cruce) y actúan directamente sobre sus representaciones. Una nueva solución surge a partir de los diferentes atributos de las soluciones de la población actual.
     \item \textbf{Selección de la nueva población}. Este último paso consiste en seleccionar las nuevas soluciones y reemplazar a la población actual. Este reemplazamiento se puede realizar de varias maneras, por ejemplo una estrategia se basa en seleccionar la nueva población generada como la población actual, otra estrategia se fundamenta en el escoger las dos mejores soluciones de la nueva población y reemplazarlas por las dos peores de la población actual, etc.
 \end{enumerate}
@@ -427,9 +425,9 @@ El algoritmo \ref{alg:ev} ilustra este procedimiento.
 
 Los \emph{algoritmos genéticos} son algoritmos de optimización, búsqueda y aprendizaje inspirados en los procesos de evolución natural y evolución genética.
 
-Estos algoritmos suelen aplicar como operador de variación un operador de cruce a las dos soluciones (cromosomas) que juegan un papel importante, además de un operador de mutación que modifica aleatoriamente el contenido del individuo (gen) para fomentar la diversidad. Los algoritmos genéticos usan una selección probabilística. El reemplazamiento es generacional, esto es, los padres serán reemplazados por sus descendientes.
+Estos algoritmos suelen aplicar como operador de variación un operador de cruce a las dos soluciones (cromosomas) que juegan un papel importante, además de un operador de mutación que modifica aleatoriamente el contenido del individuo (gen) para fomentar la diversidad. Los algoritmos genéticos usan una selección probabilística. El reemplazamiento puede ser generacional, esto es, los padres serán reemplazados por sus descendientes.
 
-El operador de cruce es un operador binario y, a veces, $n$-ario. Este operador se basa en adquirir las características de los dos padres y generar un descendiente. La principal característica de este operador es la \emph{heredabilidad}, pues crea un cromosoma a partir de los genes heredados de los padres. Esto es, el descendiente tendrá una recombinación de las características de sus padres. Los padres cruzarán con una cierta probabilidad $p_c$. Es importante que el operador de cruce debe producir soluciones válidas.
+El operador de cruce es un operador binario y, a veces, $n$-ario. Este operador se basa en adquirir las características de los dos padres y generar un descendiente. La principal característica de este operador es la \emph{heredabilidad}, pues crea un cromosoma a partir de los genes heredados de los padres. Esto es, el descendiente tendrá una recombinación de las características de sus padres. Los padres cruzarán con una cierta probabilidad $p_c$. Es importante asegurar que el operador de cruce produce soluciones válidas.
 
 El operador de mutación es un operador unario que actúa sobre un solo individuo. Las mutaciones representan pequeños cambios de los individuos seleccionados. La probabilidad $p_m$ define la probabilidad de mutar cada elemento (gen) de la representación. Este operador debe garantizar que cualquier solución estará en el espacio de búsqueda y que sea válida. Con la mutación conseguimos introducir diversidad en los individuos de una población. Al igual que con el operador de cruce, el de mutación también debe producir soluciones válidas.
 
@@ -453,6 +451,4 @@ El algoritmo \ref{alg:gen} ilustra este procedimiento.
     }
 \end{Ualgorithm}
 
-Este modelo es elitista y produce una convergencia rápida cuando se reemplazan los peores cromosomas de la población.
-
-% TODO operador de seleccion de torneo binario
+El modelo puede ser elitista (conserva a los mejores individuos), lo que produce una convergencia rápida cuando se reemplazan los peores cromosomas de la población.
