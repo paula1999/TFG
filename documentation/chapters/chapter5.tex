@@ -17,11 +17,62 @@ Sea $\mathbb{F}_q$ un cuerpo finito con $q$ elementos y sean $k,n$ dos números 
 El siguiente resultado nos proporciona un método para calcular la distancia mínima a partir de la matriz escalonada (\emph{reduced row echelon form}) de la matriz generadora del código equivalente.
 
 \begin{theorem}
-    Sea $G$ una matriz generadora de dimensión $k \times n$ de un $[n, k]_q$-código lineal $\mathcal{C}$ sobre el cuerpo finito $\mathbb{F}_q$. Existe una permutación $x \in \mathcal{S}_n$ tal que la matriz escalonada, $R$, de $GP_x$, donde $P_x$ es la matriz asociada a la permutación $x$, cumple que el peso de alguna de sus filas alcanza la mínima distancia de $\mathcal{C}$. Por lo tanto, si $b$ es una fila de $R$ verificando esa propiedad, entonces $bP_x^{-1}$ es una palabra código no nula de $\mathcal{C}$ con peso mínimo.
+    Sea $G$ una matriz generadora de dimensión $k \times n$ de un $[n, k]_q$-código lineal $\mathcal{C}$ sobre el cuerpo finito $\mathbb{F}_q$. Existe una permutación $x \in \mathcal{S}_n$ tal que la matriz escalonada, $R$, de $GP_x$, donde $P_x$ es la matriz asociada a la permutación $x$, cumple que el peso de alguna de sus filas alcanza la distancia mínima de $\mathcal{C}$. Por lo tanto, si $b$ es una fila de $R$ verificando esa propiedad, entonces $bP_x^{-1}$ es una palabra código no nula de $\mathcal{C}$ con peso mínimo.
 \end{theorem}
 
 \begin{proof}
-    Ver \cite[Página 4]{Cuellar_etal}.
+    Sea $d$ la distancia mínima de $\mathcal{C}$ y sea $a \in \mathcal{C}$ una palabra código tal que $w(a) = d$. Como $a$ es distinto de cero, existe una matriz regular $A$ de dimensión $k \times k$ sobre $\mathbb{F_q}$ tal que 
+    \[
+        AG = \left( \frac{G_1}{a} \right)
+    \]
+    para alguna matriz $G_1$ de dimensión $(k-1) \times n$ sobre $\mathbb{F_q}$. Por otra parte, como $w(a) = d$, existe una permutación $x \in \mathcal{S}_n$ que mueve las entradas no nulas de $a$ a las últimas posiciones, esto es,
+    \[
+        aP_x = (0, ..., 0, a_1, ..., a_d),
+    \]
+    donde $a_1, ..., a_d \in \mathbb{F}_q \backslash \{ 0 \}$. Luego
+    \[
+        AGP_x = \left( \frac{G_1 P_x}{a P_x} \right) = \left( \frac{G_1 P_x}{0 \cdots 0 \vert a_1 \cdots a_d} \right).
+    \]
+    Ahora, definimos la matriz $A'$ de dimensión $(k-1) \times (k-1)$ sobre $\mathbb{F_q}$ de tal forma que sea invertible y que $A'G_1P_x = H'$ sea una matriz escalonada. Tenemos que
+    \begin{equation}
+        \label{eq:matriz_bloques}
+        \left( 
+            \begin{array}{c|c} 
+                A' & 0 \\
+                \hline
+                0 & 1
+            \end{array}
+        \right)
+        AGP_x
+        =
+        \left( 
+            \begin{array}{c|c} 
+                A' & 0 \\
+                \hline
+                0 & 1
+            \end{array}
+        \right)
+        \left( 
+            \begin{array}{c} 
+                G_1P_x \\
+                \hline
+                \begin{array}{c|c}
+                    0 \cdots 0 & a_1 \cdots a_d
+                \end{array}
+            \end{array}
+        \right)
+        = 
+        \left( 
+            \begin{array}{c} 
+                H' \\
+                \hline
+                \begin{array}{c|c}
+                    0 \cdots 0 & a_1 \cdots a_d
+                \end{array}
+            \end{array}
+        \right).
+    \end{equation}
+    La última fila de $H'$ es distinta de cero, pues la matriz $G_1$ tiene rango $k-1$. Supongamos que el pivote de esta fila está en la columna $i_0$-ésima. Supongamos que $i_0 \geq n - d + 1$, entonces las últimas dos filas de \eqref{eq:matriz_bloques} son linealmente independientes y las coordenadas no nulas se encuentran en las últimas $d$ coordenadas. Por tanto, existe una combinación lineal de ambas cuyo peso es menor que $d$, lo que lleva a una contradicción. Luego se tiene que $i_0 < n - d + 1$ y en consecuencia, la última fila de \eqref{eq:matriz_bloques} coincide con la última fila de la matriz escalonada de $GP_x$, salvo multiplicación escalar no nula, como queríamos.
 \end{proof}
 
 Este teorema expone que encontrar la distancia mínima de un $[n, k]_q$-código lineal se reduce a encontrar el mínimo de la aplicación $\mathfrak d : \mathcal{S}_n \rightarrow \mathbb{N}$ definida por
@@ -91,11 +142,17 @@ En \cite{Cuellar_etal} se obtiene que la probabilidad de encontrar el mínimo de
 
 \section{Algoritmos genéticos}
 
-El teorema de la sección \ref{sec:perm} tiene una consecuencia inmediata: nos permite cambiar el problema de encontrar la distancia mínima, para que la búsqueda de la palabra código con peso mínimo equivale a encontrar una permutación adecuada de las columnas de una matriz generadora.
+En esta sección estudiaremos las adaptaciones de los algoritmos GGA y CHC propuestos en \cite{Cuellar_etal} para resolver el problema de encontrar la distancia mínima de un código lineal. Además, implementaremos ambos algoritmos y analizaremos los resultados.
 
-En esta sección estudiaremos las adaptaciones de los algoritmos GGA y CHC propuestos en \cite{Cuellar_etal}. Además, implementaremos ambos algoritmos y analizaremos los resultados.
+La representación clásica de estos algoritmos es la discreta. Esto es, fijado un código $\mathcal{C}$ de longitud $n$ y dimensión $k$ sobre un cuerpo finito con $q$ elementos $\mathbb{F}_q$, consideramos su matriz generadora $G$. Buscaremos una $k$-tupla $m = (m_1, ..., m_k) \in \mathbb{F}_q^k$ con $m \neq 0$ de tal forma que el peso correspondiente a la palabra código $mG$ sea mínimo. De este modo, cada solución (cromosoma) $x$ estará asignada a un mensaje $m$ como un fenotipo, mientras que los genotipos se componen de $k$ variables de decisión o genes cuyos valores están en el conjunto $\mathbb{F}_q$. De esta forma, la función fitness definida en $\mathbb{F}_q^k \longrightarrow \mathbb{N}$ consistirá en minimizar el peso que producen las soluciones que componen la población.
 
-La función fitness, en ambos algoritmos, consistirá en minimizar el peso que producen las soluciones que componen la población.
+No obstante, según el resultado de la sección \ref{sec:perm} podemos cambiar el espacio de las soluciones del planteamiento tradicional del problema al espacio de las permutaciones de $n$ elementos, $\mathcal{S}_n$, donde $n$ es la longitud del código lineal que estudiaremos. Esto tiene una consecuencia inmediata: nos permite cambiar el problema de encontrar la distancia mínima $d(\mathcal{C})$ de un código $\mathcal{C}$, para que la búsqueda de la palabra código con peso mínimo equivalga a encontrar una permutación $x \in \mathcal{S}_n$ adecuada de las columnas de una matriz generadora de tal forma que la fila $r$ de su matriz escalonada tenga peso $w(r) = d(\mathcal{C})$. Así, las soluciones (cromosomas) se representarán como permutaciones $x$ (fenotipos) de las $n$ columnas de la matriz generadora $G$, y que contienen $n$ variables de decisión (genotipos) cuyos valores pueden ser $\{ 1,...,n\}$, donde cada número representa una posición de cada columna de la matriz. Esto es, dada una permutación $x = (x_1, ..., x_n)$, un valor $x_i$ significa que la columna de la matriz que se encuentra en la posición $i$ cambiará su ubicación a la columna en la posicición $x_i$ en la permutación.
+
+Por tanto, el fitness de una permutación $x \in \mathcal{S}_n$ se puede calcular como
+\[
+    f(x) = \min \{w(r_i) : r_i \text{ es una fila de la matriz escalonada de } GP_x \},
+\]
+donde $P_x$ denota a la matriz de permutaciones de $x$.
 
 \subsection{Algoritmo GGA}
 

@@ -113,6 +113,8 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
         sage: g = x^3 + a*x^2 + 1
         sage: n = 10
         sage: defining_set = get_defining_set(n, g, L)
+        sage: defining_set
+        > [z4^2 + 1, z4^3 + 1, z4^2, z4, z4^3 + z4^2, z4^2 + z4, z4^3 + z4 + 1, z4^3 + z4, z4^2 + z4 + 1, 1]
         sage: C = Goppa(defining_set, g, F)
         sage: C
         > [10, 4] Goppa code
@@ -128,12 +130,12 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
     La matriz de paridad $H$ que nos devuelve el código anterior es la siguiente:
     \[
         H = \left(\begin{array}{rrrrrrrrrr}
-            0 & z_{2} & 0 & z_{2} + 1 & 1 & z_{2} + 1 & 1 & 0 & 0 & 1 \\
-            1 & 1 & z_{2} + 1 & 1 & z_{2} + 1 & z_{2} + 1 & 0 & 0 & z_{2} + 1 & 0 \\
-            1 & 1 & 1 & z_{2} + 1 & z_{2} & z_{2} & z_{2} + 1 & 0 & 0 & z_{2} \\
-            1 & z_{2} & z_{2} + 1 & 0 & 1 & 0 & 1 & 0 & z_{2} & z_{2} \\
-            0 & 1 & z_{2} & 1 & z_{2} & z_{2} & z_{2} & 1 & 1 & 1 \\
-            z_{2} & z_{2} & 0 & z_{2} & z_{2} & 1 & z_{2} & 0 & 1 & z_{2}
+            0 & b & 0 & b + 1 & 1 & b + 1 & 1 & 0 & 0 & 1 \\
+            1 & 1 & b + 1 & 1 & b + 1 & b + 1 & 0 & 0 & b + 1 & 0 \\
+            1 & 1 & 1 & b + 1 & b & b & b + 1 & 0 & 0 & b \\
+            1 & b & b + 1 & 0 & 1 & 0 & 1 & 0 & b & b \\
+            0 & 1 & b & 1 & b & b & b & 1 & 1 & 1 \\
+            b & b & 0 & b & b & 1 & b & 0 & 1 & b
             \end{array}
         \right).
     \]
@@ -147,10 +149,10 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
     Este código devuelve la siguiente matriz generadora:
     \[
         G = \left(\begin{array}{rrrrrrrrrr}
-        1 & 0 & 0 & z_{2} + 1 & 0 & z_{2} + 1 & z_{2} & z_{2} + 1 & 0 & z_{2} \\
-        0 & 1 & 0 & 0 & 0 & z_{2} + 1 & 0 & 1 & 1 & 0 \\
-        0 & 0 & 1 & z_{2} & 0 & z_{2} + 1 & 0 & z_{2} + 1 & 1 & z_{2} + 1 \\
-        0 & 0 & 0 & 0 & 1 & 1 & z_{2} + 1 & 0 & 0 & 1
+        1 & 0 & 0 & b + 1 & 0 & b + 1 & b & b + 1 & 0 & b \\
+        0 & 1 & 0 & 0 & 0 & b + 1 & 0 & 1 & 1 & 0 \\
+        0 & 0 & 1 & b & 0 & b + 1 & 0 & b + 1 & 1 & b + 1 \\
+        0 & 0 & 0 & 0 & 1 & 1 & b + 1 & 0 & 0 & 1
         \end{array}\right).
     \]
     Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $4$.
@@ -165,7 +167,7 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 
 \begin{exampleth}
     \label{ex:goppa-3_3}
-    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Obtengamos el código de Goppa definidor por dicho conjunto de definición y polinomio $g$.
+    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 8$ como longitud del conjunto de definición. Obtengamos el código de Goppa definidor por dicho conjunto de definición y polinomio $g$.
 
     \begin{lstlisting}[gobble=4]
         sage: F = GF(3^3)
@@ -174,14 +176,14 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
         sage: b = F.gen()
         sage: R.<x> = L[]
         sage: g = x^2 + a*x + 1 + a^2
-        sage: n = 10
+        sage: n = 8
         sage: defining_set = get_defining_set(n, g, L)
         sage: C = Goppa(defining_set, g, F)
         sage: C
-        > [10, 6] Goppa code
+        > [8, 4] Goppa code
     \end{lstlisting}
     
-    Observamos que el código es un $[10, 6]$-código de Goppa, esto es, la longitud de este código es $10$ y la dimensión es $6$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
+    Observamos que el código es un $[8, 4]$-código de Goppa, esto es, la longitud de este código es $8$ y la dimensión es $4$. Calculemos ahora la matriz de paridad y la matriz generadora asociada a este código.
 
     \begin{lstlisting}[gobble=4]
         sage: H = C.parity_check_matrix()
@@ -189,13 +191,14 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
     \end{lstlisting}
 
     La matriz de paridad $H$ que nos devuelve el código anterior es la siguiente:
-    \[\scriptsize
+    \[
+        \footnotesize
         H = 
-        \left(\begin{array}{rrrrrrrrrr}
-        2 z_{3}^{2} + 2 z_{3} + 2 & z_{3}^{2} + 1 & 1 & z_{3}^{2} & 2 z_{3}^{2} + 2 z_{3} + 1 & 1 & 2 z_{3}^{2} + 2 z_{3} + 2 & z_{3} + 2 & z_{3}^{2} + 1 & z_{3}^{2} + 2 z_{3} + 1 \\
-        z_{3}^{2} + 2 z_{3} + 2 & z_{3}^{2} + 1 & 2 & z_{3}^{2} + z_{3} & z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} & z_{3}^{2} + 2 z_{3} + 2 & 1 & z_{3}^{2} & z_{3}^{2} + 1 \\
-        2 z_{3}^{2} + z_{3} + 1 & z_{3} + 1 & 1 & z_{3}^{2} + 2 z_{3} & z_{3}^{2} + 1 & z_{3}^{2} + z_{3} & z_{3}^{2} + z_{3} + 1 & 2 z_{3} + 2 & z_{3}^{2} & 2 \\
-        0 & z_{3} + 2 & 0 & z_{3}^{2} & z_{3}^{2} + 2 z_{3} & z_{3}^{2} + 2 z_{3} + 2 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} & z_{3}^{2} + z_{3} & 2 z_{3}^{2} + 2 z_{3} + 2
+        \left(\begin{array}{rrrrrrrr}
+        2 b^{2} + 2 b + 2 & b^{2} + 2 b & 2 b & 2 b^{2} + 1 & 2 b^{2} + b + 2 & b^{2} & 2 b + 2 & 2 b + 1 \\
+        2 b + 1 & b^{2} + 1 & b^{2} + b + 1 & 2 & 2 b^{2} + 1 & 2 b^{2} + b & b^{2} + 2 b & 2 \\
+        b^{2} + 2 b + 2 & 2 b^{2} + b + 1 & b^{2} + 2 b + 2 & b + 2 & b^{2} + 2 b & b^{2} + b & 2 & b^{2} + 2 b + 1 \\
+        2 b^{2} + 2 b + 2 & 2 b^{2} + b + 2 & 2 b^{2} + b + 1 & 2 b^{2} + 2 b & b & 2 & 2 b^{2} + b + 1 & b + 1
         \end{array}\right).
     \]
     Análogamente, podemos calcular la matriz generadora $G$ como se indica a continuación.
@@ -207,18 +210,15 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 
     Este código devuelve la siguiente matriz generadora:
     \[ 
-        \footnotesize
         G = 
-        \left(\begin{array}{rrrrrrrrrr}
-        1 & 0 & 0 & 0 & 0 & 0 & 2 z_{3} + 2 & 2 z_{3}^{2} + 1 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} + 1 \\
-        0 & 1 & 0 & 0 & 0 & 0 & 2 z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} + 2 z_{3} + 2 & 2 z_{3}^{2} + 2 & 2 z_{3}^{2} + 2 z_{3} \\
-        0 & 0 & 1 & 0 & 0 & 0 & 2 z_{3}^{2} + z_{3} + 2 & 2 z_{3}^{2} + 2 z_{3} & 2 z_{3} + 2 & 2 z_{3}^{2} + 2 z_{3} \\
-        0 & 0 & 0 & 1 & 0 & 0 & 2 z_{3}^{2} + z_{3} & z_{3} & 2 z_{3}^{2} + z_{3} & z_{3}^{2} + 2 z_{3} + 2 \\
-        0 & 0 & 0 & 0 & 1 & 0 & z_{3} + 1 & 2 z_{3}^{2} + 2 z_{3} & z_{3} + 2 & z_{3}^{2} + 2 \\
-        0 & 0 & 0 & 0 & 0 & 1 & z_{3}^{2} + 2 z_{3} + 1 & z_{3}^{2} + 1 & z_{3}^{2} + 2 & 2 z_{3}^{2} + 1
-        \end{array}\right).
+        \left(\begin{array}{rrrrrrrr}
+            1 & 0 & 0 & 0 & 2 b^{2} + b + 1 & 2 & b^{2} + 2 & 2 b + 1 \\
+            0 & 1 & 0 & 0 & b^{2} + b & 2 & b^{2} + 2 b & b^{2} + 1 \\
+            0 & 0 & 1 & 0 & 2 b^{2} + 1 & b^{2} & b^{2} + 1 & b^{2} + 2 b + 2 \\
+            0 & 0 & 0 & 1 & 2 b^{2} & 1 & 1 & 2 b + 2
+            \end{array}\right).
     \]
-    Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $6$.
+    Observamos que efectivamente el rango de la matriz generadora coincide con la dimensión del código, que era $4$.
 
     Además, podemos comprobar efectivamente que se da la igualdad $H \cdot G^T = 0$:
 

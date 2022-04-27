@@ -42,7 +42,7 @@ La propiedad \ref{def:criptosistema} se transforma en
 \[
     D_{k_s} \left( E_{k_p}(m) \right) = m.
 \]
-Para encriptar y desencriptar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}).
+Para encriptar y desencriptar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}) \cite[Sección 2.1]{Introduction_to_cryptography}.
 
 En 1976, Diffie y Hellman \cite{Diffie_Hellman_1976} introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, también llamada \emph{criptografía asimétrica}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (k_p, k_s)$, que consiste en dos partes: $k_p$ es la clave de cifrado y es pública, y $k_s$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $k_p$ del receptor. Así, el receptor poddrá descifrar el texto cifrado usando su clave privada $k_s$, que solo conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
 
@@ -60,36 +60,6 @@ Además de proporcionar confidencialidad, la criptografía proporciona solucione
 Para garantizar la integridad de los datos, hay métodos simétricos y de clave pública. El mensaje $m$ es aumentado por un \emph{código de autenticación de mensaje} (MAC). Este código es generado por un algoritmo que depende de la clave secreta. Así, el mensaje aumentado $(m, MAC(k,m))$ está protegido contra modificaciones. El receptor ahora puede comprobar la integridad del mensaje $(m, \bar{m})$ verificando que $MAC(k, m) = \bar{m}$.
 
 Las firmas digitales requieren métodos de clave pública y proporcionan autenticación y no repudiablidad. Cualquier persona puede verificar si una firma digital es válida con la clave pública del firmante. Esto es, si firmamos con nuestra clave privada $k$, obtenemos la firma $Sign(k_s, m)$. El receptor recibe la firma $s$ del mensaje $m$ y comprueba con el algoritmo de verificación \emph{Verify} que se cumple que \emph{Verify}$(k_p, s, m) = ok$, siendo $k_p$ la clave pública del emisor.
-
-\section{Criptografía simétrica}
-
-Un criptosistema \emph{simétrico}, como hemos visto, viene determinado por dos aplicaciones
-\[
-    E : \mathcal{K} \times \mathcal{M} \rightarrow \mathcal{C},
-\]
-\[
-    D : \mathcal{K} \times \mathcal{C} \rightarrow \mathcal{M},
-\]
-tales que para cualquier clave $k \in \mathcal{K}$ y cualquier mensaje $m \in \mathcal{M}$,
-\begin{equation}
-    \label{def:criptosistema_simetrico}
-    D(k, E(k, m)) = m.
-\end{equation}
-
-Fijada $k \in \mathcal{K}$, usaremos la notación 
-\[
-    E_k : \mathcal{M} \rightarrow \mathcal{C},
-\]  
-\[
-    D_k : \mathcal{C} \rightarrow \mathcal{M},
-\]
-para las funciones de cifrado y descifrado. La propiedad \ref{def:criptosistema_simetrico} se transforma en
-\[
-    D_k \left( E_k (m) \right) = m.
-\]
-Observamos que la clave que se usa para cifrar es la misma que se usa para descifrar.
-
-Algunos ejemplos importantes de sistemas simétricos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}) \cite[Sección 2.1]{Introduction_to_cryptography}.
 
 \section{Criptografía asimétrica}
 
@@ -172,7 +142,7 @@ El criptosistema RSA también se puede usar para realizar firmas digitales. Sea 
 
 \section{Criptografía post-cuántica}
 
-En \cite{Post-Quantum_Cryptography_2009} se comenta la creencia de que algunos sistemas criptográficos, tales como RSA, resisten los ataques de ordenadores clásicos, pero no de los ordenadores cuánticos. Sin embargo, se cree que algunas alternativas, como el sistema de McEliece con una clave de cuatro millones de bits, son capaces de resistir los ataques de ordenadores clásicos y cuánticos. Es por esto que surgen diversas preocupaciones ante la amenaza de los ordenadores cuánticos: se duda sobre si seguir usando RSA o simplemente cambiar a otros sistemas criptográficos que sean resistentes a dichos ordenadores. Sin embargo, esto último no es tan sencillo pues necesitamos tiempo para mejorar la eficiencia, fomentar la confanza y mejorar de la usabilidad de los criptosistemas post-cuánticos. En resumen, todavía no estamos preparados para que el mundo cambie a la criptografía post-cuántica.
+En \cite{Post-Quantum_Cryptography_2009} se comenta la creencia de que algunos sistemas criptográficos, tales como RSA, resisten los ataques de ordenadores clásicos, pero no de los ordenadores cuánticos. Es por esto que surgen diversas preocupaciones ante la amenaza de los ordenadores cuánticos: se duda sobre si seguir usando RSA o simplemente cambiar a otros sistemas criptográficos que sean resistentes a dichos ordenadores. Sin embargo, esto último no es tan sencillo pues necesitamos tiempo para mejorar la eficiencia, fomentar la confanza y mejorar de la usabilidad de los criptosistemas post-cuánticos. En resumen, todavía no estamos preparados para que el mundo cambie a la criptografía post-cuántica.
 
 En esta sección estudiaremos los sistemas criptográficos basados en códigos, es decir, criptosistemas que usan una familia de códigos correctores de errores $\mathcal{C}$. Para ello, agregan un error a una palabra de alguno de los códigos $\mathcal{C}$ o al calcular un síndrome relativo a la matriz de paridad de $\mathcal{C}$.
 
@@ -184,7 +154,7 @@ En 1978, R. J. McEliece propuso un criptosistema de clave pública \cite{McEliec
 
 La construcción original en \cite{McEliece_1978} usa códigos de Goppa binarios para cifrar y descifrar mensajes. Sim embargo, han surgido otras variantes de este criptosistema que usan otros códigos lineales, pero la mayoría han resultado ser inseguros. A día de hoy, la construcción original de 1978 se considera segura con la correcta elección de parámetros.
 
-Por esta razón, el criptosistemade McEliece se pone a la altura del RSA. Existen algunas diferencias entre ambos criptosistemas, el de McEliece es capaz de cifrar y descifrar mensajes más rápido. Sin embargo, los tamaños de las claves son mayores que los del RSA, que es la razón por la que el criptosistema de McEliece apenas se usa. La principal razón por la que está creciendo el interés en el criptosistema de McEliece es porque es uno de los mejores candidatos para criptosistemas de clave pública seguros post-cuánticos. El esquema de Niederreiter \cite{Niederreiter_1986}, una variante del criptosistema de McEliece, también permite construir un esquema de firma digital segura.
+Por esta razón, el criptosistemade McEliece se pone a la altura del RSA. Existen algunas diferencias entre ambos criptosistemas, el de McEliece es capaz de cifrar y descifrar mensajes más rápido. Sin embargo, los tamaños de las claves son mayores que los del RSA, que es la razón por la que el criptosistema de McEliece apenas se usa. La principal razón por la que está creciendo el interés en el criptosistema de McEliece es porque es uno de los mejores candidatos para criptosistemas de clave pública seguros post-cuánticos. El esquema de Niederreiter \cite{Niederreiter_1986}, una variante del criptosistema de McEliece, también permite construir un esquema de firma digital segura \cite[Sección 4]{Niederreiter_signature_2001} \cite{Advances_cryptology}.
 
 En esta sección presentaremos el criptosistema de McEliece incluyendo algunas de sus variantes y estudiaremos su seguridad y los ataques más conocidos.
 
@@ -277,15 +247,9 @@ Para recuperar $\textbf{m}$ eficientemente, podemos usar el siguiente algoritmo 
 \[
     S^{-1} \textbf{c}^T = H P \textbf{m}^T.
 \]
-Luego, buscamos un vector $\textbf{z} \in \mathbb{F}^n$ tal que $H \textbf{z}^T = HP \textbf{m}^T$. Entonces $\textbf{z} - (P\textbf{m}^T)^T = \textbf{z} - \textbf{m}P^T$ es una palabra código válida en $\mathcal{C}$ debido a que los síndromes de las palabras son iguales. Como $\textbf{m}P^T$ tiene peso $t$, podemos aplicar $\mathcal{D}$ a $\textbf{z}$ para encontrar el vector error $\textbf{m}P^T$ y por lo tanto $\textbf{m}$.
+Luego, buscamos un vector $\textbf{z} \in \mathbb{F}^n$ tal que $H \textbf{z}^T = S^{-1}c^T$. Como además $H \textbf{z}^T = HP\textbf{m}^T$, entonces $\textbf{z} - (P\textbf{m}^T)^T = \textbf{z} - \textbf{m}P^T$ es una palabra código válida en $\mathcal{C}$ debido a que los síndromes de las palabras son iguales. Como $\textbf{m}P^T$ tiene peso $t$, podemos aplicar $\mathcal{D}$ a $\textbf{z}$ para encontrar el vector error $\textbf{m}P^T$ y por lo tanto $\textbf{m}$.
 
-% TODO
-\textcolor{red}{Hay que desarrollar y explicar mejor el párrafo de arriba.}
-
-Observemos que el mensaje en texto plano se representa como el error de la palabra código en lugar de la palabra con la información original. De este modo, el mensaje en texto plano debe codificarse adicionalmente en un vector de peso $t$ para el cifrado.
-
-% TODO
-\textcolor{red}{No entiendo qué dice de hacerle al mensaje en texto plano para poder cifrarlo.}
+Observemos que el mensaje en texto plano se representa como el error de la palabra código en lugar de la palabra con la información original. De este modo, cualquier mensaje que queramos enviar se tendrá que codificar adicionalmente en un vector binario de peso $t$ antes de cifrarlo.
 
 A diferencia con el criptosistema de McEliece, el algoritmo de decodificación del síndrome es más eficiente que el algoritmo de decodificación del criptosistema de McEliece. Además, tambien se puede usar para construir un esquema de firma digital.
 
@@ -294,6 +258,15 @@ Sin embargo, si un ataque es capaz de romper el criptosistema de McEliece, tambi
 % TODO
 \textcolor{red}{Poner ejemplos usando la implementación de este criptosistema.}
 
+\subsubsection{Firma digital}
+
+Para obtener una firma digital eficiente necesitamos dos cosas: un algoritmo capaz de calcular la firma para cualquier documento de tal forma que identifiquen a un único autor, y un algoritmo de verificación rápida disponible para todo el mundo.
+
+Sea $h$ una función hash que devuelve una palabra binaria de longitud $n - k$ (la longitud del síndrome). Sea $D$ nuestro documento, aplicamos la función $h$ a dicho documento y definimos $s = h(D)$. Denotamos por $[ \cdots s \cdots \vert \cdot i \cdot]$ la concatenación de $s$ e $i$ y $s_i = h([ \cdots s \cdots \vert \cdot i \cdot])$.
+
+El algoritmo de firma calculará $s_i$ para $i$ empezando en $0$ e incrementándolo en una unidad hasta que uno de los síndromes $s_i$ sea decodificable. Denotemos por $i_0$ al primer índice para el cual $s_i$ es decodificable, y usaremos este síndrome para la firma. A continuación, la firma será el mensaje descifrado, esto es, la palabra $z$ de longitud $n$ tal que $Hz^T = s_{i_0}$. Sin embargo, la firma también tendrá que incluir el valor de $i_0$ para la verificación. La firma entonces será $[\cdots z \cdots \vert \cdot i_0 \cdot]$.
+
+El algoritmo de verificación es mucho más simple (y rápido). Este algoritmo consiste en aplicar la función de cifrado público a la firma y verificar que el resultado es el valor hash del documento. Esto es, primero calculamos $s_1 = Hz^T$ con la clave pública $H$. Luego, calculamos $s_2 = h([\cdots h(D) \cdots \vert \cdot i_0 \cdot])$ con la función hash pública. Finalmente, si $s_1$ y $s_2$ son iguales entonces la firma es válida.
 
 \subsection{Seguridad del criptosistema de McEliece}
 

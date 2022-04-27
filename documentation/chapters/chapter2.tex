@@ -265,13 +265,24 @@ En el artículo \cite{Vardy_1997} se ha demostrado que el problema de calcular l
 
 El problema \ref{pr:min-dist} es un problema NP-completo. Veamos un esquema de la demostración de este resultado. Para ello, haremos uso de una transformación polinomial del problema de Decodificación de Máxima Verosimilitud al problema de Distancia Mínima.
 
-\begin{problemth}[Decodificación de Máxima Verosimilitud]
-    \label{pr:dmv}
-    Dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. ¿Existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$?
-\end{problemth}
+\begin{theorem}[Decodificación de Máxima Verosimilitud]
+    \label{th:dmv}
+    Dados una matriz binaria $H$ de dimensión $m \times n$, un vector $s \in \mathbb{F}_2^m$ y un número entero $w > 0$. Saber si existe un vector $x \in \mathbb{F}_2^n$ de peso menor o igual que $w$ tal que $Hx^t = s$ es un problema NP-completo.
+\end{theorem}
 
-El problema \ref{pr:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión para cuerpos finitos de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-duro, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathbb{C\#}$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathbb{C\#}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathbb{C\#}$, y el mapeo en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
+\begin{proof}
+    Veamos que este problema es NP-completo reduciendo el problema del emparejamiento tridimensional \cite{Berlekamp_McEliece_1978}.
 
+    \begin{problemth}[Emparejamiento Tridimensional]
+        Dado un subconjunto $U \subset T \times T \times T$, donde $T$ es un conjunto finito. ¿Existe un conjunto $W \subset U$ tal que $\vert W \vert = \vert T \vert$, y que dos elementos de $W$ no coincidan en alguna coordenada?
+    \end{problemth}
+
+    Antes de reducir este problema, vamos a codificar el conjunto $U$ de $3$-tuplas en una matriz de incidencia binaria $\vert U \vert \times 3 \vert T \vert$, en la que cada fila corresponde a una de las $3$-tuplas y tiene peso $3$, y cada $1$ corresponde a una componente de la $3$-tupla. En términos de esta matriz, una solución al problema de Emparejamiento Tridimensional es la existencia de $\vert T \vert$ filas cuya suma módulo $2$ es $111\cdots111$.
+
+    Supongamos entonces que tenemos un algoritmo en tiempo polinómial para el problema de Decodificación de Máxima Verosimilitud. Ahora, dado un conjunto $U \subset T \times T \times T$ para el problema de Emparejamiento Tridimensional, sea $A$ la matriz de incidencia $\vert U \vert \times 3 \vert T \vert$ descrita anteriormente. Entonces, ejecutando el algoritmo para la Decodificación de Máxima Verosimilitud con las entradas $A$, $y = (111\cdots111)$, $w = \vert T \vert$, obtendríamos, en tiempo polinomial, si existen las coincidencias. Esto es, un algoritmo en tiempo polinomial para la Decodificación de Máxima Verosimilitud implica un algoritmo en tiempo polinomial para el Emparejamiento Tridimensional, que a su vez implica un algoritmo en tiempo polinomial para cualquier NP-problema. Esto demuestra que el problema que el problema de Decodificación de Máxima Verosimilitud es NP-completo.
+\end{proof}
+
+El problema \ref{th:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión para cuerpos finitos de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-duro, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathcal{C}$ definido por la matriz de paridad $H$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathcal{C}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathcal{C}$, y la aplicación en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 
 \begin{definition}
     Sea $A_i$, también denotada por $A_i(\mathcal{C})$, el número de palabras código con peso $i$ en $\mathcal{C}$. Se dice que la lista $A_i$ para $0 \leq i \leq n$ es la distribución del peso o espectro del peso de $\mathcal{C}$.
@@ -443,6 +454,6 @@ y la palabra código de peso $dist(C)$ se encuentra en $C_{i_0}$.
             \end{array}
             \right) .
     \]
-    Esta matriz generadora tiene conjunto de información $\{6\}$. El conjunto $C_1$ está formado por las filas de las tres matrices generadoras $G_1$, $G_2$ y $G_3$. Ahora, calculamos el peso de cada uno de ellos, esto es, el número de coordenadas no nulas de cada elemento y obtenemos que todos tienen peso $4$, por lo que $\bar{d}_1 = 4$. El límite inferior del peso mínimo de los vectores que no pertenecen a $C_1$ es $\underline{d}_1 = 1 + 1 - (3-3) + 1 + 1 - (3-3) = 4$. Concluimos que $d = \bar{d}_1 = 4$ es la mínima distancia de $C$.
+    Esta matriz generadora tiene conjunto de información $\{6\}$. El conjunto $C_1$ está formado por las filas de las tres matrices generadoras $G_1$, $G_2$ y $G_3$. Ahora, calculamos el peso de cada uno de ellos, esto es, el número de coordenadas no nulas de cada elemento y obtenemos que todos tienen peso $4$, por lo que $\bar{d}_1 = 4$. El límite inferior del peso mínimo de los vectores que no pertenecen a $C_1$ es $\underline{d}_1 = 1 + 1 - (3-3) + 1 + 1 - (3-3) = 4$. Concluimos que $d = \bar{d}_1 = 4$ es la distancia mínima de $C$.
 \end{exampleth}
 
