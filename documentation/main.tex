@@ -169,37 +169,56 @@ manychapters,pdfspacing]{classicthesis}
 % TODO: dedicatoria
 \input{add_ons/dedicatoria}
 
-% Indice
-\tableofcontents
-
 \onehalfspacing
 
 % TODO: Resumen
 \input{add_ons/resumen}
+
+\newpage
+\null
+\thispagestyle{empty}
+
 \input{add_ons/summary}
+
+\newpage
+\null
+\thispagestyle{empty}
+
+% Indice
+\tableofcontents
 
 % TODO: Introducción
 \input{add_ons/introduccion}
 
-% TODO: Capítulos
+\newpage
+\null
+\thispagestyle{empty}
+
 \input{chapters/chapter1}
 \input{chapters/chapter2}
 \input{chapters/chapter3}
 \input{chapters/chapter4}
 \input{chapters/chapter5}
 
-% TODO: Apéndice
+% TODO: Conclusión
+\newpage
+\null
+\thispagestyle{empty}
+
+\input{add_ons/conclusion}
+
+\newpage
+\null
+\thispagestyle{empty}
+
 \appendix
 \include{appendix/sage-Goppa}
 \include{appendix/sage-McEliece}
 \include{appendix/sage-Niederreiter}
-
-
-% TODO: Conclusión
-\input{add_ons/conclusion}
+\include{appendix/sage-genetic-algorithms}
 
 % ----------------------- %
-% TODO: BIBLIOGRAFÍA
+% BIBLIOGRAFÍA
 % ----------------------- %
 
 % Estilo de cita.
