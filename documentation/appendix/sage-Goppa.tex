@@ -3,7 +3,10 @@
 
 En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que hereda de la clase \texttt{Encoder} y es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder}, que hereda de la clase \texttt{Decoder}, para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original.
 
-%TODO añadir enlace de github
+El código desarrollado se encuentra en
+\begin{center}
+    \url{https://github.com/paula1999/TFG/tree/main/src}.
+\end{center}
 
 \section{Clase para códigos de Goppa}
 
@@ -432,15 +435,14 @@ En esta sección presentaremos la implementación del decodificador para los có
 
     \textsc{Ejemplos}
     \begin{lstlisting}[gobble=4]
-        sage: F = GF(2^6)
-        sage: a = F.gen()
-        sage: R.<x> = F[]
+        sage: L = GF(2^6)
+        sage: a = L.gen()
+        sage: R.<x> = L[]
         sage: g = x^5 + a*x^2 + 1
-        sage: n = 8
+        sage: n = 5
         sage: get_defining_set(n, g, L)
-        > 
+        > [z6^5 + z6^3 + z6^2 + z6, z6^4 + z6^3 + 1, z6^5 + z6^4 + z6^3 + z6 + 1, z6^5 + z6^2, z6 + 1]
     \end{lstlisting}
-    \[\left[z_{6}^{2} + z_{6}, z_{6}^{5} + z_{6}^{4} + z_{6}^{3} + z_{6}, z_{6}^{3} + z_{6}, z_{6}^{2} + 1, z_{6}^{5} + z_{6}^{4} + z_{6} + 1, z_{6}^{4} + 1, z_{6}^{5} + z_{6}^{4}, z_{6}\right]\]
 
     \item[random\_word(n, field)]
   
@@ -457,11 +459,8 @@ En esta sección presentaremos la implementación del decodificador para los có
         sage: n = 6
         sage: field = GF(3^3)
         sage: random_word(n, field)
-        > 
+        > (z3^2 + 1, 2*z3^2 + z3 + 2, 2, 2*z3^2 + 2*z3 + 1, 2, 2*z3^2 + 1)
     \end{lstlisting}
-    \[
-        \left(2 z_{3}^{2} + z_{3},\,2 z_{3}^{2} + z_{3} + 2,\,z_{3}^{2} + 2 z_{3},\,2 z_{3}^{2} + z_{3} + 2,\,2 z_{3}^{2} + 2 z_{3} + 2,\,2 z_{3} + 2\right)
-    \]
 
     \item[random\_error(n, num\_errors, field)]
   
@@ -480,9 +479,6 @@ En esta sección presentaremos la implementación del decodificador para los có
         sage: n = 10
         sage: num_errors = 3
         sage: random_error(n, num_errors, field)
-        > 
+        > (z6^4 + z6^3 + z6^2 + z6 + 1, 0, 0, z6^3 + z6 + 1, 0, 0, 0, 0, 0, 0)
     \end{lstlisting}
-    \[
-        \left(0,\,0,\,0,\,0,\,0,\,z_{6}^{4} + z_{6}^{3} + z_{6}^{2} + 1,\,0,\,z_{6}^{2} + 1,\,0,\,0\right)
-    \]
 \end{description}
