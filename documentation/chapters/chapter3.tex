@@ -50,8 +50,6 @@ Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $
 
 con $h_i = g(\gamma_i)^{-1}$.
 
-% TODO
-\textcolor{red}{Formalizar la otra forma de construir la matriz de paridad a partir de los coeficientes de los polinomios de paridad.}
 
 \begin{proposition}
     La matriz $H$ se puede reducir a una matriz $H'$ de dimensión $w \times n$, donde 
@@ -68,6 +66,46 @@ con $h_i = g(\gamma_i)^{-1}$.
 \end{proposition}
 
 Las entradas de $H'$ están en $\mathbb{F}_{q^t}$. Eligiendo una base de $\mathbb{F}_{q^t}$ sobre $\mathbb{F}_q$, cada elemento de $\mathbb{F}_{q^t}$ se puede representar como un vector columna $t \times 1$ sobre $\mathbb{F}_q$. Reemplazando cada entrada de $H'$ por su correspondiente vector columna, obtenemos una matriz $H''$ de dimensión $tw \times n$ sobre $\mathbb{F}_{q}$ que tiene la propiedad de que $\textbf{c} \in \mathbb{F}_q^n$ está en $\Gamma(L,g)$ si y solo si $H''c^T = 0$.
+
+No obstante, veamos que existe otra forma de construir la matriz de paridad de un código de Goppa $\Gamma(L, g)$, que es la que utilizaremos para la implementación. Sea $q = p^r$ con $p$ primo y $r > 0$ y $t > 0$. Consideramos la extensión de cuerpos $\mathbb{F}_{q^t}$ de $\mathbb{F}_q$. Sean $\gamma_1, ..., \gamma_n \in \mathbb{F}_{q^t}$ y $g \in \mathbb{F}_{q^t}[x]$, tenemos que
+\[
+    g(\gamma_i) \neq 0 \quad \Leftrightarrow \quad x - \gamma_i \nmid g(x) \quad \Leftrightarrow \quad (x - \gamma_i, g(x)) = 1.
+\]
+Por el Teorema de Bezout, existen dos polinomios $h_i, v_i \in \mathbb{F}_{q^t}[x]$ tales que
+\[
+    1 = h_i(x) \cdot (x - \gamma_i) + v_i(x)g(x).
+\]
+Tomando módulo $g$, se cumple que
+\[
+    1 \equiv h_i(x) \cdot (x - \gamma_i) \pmod{g(x)}.
+\]
+Luego el polinomio $h_i(x)$ es el inverso de $x - \gamma_i$ en $\mathbb{F}_{q^t}[x]$, para $i = 0,..., n-1$. A los polinomios $h_i(x)$ con $i = 0, ..., n-1$ los llamaremos \emph{polinomios de paridad}.
+
+Como $\sum_{i=0}^{n-1} \frac{c_i}{x - \gamma_i} \equiv 0 \pmod{g(x)}$, entonces $\sum_{i=0}^{n-1}c_i h_i \equiv 0 \pmod{g(x)}$ y $\gr(h_i) \leq \gr(g) = s$.
+
+Ahora, supongamos que $h_i(x) = \sum_{j=0}^s (h_i)_j x^j$ para $i = 0,...,n-1$. Podemos definir la matriz $H$ de dimensión $s \times n$ a partir de los coeficientes de los polinomios de paridad por columnas. Esto es,
+\[
+   H = \left(
+            \begin{array}{ccc} 
+                (h_0)_1 & \cdots & (h_{n-1})_1  \\
+                \vdots &  & \vdots \\
+                (h_0)_s & \cdots & (h_{n-1})_s \\
+            \end{array}
+            \right).
+\]
+Sea $\mathcal{B}$ una base del cuerpo $\mathbb{F}_{q}$, las coordenadas del polinomio $(h_i)_j$, para $i = 0,...,n-1$ y $j = 0,...,s$ son
+\[
+    h_{ij} = \left(
+        \begin{array}{c} 
+            h_{ij}^m \\
+            \vdots  \\
+            h_{ij}^m \\
+        \end{array}
+        \right),
+\]
+donde $m$ es el grado de la extensión $[\mathbb{F}_{q^t} : \mathbb{F}_{q}] = m$.
+
+Ahora, colocando los polinomios $h_{ij}$ por columnas, obtenemos la matriz $H'$ de dimensión $sm \times n$, que es la matriz de paridad del código de Goppa $\Gamma(L, g)$.
 
 El siguiente resultado nos muestra los límites en la dimensión y la distancia mínima de un código de Goppa.
 
@@ -167,7 +205,7 @@ Para ilustrar la teoría que acabamos de ver sobre los códigos de Goppa, usarem
 
 \begin{exampleth}
     \label{ex:goppa-3_3}
-    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 8$ como longitud del conjunto de definición. Obtengamos el código de Goppa definidor por dicho conjunto de definición y polinomio $g$.
+    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Definimos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 8$ como longitud del conjunto de definición. Obtengamos el código de Goppa definido por dicho conjunto de definición y polinomio $g$.
 
     \begin{lstlisting}[gobble=4]
         sage: F = GF(3^3)
@@ -302,9 +340,10 @@ De esta forma obtenemos la palabra código $\textbf{c}$ que está en $\Gamma (L,
 En los siguientes ejemplos vamos a usar el código descrito en el apéndice \ref{annex:sage-Goppa} para mostrar la codificación de algunos mensajes.
 
 \begin{exampleth}
+    \label{ex:goppa-encode}
     Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Consideramos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. Sabemos que, por el ejemplo \ref{ex:goppa-3_3}, los mensajes deben tener longitud $6$. Dada la palabra
     \[
-        word := (1, 0, b, b + 1, b, 0, b + 1) \in \mathbb{F}_3^3,
+        word := (1, 0, b, b + 1, b, 0, b + 1) \in \mathbb{F}_{3^3},
     \]
     la podemos transformar en una palabra código del código Goppa definido por el conjunto de definición y el polinomio $g$:
 
@@ -322,12 +361,12 @@ En los siguientes ejemplos vamos a usar el código descrito en el apéndice \ref
         sage: word = vector(F, (1, 0, b + 1, b, 0, b + 1))
         sage: x = E.encode(word)
         sage: x
-        > (1, 0, z3 + 1, z3, 0, z3 + 1, 2*z3, z3^2, z3 + 1, 0)
+        > (1, 0, z3 + 1, z3, 0, z3 + 1, 2*z3^2 + z3 + 1, z3^2 + z3, 0, 2*z3^2 + 1)
     \end{lstlisting}
 
     Por lo que la palabra $word$ codificada es la siguiente:
     \[
-        (1, 0, b + 1, b, 0, b + 1, 2b, b^2, b + 1, 0).
+        (1, 0, b + 1, b, 0, b + 1, 2b^2 + b + 1, b^2 + b, 0, 2b^2 + 1).
     \]
 \end{exampleth}
 
@@ -689,119 +728,49 @@ En resumen, el algoritmo de Sugiyama consiste en:
     \item[VII.] Restar a la palabra codificada el error para obtener el mensaje original codificado.
 \end{itemize}
 
+En el siguiente ejemplo vamos a usar el código descrito en el apéndice \ref{annex:sage-Goppa} para mostrar la decodificación de una palabra codificada. Esta decodificación se basa en el algoritmo de Sugiyama explicado en esta sección.
+
 \begin{exampleth}
-    % TODO
+    Sea $\mathbb{F}_{3^3} \subset \mathbb{F}_{3^6}$ extensión de cuerpos finitos y sean $a$ y $b$ elementos de $\mathbb{F}_{3^6}$ y $\mathbb{F}_{3^3}$, respectivamente. Consideramos el polinomio $g(x) = x^2 + ax + 1 + a^2 \in \mathbb{F}_{3^6}[x]$ y tomamos $n = 10$ como longitud del conjunto de definición. En el ejemplo \ref{ex:goppa-encode} obtuvimos la siguiente palabra codificada:
+    \[
+        x := (1, 0, b + 1, b, 0, b + 1, 2b^2 + b + 1, b^2 + b, 0, 2b^2 + 1) \in \mathbb{F}_{3^3}.
+    \]
+    Supongamos que el error que se le añade a la palabra anterior es:
+    \[
+        e := (0, 0, 2b^2 + 2b + 1, 0, 0, 0, 0, 0, 0, 0).
+    \]
+    Por lo que la palabra que recibiría el destinatario sería:
+    \[
+        y = x + e = (1, 0, 2b^2 + 2, b, 0, b + 1, 2b^2 + b + 1, b^2 + b, 0, 2b^2 + 1).
+    \]
+    Para recuperar el mensaje original, vamos a aplicar el algoritmo de decodificación de Sugiyama.
+
+    \begin{lstlisting}[gobble=4]
+        sage: F = GF(3^3)
+        sage: L = GF(3^6)
+        sage: a = L.gen()
+        sage: b = F.gen()
+        sage: R.<x> = L[]
+        sage: g = x^2 + a*x + 1 + a^2
+        sage: n = 10
+        sage: defining_set = get_defining_set(n, g, L)
+        sage: C = Goppa(defining_set, g, F)
+        sage: D = GoppaDecoder(C)
+        sage: y = (1, 0, 2*b^2 + 2, b, 0, b + 1, 2*b^2 + b + 1, b^2 + b, 0, 2*b^2 + 1)
+        sage: D.decode_to_code(y)
+        > (1, 0, z3 + 1, z3, 0, z3 + 1, 2*z3^2 + z3 + 1, z3^2 + z3, 0, 2*z3^2 + 1)
+    \end{lstlisting}
+
+    Por lo que el mensaje original codificado es el siguiente:
+    \[
+        (1, 0, b + 1, b, 0, b + 1, 2b^2 + b + 1, b^2 + b, 0, 2b^2 + 1),
+    \]
+    que efectivamente coincide con la palabra codificada $x$. Además, si queremos recuperar el mensaje original, debemos llamar al método \texttt{decode\_to\_message}:
+
+    \begin{lstlisting}[gobble=4]
+        sage: D.decode_to_message(y)
+        > (1, 0, z3 + 1, z3, 0, z3 + 1)
+    \end{lstlisting}
+
+    Observamos que obtenemos el mensaje original que fue transmitido, $word = (1, 0, b + 1, b, 0, b + 1)$.
 \end{exampleth}
-
-% TODO: más ejemplos
-\textcolor{red}{Completar y añadir más ejemplos}
-
-
-\begin{comment}
-El algoritmo de Sugiyama es el siguiente:
-
-\begin{itemize}
-    \item[I.] Sean $f(x) = x^{2t}$, $s(x) = S(x)$, $r_{-1}(x) = f(x)$, $r_0(x) = s(x)$, $b_{-1}(x) = 0$ y $b_0(x) = 1$.
-    \item[II.] Iterar incrementando en una unidad desde $i = 1$ hasta $I$, de forma que se cumpla que $\gr(r_{I-1}(x)) \geq t$ y $\gr(r_I(x)) < t$. En cada iteración habrá que determinar $h_i(x)$, $r_i(x)$ y $b_i(x)$:
-        $$r_{i-2}(x) = r_{i-1}(x) h_i(x) + r_i (x), \qquad \text{ donde } \gr(r_i(x)) < \gr(r_{i-1}(x)),$$
-        $$b_i(x) = b_{i-2}(x) - h_i(x) b_{i-1}(x).$$
-    \item[III.] $\sigma(x)$ es un escalar no nulo múltiplo de $b_I(x)$. 
-\end{itemize}
-
-Para verificar que este algoritmo funciona, el siguiente lema nos será de utilidad.
-
-\begin{lemma}
-    \label{lm:dem_sugiyama}
-    Con la notación del algoritmo de Sugiyama, sea $a_{-1}(x) = 1$, $a_0(x) = 0$ y $a_i(x) = a_{i-2}(x) - h_i(x) a_{i-1}(x)$ para $i \geq 1$. Las siguientes afirmaciones son ciertas.
-
-    \begin{itemize}
-        \item $a_i(x) f(x) + b_i(x) s(x) = r_i (x)$ para $i \geq -1$.
-        \item $b_i(x) r_{i-1}(x) - b_{i-1} r_i(x) = (-1)^i f(x)$ para $i \geq 0$.
-        \item $a_i(x) b_{i-1}(x) - a_{i-1} b_i (x) = (-1)^{i+1}$ para $i \geq 0$.
-        \item $\gr(b_i(x)) + \gr(r_{i-1}(x)) = \gr(f(x))$ para $i \geq 0$.
-    \end{itemize}
-\end{lemma}
-
-\begin{proof}
-    Ver Lema 5.4.11 en la página 191, \cite{Huffman_Pless_2010}.
-\end{proof}
-
-Comprobemos ahora que el algoritmo de Sugiyama funciona. Por el Lema \ref{lm:dem_sugiyama} (i) tenemos que
-
-\begin{equation}
-    \label{dem:sugiyama_relacion}
-    a_I(x) x^{2t} + b_I(x) S(x) = r_I(x).
-\end{equation}
-
-Además, por la ecuación clave sabemos que
-
-\begin{equation}
-    \label{dem:sugiyama_key_equation}
-    a(x) x^{2t} + \sigma(x) S(x) = \omega(x)
-\end{equation}
-
-para algún polinomio $a(x)$. Multiplicando \ref{dem:sugiyama_relacion} por $\sigma(x)$ y \ref{dem:sugiyama_key_equation} por $b_I(x)$ obtenemos 
-
-\begin{equation}
-    \label{dem:sugiyama_relacion_sigma}
-    a_I(x) \sigma(x) x^{2t}  + b_I(x) \sigma(x) S(x) = r_I(x) \sigma(x) \quad \text{ y }
-\end{equation}
-\begin{equation}
-    \label{dem:sugiyama_key_equation_b_I}
-    a(x) b_I(x) x^{2t} + \sigma(x) b_I(x) S(x) = \omega(x) b_I(x).
-\end{equation}
-
-Aplicando módulo $x^{2t}$ a ambas ecuaciones tenemos que 
-
-\begin{align*}
-    b_I(x) \sigma(x) S(x) &\equiv r_I(x) \sigma(x) \pmod{x^{2t}} \quad \text{ y }\\
-    \sigma(x) b_I(x) S(x) &\equiv \omega(x) b_I(x) \pmod{x^{2t}}.
-\end{align*}
-
-Por lo tanto,
-
-\begin{equation}
-    \label{dem:sugiyama_modulo}
-    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
-\end{equation}
-
-Como $\gr(\sigma(x)) \leq t$, por la elección de $I$,
-
-$$\gr(r_I(x) \sigma(x)) = \gr(r_I(x)) + \gr(\sigma(x)) < t + t = 2t.$$ 
-
-Por el Lema \ref{lm:dem_sugiyama} (iv), la elección de $I$ y como $\gr(\omega(x)) < t$, entonces se cumple que 
-
-$$\gr(\omega(x) b_I(x)) = \gr(\omega(x)) + \gr(b_I(x)) < t + \gr(b_I(x)) = t + (\gr(x^{2t}) - \gr(r_{I-1}(x))) \leq 3t - t = 2t.$$
-
-Por \ref{dem:sugiyama_modulo} tenemos que $r_I(x) \sigma(x) = \omega(x) b_I(x)$. Esto, junto con \ref{dem:sugiyama_relacion_sigma} y \ref{dem:sugiyama_key_equation_b_I}, implica que 
-
-\begin{equation}
-    \label{dem:sugiyama_implicacion_ecuaciones}
-    r_I(x) \sigma(x) \equiv \omega(x) b_I(x) \pmod{x^{2t}}.
-\end{equation}
-
-Sin embargo, el Lema \ref{lm:dem_sugiyama} (iii) afirma que $a_I(x)$ y $b_I(x)$ son primos relativos, y por \ref{dem:sugiyama_implicacion_ecuaciones} se cumple que $a(x) = \lambda(x) a_I(x)$. Sustituyendo esta relación en \ref{dem:sugiyama_implicacion_ecuaciones},
-
-\begin{equation}
-    \label{dem:sugiyama_sustitucion}
-    \sigma(x) = \lambda(x) b_I(x).
-\end{equation}
-
-Ahora, sustituyendo estas dos últimas relaciones en \ref{dem:sugiyama_key_equation} obtenemos
-
-$$\lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \omega(x).$$ 
-
-La ecuación \ref{dem:sugiyama_relacion} implica que
-
-\begin{equation}
-    \label{dem:sugiyama_relacion_omega}
-    \omega(x) = \lambda(x) a_I(x) x^{2t} + \lambda(x) b_I(x) S(x) = \lambda(x) \cdot \left( a_I(x) x^{2t} + b_I(x) S(x) \right) = \lambda(x) r_I(x).
-\end{equation}
-
-Teniendo en cuenta que los polinomios $\sigma(x)$ y $\omega(x)$ son primos relativos y por \ref{dem:sugiyama_sustitucion} y \ref{dem:sugiyama_relacion_omega}, $\lambda(x)$ tiene que ser una constante no nula, verificando el paso III del algoritmo de Sugiyama.
-
-Como solo estamos interesados en las raíces de $\sigma(x)$, es suficiente con determinar las raíces de $b_I(x)$ obtenidos en el paso II; lo que nos dará los $X_j$. 
-
-Más adelante veremos que este algoritmo sigue funcionando con otras elecciones de $f(x)$ y $s(x)$, con las modificaciones apropiadas de las condiciones sobre las que el algoritmo termina en el paso II. Una de estas modificaciones nos será útil para decodificar los códigos Goppa que veremos a continuación.
-
-\end{comment}
