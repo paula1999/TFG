@@ -1,8 +1,33 @@
 \chapter*{Summary}
-\addcontentsline{toc}{chapter}{Summary} 
+%\addcontentsline{toc}{chapter}{Summary} 
 
 %TODO: longitud mínima de 1500 palabras
-\textcolor{red}{Añadir resumen y palabras clave en inglés}
+\textcolor{red}{Traducir al inglés}
 
+%\begin{otherlanguage}{english}
 
-\small{\spacedallcaps{Keywords:}}
+El objetivo principal de este trabajo es presentar, estudiar e implementar un criptosistema resistente ante los ataques de los ordenadores cuánticos, el criptosistema de McEliece. 
+
+\spacedlowsmallcaps{Chapter 1}
+
+En este capítulo presentaremos los conceptos matemáticos previos necesarios para poder comprender el desarrollo posterior de este trabajo. Necesitaremos abordar conceptos como los cuerpos finitos, pues son la estructura algebraica sobre la que trabajeremos. También trataremos la complejidad de los algoritmos y de los problemas, que será útil para conocer si podemos obtener una solución en tiempo polinómico. Finalmente, introduciremos los conceptos básicos sobre las metaheurísticas basadas en poblaciones para desarrollar en más profundidad los algoritmos genéticos, los cuales serán de utilidad para intentar vulnerar la seguridad del criptosistema de McEliece.
+
+\spacedlowsmallcaps{Chapter 2}
+
+En el segundo capítulo estudiaremos los códigos lineales, definidos como un subespacio de un cuerpo finito. Introduciremos dos conceptos que serán de gran importancia a lo largo de el desarrollo de este trabajo: la matriz generadora y la matriz de paridad. Cada una de estas matrices presenta un único código. También definiremos algunas medidas significantes junto a sus propiedades, como la distancia de Hamming o el peso de Hamming. Trataremos la complejidad del problema de encontrar una palabra con peso mínimo y cuestiones relacionadas. Terminaremos presentando el algoritmo de Brouwer-Zimmermann para el cálculo de la distancia de un código.
+
+\spacedlowsmallcaps{Chapter 3}
+
+En este capítulo desarrollaremos e implementaremos una nueva clase de códigos de corrección de errores lineales, los códigos de Goppa. Estudiaremos la matriz de paridad asociada a estos códigos y obtendremos a partir de ella la matriz generadora, que será de utilidad para codificar los mensajes. También analizaremos la capacidad correctora, que dependerá del grado del polinomio sobre el que se define el código. Además, desarrollaremos el proceso de codificación y decodificación, incluyendo ejemplos de la implementación realizada. Para la decodificación usaremos un algoritmo eficiente, el algoritmo de Sugiyama, que se basa en el algoritmo de Euclides y nos permitirá recuperar los mensajes.
+
+\spacedlowsmallcaps{Chapter 4}
+
+El cuarto capítulo contiene el estudio del objetivo de este trabajo, el criptosistema de McEliece. Previamente, introduciremos el concepto y los objetivos de la criptografía, así como dos principales tipos de criptosistemas. A continuación, presentaremos la posibilidad de la existencia de los ordenadores cuánticos y la amenaza que presentan a la seguridad de algunos criptosistemas existentes, proponiendo algunas alternativas que sean capaces de resistir ante sus ataques, como el criptosistema de McEliece. Este sistema se construye a partir de los códigos de Goppa estudiados en el capítulo anterior. Estudiaremos la generación de sus claves (pública y privada), así como los procesos de cifrado y descifrado. También analizaremos e implementaremos una variante, el sistema de Niederreiter, que es equivalente en seguridad. De cada sistema presentaremos ejemplos usando la implementación realizada para mostrar su funcionamiento.
+
+\spacedlowsmallcaps{Chapter 5}
+
+En este último capítulo, desarrollaremos un par de ataques usando algoritmos genéticos para vulnerar la seguridad del criptosistema de McEliece. Estos ataques se basan en el cálculo de la distancia de un código a partir de una matriz escalonada de una matriz generadora del código equivalente, que se obtendrá permutando las columnas del código. Estudiaremos e implementaremos las adaptaciones de los algoritmos GGA y CHC. Finalmente, analizaremos los resultados obtenidos tras aplicar estos algoritmos al sistema de McEliece.
+
+\small{\spacedallcaps{Keywords:} coding theory, \; Goppa, \; criptography, \; post-quantum criptography, \; McEliece, \; Niederreiter, \; genetic algorithms, \; SageMath}
+
+%\end{otherlanguage}
