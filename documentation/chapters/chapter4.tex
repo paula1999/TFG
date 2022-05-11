@@ -192,11 +192,140 @@ Ahora ya podemos aplicar el algoritmo de descifrado $\mathcal{D}$ a $\textbf{c} 
 \[
     \textbf{m} = \textbf{c'} S^{-1}.
 \]
-Por otra parte, a la hora de aplicar el algoritmo de Sugiyama, sabemos que este algoritmo de descifrado necesita saber el polinomio generador. De este modo consideraremos la clave privada como $(S, G, P, g(x))$, donde $g(x)$ es el polilnomio de Goppa para el código elegido.
+Por otra parte, a la hora de aplicar el algoritmo de Sugiyama, sabemos que este algoritmo de descifrado necesita saber el polinomio generador. De este modo consideraremos la clave privada como $(S, G, P, g(x))$, donde $g(x)$ es el polinomio de Goppa para el código elegido.
 
-% TODO
-\textcolor{red}{Poner ejemplos usando la implementación de este criptosistema.}
+En el siguiente ejemplo vamos a usar el código descrito en el apéndice \ref{annex:sage-McEliece} para mostrar el cifrado de un mensaje y su correspondiente descifrado usando el criptosistema de McEliece que acabamos de estudiar.
 
+\begin{exampleth}
+    Sea $\mathbb{F}_{2^5}$ el cuerpo finito de 32 elementos y sea $a$ un elemento de dicho cuerpo. Definimos el polinomio $g(x) = x^3 + (a^4 + a^3 + 1) x^2 + (a^4 + 1)x + a^4 + a^2 + a + 1 \in F_{2^5}[x]$ y tomamos $n = 20$. Podemos obtener el criptosistema de McEliece definido por el polinomio $g(x)$ sobre el cuerpo finito $\mathbb{F}_{2^5}$ y de tamaño $n = 20$ escribiendo lo siguiente:
+
+    \begin{lstlisting}[gobble=4]
+        sage: L = GF(2^5)
+        sage: a = L.gen()
+        sage: R.<x> = L[]
+        sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+        sage: n = 20
+        sage: ME = McEliece(n, q, g)
+        sage: ME
+        > McEliece cryptosystem over [20, 5] Goppa code
+    \end{lstlisting}
+
+    Observamos que con los datos introducidos, el código de Goppa sobre el que se construye este criptosistema tiene longitud $20$ y dimensión $5$. Este criptosistema está formado por una clave privada $(S, G, P, g(x))$ y una clave pública $(G', t)$.
+
+    La matriz $S$ de la clave privada es una matriz no singular binaria aleatoria de dimensión $5 \times 5$, que podemos obtenerla con el método \texttt{get\_S}:
+
+    \begin{lstlisting}[gobble=4]
+        sage: S = ME.get_S()
+        sage: show(S)
+    \end{lstlisting}
+
+    Este código devuelve la siguiente matriz:
+
+    \[
+        S = \left(\begin{array}{rrrrr}
+            1 & 1 & 1 & 1 & 1 \\
+            0 & 1 & 1 & 1 & 0 \\
+            1 & 0 & 1 & 0 & 1 \\
+            0 & 1 & 0 & 0 & 0 \\
+            0 & 1 & 1 & 1 & 1
+            \end{array}\right).
+    \]
+
+    De la misma forma, la matriz $P$, que es una matriz de permutaciones aleatoria de dimensión $20 \times 20$ es la siguiente:
+
+    \begin{lstlisting}[gobble=4]
+        sage: P = ME.get_P()
+        sage: show(P)
+    \end{lstlisting}
+
+    Este código devuelve la siguiente matriz:
+
+    \[
+        P = \left(\begin{array}{rrrrrrrrrrrrrrrrrrrr}
+            0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+            0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0
+            \end{array}\right)
+    \]
+
+    Análogamente, podemos obtener la matriz $G$, que es la matriz generadora asociada al código de Goppa de dimensión $5 \times 20$:
+
+    \begin{lstlisting}[gobble=4]
+        sage: G = ME.get_G()
+        sage: show(G)
+    \end{lstlisting}
+
+    Este código devuelve la siguiente matriz:
+
+    \[
+        G = \left(\begin{array}{rrrrrrrrrrrrrrrrrrrr}
+            1 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0 & 1 & 1 \\
+            0 & 0 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 1 & 0 & 0 & 1 & 1 & 0 \\
+            0 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\
+            0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 1 & 0
+            \end{array}\right).
+    \]
+
+    
+    
+    Podemos calcular la clave pública a partir de las matrices anteriores: $G' = SGP$. El método \texttt{get\_public\_key} nos permite obtener esta matriz:
+    
+    \begin{lstlisting}[gobble=4]
+        sage: PK = ME.get_public_key()
+        sage: show(PK)
+    \end{lstlisting}
+
+    La matriz que nos devuelve el código anterior es la siguiente:
+    \[
+        G' = \left(\begin{array}{rrrrrrrrrrrrrrrrrrrr}
+            1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 & 0 \\
+            0 & 1 & 1 & 0 & 0 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 & 1 \\
+            1 & 0 & 1 & 1 & 1 & 1 & 1 & 1 & 0 & 1 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 & 1 & 1 \\
+            1 & 1 & 1 & 0 & 0 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 & 0 \\
+            0 & 1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 1
+            \end{array}\right).
+    \]
+    Esta matriz nos permite cifrar mensajes. Durante este proceso, el criptosistema le añadirá errores aleatorios cuyo peso coincidirá con la mitad del grado del polinomio $g(x)$, en este caso se añadirá un error. Supongamos que queremos enviar el siguiente mensaje:
+    \[
+        \textbf{m} := (1, 1, 0, 1, 1) \in \{ 0, 1 \} ^5.
+    \]
+    Para ello, debemos escribir lo siguiente:
+
+    \begin{lstlisting}[gobble=4]
+        sage: m = vector(GF(2), (1, 1, 0, 1, 1))
+        sage: encrypted_message = ME.encrypt(m)
+        > (0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1)
+    \end{lstlisting}
+    
+    Por lo que el mensaje $\textbf{m}$ cifrado es $(0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1)$.
+
+    Ahora, usando la clave privada podemos decodificar el criptograma anterior:
+
+    \begin{lstlisting}[gobble=4]
+        sage: ME.decrypt(encrypted_message)
+        > (1, 1, 0, 1, 1)
+    \end{lstlisting}
+
+    Observamos que efectivamente el código anterior devuelve $(1, 1, 0, 1, 1)$, que efectivamente coincide con el mensaje original $\textbf{m}$.
+\end{exampleth}
 
 \subsection{Criptosistema de Niederreiter}
 
@@ -257,6 +386,7 @@ Sin embargo, si un ataque es capaz de romper el criptosistema de McEliece, tambi
 
 % TODO
 \textcolor{red}{Poner ejemplos usando la implementación de este criptosistema.}
+
 
 \subsubsection{Firma digital}
 
