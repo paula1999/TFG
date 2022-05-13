@@ -47,6 +47,23 @@ cleardoublepage=empty,abstractoff,BCOR=5mm,paper=a4,fontsize=12pt,main=spanish]{
 \usepackage{listings} % Código
 \usepackage{comment}
 
+\lstset{
+	basicstyle=\ttfamily,%
+	breaklines=true,%
+	captionpos=b,                    % sets the caption-position to bottom
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  frame=none,
+  numbers=left,
+  xleftmargin=18pt,
+  stepnumber=1,
+  aboveskip=12pt,
+  showstringspaces=false,
+  keywordstyle=\bfseries,
+  commentstyle=\itshape,
+  numberstyle=\scriptsize\bfseries,
+  %morekeywords={sage},
+}
+
 % Operadores
 
 \DeclareMathOperator{\gr}{gr}
@@ -131,6 +148,8 @@ manychapters,pdfspacing]{classicthesis}
 \usepackage{wallpaper}
 \usepackage[main=spanish]{babel}
 
+
+\usepackage{slantsc}
 
 % Algoritmos
 
