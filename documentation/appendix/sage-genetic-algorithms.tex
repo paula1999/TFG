@@ -5,11 +5,229 @@
 
 El código desarrollado se encuentra en
 \begin{center}
-    \url{https://github.com/paula1999/TFG/tree/main/src}.
+\url{https://github.com/paula1999/TFG/tree/main/src}.
 \end{center}
 
 
 \section{Algoritmo genético GGA}
 
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+  \item[GGA(G, N, pc, max\_reinit, min\_fitness)]
+
+  Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[G] Matriz conformada por la clave pública de un criptosistema de McEliece y una fila con el mensaje encriptado.
+    \item[N] Tamaño de la población.
+    \item[pc] Probabilidad de cruce.
+    \item[max\_reinit] Número máximo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada.
+    \item[min\_fitness] Peso del vector error. 
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: q = 4
+    sage: n = 14
+    sage: t = 2
+    sage: F = GF(2)
+    sage: L = GF(2^q)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^2 + (a^3 + a^2 + a)*x + a^2 + a + 1
+    sage: min_fitness = floor(t/2)
+    sage: ME = McEliece(n, q, g)
+    sage: G = ME.get_public_key()
+    sage: message = vector(F, (0, 0, 1, 1, 1, 0))
+    sage: encrypted_message = ME.encrypt(message)
+    sage: G = G.stack(encrypted_message)
+    sage: GGA(G, 400, 0.7, 100000, min_fitness)
+    > ((1, 11, 9, 14, 10, 3, 8, 6, 12, 7, 4, 5, 2, 13), 1)
+  \end{lstlisting}
+\end{description}
+
 \section{Algoritmo genético CHC}
 
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+  \item[CHC(G, N, tau, min\_fitness)]
+
+  Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[G] Matriz conformada por la clave pública de un criptosistema de McEliece y una fila con el mensaje encriptado.
+    \item[N] Tamaño de la población.
+    \item[tau] Tasa de actualización. $\tau \in [0,1]$.
+    \item[min\_fitness] Peso del vector error. 
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: q = 4
+    sage: n = 14
+    sage: t = 2
+    sage: F = GF(2)
+    sage: L = GF(2^q)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^2 + (a^3 + a^2 + a)*x + a^2 + a + 1
+    sage: min_fitness = floor(t/2)
+    sage: ME = McEliece(n, q, g)
+    sage: G = ME.get_public_key()
+    sage: message = vector(F, (0, 0, 1, 1, 1, 0))
+    sage: encrypted_message = ME.encrypt(message)
+    sage: G = G.stack(encrypted_message)
+    sage: CHC(G, 400, 0.8, min_fitness)
+    > ((9, 13, 7, 10, 11, 2, 8, 6, 14, 12, 5, 3, 4, 1), 1)
+  \end{lstlisting}
+\end{description}
+
+\section{Funciones auxiliares}
+
+\begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
+  \item[fitness\_vector(v)]
+
+  Calcula el fitness de un vector \texttt{v}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[v] Vector binario al que se le va a calcular el fitness. 
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: fitness_vector([0, 1, 1, 0, 0, 0, 1])
+    > 3
+  \end{lstlisting}
+
+  \item[fitness\_matrix(M)]
+
+  Calcula el fitness mínimo de las filas de la matriz \texttt{M}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[M] Matriz binaria de la que queremos calcular su fitness mínimo.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: M = matrix(GF(2), [[0, 1], [1, 1]])
+    sage: fitness_matrix(M)
+    > 1
+  \end{lstlisting}
+
+  \item[permutation\_matrix(x)]  
+  Calcula la matriz asociada a la permutación \texttt{x}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[x] Permutación que se le aplica a la matriz \texttt{M}.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: x = Permutation([3, 2, 1])
+    sage: permutation_matrix(x)
+    > [0 0 1]
+      [0 1 0]
+      [1 0 0]
+  \end{lstlisting}
+
+  \item[fitness\_permutation(M, x)]
+
+  Calcula el fitness mínimo de las filas de la forma escalonada de la matriz \texttt{M} permutada por la permutación \texttt{x}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[M] Matriz binaria de la que queremos calcular su fitness mínimo.
+    \item[x] Permutación que se le aplica a la matriz \texttt{M}.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: M = matrix(GF(2), [[1, 0, 0], [0, 1, 1], [1, 0, 1]])
+    sage: x = Permutation([3,2,1])
+    sage: fitness_permutation(M, x)
+    > 1
+  \end{lstlisting}
+
+  \item[random\_sol(n)]
+
+  Calcula una solución aleatoria de tamaño \texttt{n}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[n] Tamaño de la solución.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: random_sol(5)
+    > [1, 4, 5, 2, 3]
+  \end{lstlisting}
+
+  \item[crossover(p1, p2)]
+
+  Operador cruce entre dos padres \texttt{p1} y \texttt{p2}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[p1] Primer padre que se va a cruzar.
+    \item[p2] Segundo padre que se va a cruzar. 
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: crossover([1, 3, 2], [3, 1, 2])
+    > ([3, 2, 1], [2, 1, 3])
+  \end{lstlisting}
+
+  \item[mutation(p)]
+
+  Operador mutación de \texttt{p}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[p] Individuo que se va a mutar.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: crossover([1, 3, 2], [3, 1, 2])
+    > ([3, 2, 1], [2, 1, 3])
+  \end{lstlisting}
+
+  \item[distance(x, y)]
+
+  Calcula la distancia de Hamming entre \texttt{x} e \texttt{y}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[x] Vector de tamaño \texttt{n}.
+    \item[y] Vector de tamaño \texttt{n}.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: distance([1, 3, 2], [3, 1, 2])
+    > 2
+  \end{lstlisting}
+
+  \item[actualizar(P, tau)]
+
+  Calcula el decremento del cruce como un porcentaje \texttt{tau} de la máxima distancia de Hamming entre los individuos de la población \texttt{P}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[P] Población.
+    \item[tau] Tasa de actualización. $\tau \in [0,1]$.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: P = matrix([[1, 4, 2, 3], [2, 1, 3, 4]])
+    sage: tau = 0.8
+    sage: actualizar(P, tau)
+    > (1.33333333333333, 3.20000000000000)
+  \end{lstlisting}
+\end{description}

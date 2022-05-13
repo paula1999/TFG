@@ -5,180 +5,180 @@
 
 El código desarrollado se encuentra en
 \begin{center}
-    \url{https://github.com/paula1999/TFG/tree/main/src}.
+\url{https://github.com/paula1999/TFG/tree/main/src}.
 \end{center}
 
 \section{Clase para el criptosistema McEliece}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-    \item[class McEliece(self, n, q, g)]
-  
-    Representación del criptosistema de McEliece.
-  
-    \textsc{Argumentos}
-    \begin{description}[font=\normalfont\ttfamily]
-        \item[n] Tamaño del conjunto de definición.
-        \item[q] Dimensión del cuerpo finito $GF(2^q)$.
-        \item[g] Polinomio mónico con coeficientes en un cuerpo finito $GF(2^q)$.
-    \end{description}
+  \item[class McEliece(self, n, q, g)]
 
-    \textsc{Ejemplos}
-    \begin{lstlisting}[gobble=4]
-        sage: L = GF(2^5)
-        sage: a = L.gen()
-        sage: R.<x> = L[]
-        sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-        sage: n = 20
-        sage: McEliece(n, q, g)
-        > McEliece cryptosystem over [20, 5] Goppa code
-    \end{lstlisting}
+  Representación del criptosistema de McEliece.
 
-    \begin{description}[font=\ttfamily, style=nextline]
-        \item[get\_S(self)] Devuelve la matriz no singular binaria aleatoria que es parte de la clave privada.
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+  \item[n] Tamaño del conjunto de definición.
+  \item[q] Dimensión del cuerpo finito $GF(2^q)$.
+  \item[g] Polinomio mónico con coeficientes en un cuerpo finito $GF(2^q)$.
+  \end{description}
 
-        \textsc{Ejemplos}
-        \begin{lstlisting}[gobble=4]
-            sage: L = GF(2^5)
-            sage: a = L.gen()
-            sage: R.<x> = L[]
-            sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-            sage: n = 20
-            sage: ME = McEliece(n, q, g)
-            sage: ME.get_S()
-            > [1 1 1 1 1]
-              [0 1 1 1 0]
-              [1 0 1 0 1]
-              [0 1 0 0 0]
-              [0 1 1 1 1]
-        \end{lstlisting}
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: McEliece(n, q, g)
+    > McEliece cryptosystem over [20, 5] Goppa code
+  \end{lstlisting}
 
-        \item[get\_G(self)] Devuelve la matriz generadora asociada al código de Goppa que es parte de la clave privada.
+  \begin{description}[font=\ttfamily, style=nextline]
+  \item[get\_S(self)] Devuelve la matriz no singular binaria aleatoria que es parte de la clave privada.
 
-        \textsc{Ejemplos}
-        \begin{lstlisting}[gobble=4]
-            sage: L = GF(2^5)
-            sage: a = L.gen()
-            sage: R.<x> = L[]
-            sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-            sage: n = 20
-            sage: ME = McEliece(n, q, g)
-            sage: ME.get_G()
-            > [1 0 0 0 1 0 0 1 1 1 0 0 1 0 0 1 0 0 0 0]
-              [0 1 0 0 0 0 0 1 1 1 1 0 0 1 0 1 1 0 1 1]
-              [0 0 1 0 0 0 0 1 0 0 1 0 1 1 1 0 0 1 1 0]
-              [0 0 0 1 1 1 0 0 0 0 0 0 1 1 0 0 0 1 0 1]
-              [0 0 0 0 0 0 1 1 0 1 0 1 1 0 0 1 0 1 1 0]
-        \end{lstlisting}
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: ME = McEliece(n, q, g)
+    sage: ME.get_S()
+    > [1 1 1 1 1]
+      [0 1 1 1 0]
+      [1 0 1 0 1]
+      [0 1 0 0 0]
+      [0 1 1 1 1]
+  \end{lstlisting}
 
-        \item[get\_P(self)] Devuelve la matriz de permutaciones aleatoria que es parte de la clave privada.
+  \item[get\_G(self)] Devuelve la matriz generadora asociada al código de Goppa que es parte de la clave privada.
 
-        \textsc{Ejemplos}
-        \begin{lstlisting}[gobble=4]
-            sage: L = GF(2^5)
-            sage: a = L.gen()
-            sage: R.<x> = L[]
-            sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-            sage: n = 20
-            sage: ME = McEliece(n, q, g)
-            sage: ME.get_P()
-            > [0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0]
-              [0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0]
-              [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0]
-              [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0]
-              [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1]
-              [0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0]
-              [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0]
-              [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
-              [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0]
-        \end{lstlisting}
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: ME = McEliece(n, q, g)
+    sage: ME.get_G()
+    > [1 0 0 0 1 0 0 1 1 1 0 0 1 0 0 1 0 0 0 0]
+      [0 1 0 0 0 0 0 1 1 1 1 0 0 1 0 1 1 0 1 1]
+      [0 0 1 0 0 0 0 1 0 0 1 0 1 1 1 0 0 1 1 0]
+      [0 0 0 1 1 1 0 0 0 0 0 0 1 1 0 0 0 1 0 1]
+      [0 0 0 0 0 0 1 1 0 1 0 1 1 0 0 1 0 1 1 0]
+  \end{lstlisting}
 
-        \item[get\_public\_key(self)] Devuelve la matriz que es parte de la clave pública.
+  \item[get\_P(self)] Devuelve la matriz de permutaciones aleatoria que es parte de la clave privada.
 
-        \textsc{Ejemplos}
-        \begin{lstlisting}[gobble=4]
-            sage: L = GF(2^5)
-            sage: a = L.gen()
-            sage: R.<x> = L[]
-            sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-            sage: n = 20
-            sage: McEliece(n, q, g)
-            sage: ME.get_public_key()
-            > [0 0 1 0 1 1 1 1 1 1 0 0 0 1 0 0 0 0 0 1]
-              [1 1 0 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1]
-              [0 1 1 1 0 1 1 0 1 0 0 0 0 0 1 1 1 0 0 0]
-              [0 0 0 0 1 0 1 1 1 0 0 1 1 0 0 0 1 1 1 0]
-              [1 0 0 1 0 1 0 1 1 0 0 1 1 0 0 1 0 0 1 0]
-        \end{lstlisting}
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: ME = McEliece(n, q, g)
+    sage: ME.get_P()
+    > [0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0]
+      [0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0]
+      [0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0]
+      [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0]
+      [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1]
+      [0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0]
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0]
+      [0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+      [0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0]
+  \end{lstlisting}
 
-        \item[encrypt(self, m)] Devuelve el criptograma asociado al texto plano \texttt{m}.
+  \item[get\_public\_key(self)] Devuelve la matriz que es parte de la clave pública.
 
-        \textsc{Argumentos}
-        \begin{description}[font=\normalfont\ttfamily]
-            \item[m] Texto plano que se va a encriptar.
-        \end{description}
-        
-        \textsc{Ejemplos}
-        \begin{lstlisting}[gobble=4]
-            sage: L = GF(2^5)
-            sage: a = L.gen()
-            sage: R.<x> = L[]
-            sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-            sage: n = 20
-            sage: McEliece(n, q, g)
-            sage: message = vector(GF(2), (1, 1, 0, 0, 0))
-            sage: ME.encrypt(message)
-            > (1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0)
-        \end{lstlisting}
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: McEliece(n, q, g)
+    sage: ME.get_public_key()
+    > [0 0 1 0 1 1 1 1 1 1 0 0 0 1 0 0 0 0 0 1]
+      [1 1 0 1 1 1 1 1 1 1 0 1 1 0 0 1 1 1 1 1]
+      [0 1 1 1 0 1 1 0 1 0 0 0 0 0 1 1 1 0 0 0]
+      [0 0 0 0 1 0 1 1 1 0 0 1 1 0 0 0 1 1 1 0]
+      [1 0 0 1 0 1 0 1 1 0 0 1 1 0 0 1 0 0 1 0]
+  \end{lstlisting}
 
-        \item[decrypt(self, c)] Devuelve el texto plano asociado al criptograma \texttt{c}.
+  \item[encrypt(self, m)] Devuelve el criptograma asociado al texto plano \texttt{m}.
 
-        \textsc{Argumentos}
-        \begin{description}[font=\normalfont\ttfamily]
-            \item[c] Criptograma que se va a desencriptar.
-        \end{description}
-        
-        \textsc{Ejemplos}
-        \begin{lstlisting}[gobble=4]
-            sage: L = GF(2^5)
-            sage: a = L.gen()
-            sage: R.<x> = L[]
-            sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
-            sage: n = 20
-            sage: McEliece(n, q, g)
-            sage: encrypted_message = vector(GF(2), (1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0))
-            sage: ME.decrypt(encrypted_message)
-            > (1, 1, 0, 0, 0)
-        \end{lstlisting}
-    \end{description}
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[m] Texto plano que se va a encriptar.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: McEliece(n, q, g)
+    sage: message = vector(GF(2), (1, 1, 0, 0, 0))
+    sage: ME.encrypt(message)
+    > (1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0)
+  \end{lstlisting}
+
+  \item[decrypt(self, c)] Devuelve el texto plano asociado al criptograma \texttt{c}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[c] Criptograma que se va a desencriptar.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: L = GF(2^5)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
+    sage: n = 20
+    sage: McEliece(n, q, g)
+    sage: encrypted_message = vector(GF(2), (1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0))
+    sage: ME.decrypt(encrypted_message)
+    > (1, 1, 0, 0, 0)
+  \end{lstlisting}
+  \end{description}
 \end{description}
 
 \section{Funciones auxiliares}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-    \item[get\_weight(c)]
-  
-    Calcula el peso del vector \texttt{c}.
-  
-    \textsc{Argumentos}
-    \begin{description}[font=\normalfont\ttfamily]
-        \item[c] Vector al que se le va a calcular su peso.
-    \end{description}
+  \item[get\_weight(c)]
 
-    \textsc{Ejemplos}
-    \begin{lstlisting}[gobble=4]
-        sage: v = vector(GF(2), (1, 0, 1, 1, 0))
-        sage: get_weight(v)
-        > 3
-    \end{lstlisting}
+  Calcula el peso del vector \texttt{c}.
+
+  \textsc{Argumentos}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[c] Vector al que se le va a calcular su peso.
+  \end{description}
+
+  \textsc{Ejemplos}
+  \begin{lstlisting}[gobble=4]
+    sage: v = vector(GF(2), (1, 0, 1, 1, 0))
+    sage: get_weight(v)
+    > 3
+  \end{lstlisting}
 \end{description}
