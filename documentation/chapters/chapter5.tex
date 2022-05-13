@@ -179,7 +179,7 @@ En resumen, el Algoritmo GGA consiste en:
     \DontPrintSemicolon
     \KwIn{$N$: número par con el tamaño de la población}
     \KwIn{$p_c$: probabilidad de cruce}
-    \KwIn{$MaxReinit$: número de evaluaciones de las soluciones sin mejorar el fitness antes de la reinicialización}
+    \KwIn{$max\_reinit$: número de evaluaciones de las soluciones sin mejorar el fitness antes de la reinicialización}
     \KwOut{Mejor solución de $P(t)$}
     
     $t \longleftarrow 0$\;
@@ -210,7 +210,7 @@ En resumen, el Algoritmo GGA consiste en:
             Reemplazar la peor solución de $P(t+1)$ con la mejor solución de $P(t)$\;
         }
         
-        \If{MaxReinit soluciones han sido evaluadas sin mejorar la mejor solución de $P(t+1)$}{
+        \If{max\_reinit soluciones han sido evaluadas sin mejorar la mejor solución de $P(t+1)$}{
             Reemplazar las soluciones de $P(t+1)$ con $N-1$ soluciones aleatorias y la mejor solución de $P(t)$\;
         }
         
@@ -278,5 +278,5 @@ En resumen, el Algoritmo CHC consiste en:
     \caption{Algoritmo CHC.}
 \end{Ualgorithm}
 
-% TODO introducción
+% TODO
 \textcolor{red}{Añadir ejemplos usando la implementación}
