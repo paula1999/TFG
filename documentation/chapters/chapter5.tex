@@ -219,9 +219,6 @@ En resumen, el Algoritmo GGA consiste en:
     \caption{Algoritmo GGA.}
 \end{Ualgorithm}
 
-% TODO
-\textcolor{red}{Añadir ejemplos usando la implementación}
-
 \subsection{Algoritmo CHC}
 
 El algoritmo CHC es un algoritmo evolutivo cuya versión inicial fue propuesta para codificación binaria \cite{CHC_1991}. Este algoritmo mantiene un equilibrio entre la diversidad de los genotipos en las soluciones de la población y la convergencia a óptimos locales. Se basa en cuatro componentes similares: la selección elitista, el operador de recombinador de soluciones HUX, una verificación de prevención de incesto para evitar la recombinación de soluciones similares y un método de reiniciación de la población cuando se encuentra un óptimo local. En \cite{Cuellar_etal} se propone una adaptación de este algoritmo, que es la que vamos a estudiar.
@@ -278,5 +275,150 @@ En resumen, el Algoritmo CHC consiste en:
     \caption{Algoritmo CHC.}
 \end{Ualgorithm}
 
-% TODO
-\textcolor{red}{Añadir ejemplos usando la implementación}
+\subsection{Ejemplos}
+
+Cabe destacar que los algoritmos genéticos GGA y CHC han logrado romper el criptosistema de McEliece hasta una dimensión de $n = 512$. Para ilustrar el funcionamiento de ambos algoritmos, a continuación vamos a mostrar un ejemplo de sus ejecuciones, en el que intentaremos vulnerar la seguridad del criptosistema de McEliece para dicha dimensión.
+
+
+\begin{exampleth}
+    Sea $\mathbb{F}_{2^{10}}$ el cuerpo finito de $1024$ elementos y sea $a$ un elemento de dicho cuerpo. Definimos el polinomio $g(x) = x^{25} + ax^{15} + (a^2 + 1)ax^{10} + a \in \mathbb{F}_{2^{10}}[x]$ y tomamos $n = 512$. Podemos definir el criptosistema de McEliece a partir de estos parámetros con las siguientes órdenes:
+
+    \begin{lstlisting}[gobble=4]
+    sage: n = 512
+    sage: q = 10
+    sage: F = GF(2)
+    sage: L = GF(2^q)
+    sage: a = L.gen()
+    sage: R.<x> = L[]
+    sage: g = x^25 + a*x^15 + (a^2 + 1)*a*x^10 + a
+    sage: t = floor(g.degree()/2)
+    sage: ME = McEliece(n, q, g); ME
+    > McEliece cryptosystem over [518, 262] Goppa code
+    \end{lstlisting}
+
+    Ahora, encriptamos el siguiente mensaje:
+    \begin{align}
+        message := (&0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, \notag\\ 
+                    & 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, \notag\\
+                    & 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, \notag\\
+                    & 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, \notag\\
+                    & 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, \notag\\
+                    & 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, \notag\\
+                    & 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1), \label{message}
+    \end{align}
+    que posteriormente averiguaremos.
+
+    \begin{lstlisting}[gobble=4]
+    sage: message = vector(F, [0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 
+            1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 
+            1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 
+            0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 
+            1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 
+            1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 
+            0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 
+            1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 
+            0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 
+            0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 
+            0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 
+            1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1])
+    sage: encrypted_message = ME.encrypt(message)
+    \end{lstlisting}
+
+    El método \texttt{encrypt()} cifra el mensaje $message$ multiplicándolo por la clave pública $PK$ y añadiéndole un error aleatorio $e$ al resultado.
+
+    A continuación, añadimos una fila a la clave pública $PK$ que contendrá el mensaje encriptado, llamaremos a esta matriz $G$.
+
+    \begin{lstlisting}[gobble=4]
+    sage: PK = ME.get_public_key()
+    sage: G = PK.stack(encrypted_message)
+    \end{lstlisting}
+
+    La matriz $G$ define un código lineal que tiene una distancia mínima $t = \left\lfloor \frac{\gr(g)}{2} \right\rfloor = 12$, y cuyo peso mínimo se obtiene en una única palabra: el error $e$. Para averiguar dicho error, debemos ejecutar los algoritmos genéticos GGA y CHC, los cuales nos darán una permutación $p$ con fitness $t$.
+
+    Primero, vamos a ejecutar el algoritmo genético GGA para un tamaño de población $N = 300$, con probabilidad de cruce $p_c = 0.7$, con un máximo de evaluaciones de $max\_reinit = 100000$ y con un fitness mínimo igual a $min\_fitness = t$. 
+    
+    \begin{lstlisting}[gobble=4]
+    sage: p, f = GGA(G, 300, 0.7, 100000, t)
+    \end{lstlisting}
+
+    Obtenemos una permutación $p$ que, tras aplicarla permutación, existirá una fila con fitness mínimo $f = 12$ a partir de la cual podremos obtener el error. Por tanto, primero debemos calcular la matriz $P$ asociada a la permutación $p$, aplicársela a la matriz generadora $G$ y obtener la matriz escalonada reducida del resultado $M$:
+
+    \begin{lstlisting}[gobble=4]
+    sage: P = permutation_matrix(p)
+    sage: M = (G*P).rref()
+    \end{lstlisting}
+
+    Obtenemos ahora la fila de la matriz $M$ que tenga peso $f$:
+
+    \begin{lstlisting}[gobble=4]
+    sage:   for row in M:
+                if fitness_vector(row) == f:
+                    v = vector(GF(2), row)
+                    break
+    \end{lstlisting}
+    
+    Ahora ya podemos obtener el vector error si deshacemos la permutación al vector $v$ que acabamos de calcular:
+
+    \begin{lstlisting}[gobble=4]
+    sage: e = v * P^(-1)
+    \end{lstlisting}
+
+    Una vez obtenido el error, se lo restamos al criptograma y resolvemos el sistema $y - e = mPK$,
+
+    \begin{lstlisting}[gobble=4]
+    sage: z = encrypted_message - e
+    sage: m = PK.solve_left(z)
+    sage: m
+    >  (0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 
+        0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 
+        1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 
+        0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 
+        0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 
+        1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 
+        0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 
+        1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+        1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 
+        1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 
+        0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1)
+    sage: m == message
+    > True
+    \end{lstlisting}
+
+    Observamos que el mensaje $m$ que obtenemos coincide con el mensaje original $message$ \eqref{message}. Por lo que hemos conseguido romper el criptosistema de McEliece para $n = 512$ con el algoritmo genético GGA.
+
+    Ahora, ejecutaremos el algoritmo genético CHC. Este algoritmo lo ejecutaremos para un tamaño de población $N = 350$, con $tau = 0.8$ y con un fitness mínimo igual a $min\_fitness = t$. Una vez ejecutado dicho algoritmo, los pasos son análogos.
+
+    \begin{lstlisting}[gobble=4]
+    sage: p, f = CHC(G, 350, 0.8, t)
+    sage: P = permutation_matrix(p)
+    sage: M = (G*P).rref()
+    sage:   for row in M:
+                if fitness_vector(row) == f:
+                    v = vector(GF(2), row)
+                    break
+    sage: e = v * P^(-1)
+    \end{lstlisting}
+
+    Una vez obtenido el error, se lo restamos al criptograma y resolvemos el sistema $y - e = mPK$,
+
+    \begin{lstlisting}[gobble=4]
+    sage: z = encrypted_message - e
+    sage: m = PK.solve_left(z)
+    sage: m
+    >  (0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 
+        0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 
+        1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 
+        0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 
+        0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 
+        1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 0, 
+        0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0, 
+        1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 
+        1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 
+        1, 0, 1, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 
+        0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1)
+    sage: m == message
+    > True
+    \end{lstlisting}
+
+    Observamos que, igualmente, el mensaje $m$ que obtenemos coincide con el mensaje original $message$ \eqref{message}. Por lo que hemos conseguido romper el criptosistema de McEliece para $n = 512$ con el algoritmo genético CHC.
+\end{exampleth}
