@@ -42,7 +42,12 @@ Representación de un código de Goppa como un código lineal.
   \end{lstlisting}
 
 \begin{description}[font=\ttfamily, style=nextline]
-  \item[get\_generating\_pol(self)] Devuelve el polinomio generador del código.
+  \item[get\_generating\_pol(self)] Calcula el polinomio generador del código.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] El polinomio generador del código.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -59,7 +64,12 @@ Representación de un código de Goppa como un código lineal.
     > x^{3} + z_{4} x^{2} + 1
   \end{lstlisting}
 
-  \item[get\_defining\_set(self)] Devuelve el conjunto de definición del código.
+  \item[get\_defining\_set(self)] Calcula el conjunto de definición del código.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] El conjunto de definición del código.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -76,7 +86,12 @@ Representación de un código de Goppa como un código lineal.
     > [z4^3 + z4^2, 0, z4^2 + 1, z4^2 + z4 + 1, z4 + 1, z4^3 + z4 + 1, z4^2 + z4, z4^3 + z4^2 + 1, z4^3 + z4^2 + z4 + 1, z4^3 + z4]
   \end{lstlisting}
 
-  \item[get\_parity\_pol(self)] Devuelve el polinomio de paridad del código.
+  \item[get\_parity\_pol(self)] Calcula el polinomio de paridad del código.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] El polinomio de paridad del código.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -93,7 +108,12 @@ Representación de un código de Goppa como un código lineal.
     > [(z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4)*x + 1, x^2 + z4*x, z4^3*x^2 + (z4^3 + z4^2 + 1)*x + z4^3 + z4^2, (z4^3 + z4)*x^2 + z4^2*x + z4^3 + z4^2 + z4 + 1, (z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4^2 + 1)*x + z4^2, (z4^3 + z4)*x^2 + (z4^2 + 1)*x + 1, (z4 + 1)*x^2 + (z4^3 + z4^2)*x + z4^3 + z4^2 + z4, (z4^3 + z4^2 + 1)*x^2 + (z4^2 + z4 + 1)*x + z4^2 + 1, (z4^3 + z4^2)*x^2 + (z4 + 1)*x + z4, z4^2*x^2 + (z4^2 + z4)*x + z4^3 + 1]
   \end{lstlisting}
 
-  \item[get\_parity\_check\_matrix(self)] Devuelve la matriz de paridad del código.
+  \item[get\_parity\_check\_matrix(self)] Calcula la matriz de paridad del código.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] La matriz de paridad del código.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -115,7 +135,12 @@ Representación de un código de Goppa como un código lineal.
       [z2   0 z2 + 1     z2    z2     z2      1     z2    z2      1]
   \end{lstlisting}
 
-  \item[get\_generator\_matrix(self)] Devuelve la matriz generadora del código.
+  \item[get\_generator\_matrix(self)] Calcula la matriz generadora del código.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] La matriz generadora del código.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -135,7 +160,12 @@ Representación de un código de Goppa como un código lineal.
       [0   0   0   1   z2  z2      z2    z2   z2 + 1       z2]
   \end{lstlisting}
 
-  \item[get\_dimension(self)] Devuelve la dimensión del código.
+  \item[get\_dimension(self)] Calcula la dimensión del código.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] La dimensión del código.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -187,6 +217,11 @@ Representación de un codificador para un código de Goppa usando su matriz gene
 
   \begin{description}[font=\ttfamily, style=nextline]
     \item[get\_generator\_matrix(self)] Devuelve la matriz generadora del código asociado a \texttt{self}.
+    
+    \textsc{Salida}
+    \begin{description}[font=\normalfont\ttfamily]
+      \item[] La matriz generadora del código asociado.
+    \end{description}
 
     \textsc{Ejemplos}
     \begin{lstlisting}[gobble=4]
@@ -216,7 +251,7 @@ Representación de un codificador para un código de Goppa usando su matriz gene
 
     \textsc{Salida}
     \begin{description}[font=\normalfont\ttfamily]
-        \item[] Vector asociado a una palabra código del código asociado a \texttt{self}.
+        \item[] Una palabra código del código asociado a \texttt{self}.
     \end{description}
 
     \textsc{Ejemplos}
@@ -271,7 +306,7 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
   \end{lstlisting}
 
 \begin{description}[font=\ttfamily, style=nextline]
-  \item[get\_syndrome(self, c)] Devuelve el polinomio síndrome asociado a la palabra código \texttt{c}.
+  \item[get\_syndrome(self, c)] Calcula el polinomio síndrome asociado a la palabra código \texttt{c}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
@@ -307,7 +342,12 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
     > (z4^3 + 1)*x^2 + z4^3*x + z4^3
   \end{lstlisting}
 
-  \item[get\_generating\_pol(self)] Devuelve el polinomio generador del código asociado a \texttt{self}.
+  \item[get\_generating\_pol(self)] Calcula el polinomio generador del código asociado a \texttt{self}.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+      \item[] Polinomio generador del código asociado a \texttt{self}.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -403,15 +443,18 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
 \section{Funciones auxiliares}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-  \item[get\_defining\_set(n, pol, field)]
-
-  Obtiene un conjunto de definición a partir del polinomio \texttt{g}, con longitud \texttt{n} y pertenece al cuerpo finito \texttt{field}.
+  \item[get\_defining\_set(n, pol, field)] Obtiene un conjunto de definición a partir del polinomio \texttt{pol} con longitud \texttt{n} y pertenece al cuerpo finito \texttt{field}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[n] Tamaño del conjunto de definición.
     \item[pol] Polinomio generador del conjunto de definición. Sus raíces no pertenecen a dicho conjunto.
     \item[field] Cuerpo finito sobre el que se define el conjunto de definición.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] El conjunto de definición asociado al polinomio \texttt{pol} con longitud \texttt{n} y pertenece al cuerpo finito \texttt{field}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -425,14 +468,17 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
     > [z6^5 + z6^3 + z6^2 + z6, z6^4 + z6^3 + 1, z6^5 + z6^4 + z6^3 + z6 + 1, z6^5 + z6^2, z6 + 1]
   \end{lstlisting}
 
-  \item[random\_word(n, field)]
-
-  Obtiene una palabra aleatoria de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.
+  \item[random\_word(n, field)] Obtiene un vector aleatorio de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[n] Tamaño de la palabra.
     \item[field] Cuerpo finito sobre el que se define el conjunto de definición.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Un vector aleatorio de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -443,15 +489,18 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
     > (z3^2 + 1, 2*z3^2 + z3 + 2, 2, 2*z3^2 + 2*z3 + 1, 2, 2*z3^2 + 1)
   \end{lstlisting}
 
-  \item[random\_error(n, num\_errors, field)]
-
-  Devuelve un vector aleatorio de errores de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.
+  \item[random\_error(n, num\_errors, field)] Obtiene un vector aleatorio de tamaño \texttt{n} con peso máximo \texttt{num\_errors} que pertenece al cuerpo finito \texttt{field}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[n] Tamaño del vector.
     \item[num\_errors] Número máximo de errores a añadir.
     \item[field] Cuerpo finito al que pertenece la palabra \texttt{x}.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Un vector aleatorio de tamaño \texttt{n} con peso máximo \texttt{num\_errors} que pertenece al cuerpo finito \texttt{field}.
   \end{description}
 
   \textsc{Ejemplos}

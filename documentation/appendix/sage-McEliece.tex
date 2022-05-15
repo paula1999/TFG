@@ -34,7 +34,12 @@ El código desarrollado se encuentra en
   \end{lstlisting}
 
   \begin{description}[font=\ttfamily, style=nextline]
-  \item[get\_S(self)] Devuelve la matriz no singular binaria aleatoria que es parte de la clave privada.
+  \item[get\_S(self)] Obtiene la matriz no singular binaria aleatoria que es parte de la clave privada.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Matriz no singular binaria aleatoria que es parte de la clave privada.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -52,7 +57,12 @@ El código desarrollado se encuentra en
       [0 1 1 1 1]
   \end{lstlisting}
 
-  \item[get\_G(self)] Devuelve la matriz generadora asociada al código de Goppa que es parte de la clave privada.
+  \item[get\_G(self)] Obtiene la matriz generadora asociada al código de Goppa que es parte de la clave privada.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Matriz generadora asociada al código de Goppa que es parte de la clave privada.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -70,7 +80,12 @@ El código desarrollado se encuentra en
       [0 0 0 0 0 0 1 1 0 1 0 1 1 0 0 1 0 1 1 0]
   \end{lstlisting}
 
-  \item[get\_P(self)] Devuelve la matriz de permutaciones aleatoria que es parte de la clave privada.
+  \item[get\_P(self)] Obtiene la matriz de permutaciones aleatoria que es parte de la clave privada.
+  
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Matriz de permutaciones aleatoria que es parte de la clave privada.
+  \end{description}
 
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
@@ -105,6 +120,11 @@ El código desarrollado se encuentra en
 
   \item[get\_public\_key(self)] Devuelve la matriz que es parte de la clave pública.
 
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Clave pública.
+  \end{description}
+
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
     sage: L = GF(2^5)
@@ -128,6 +148,11 @@ El código desarrollado se encuentra en
     \item[m] Texto plano que se va a encriptar.
   \end{description}
 
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Mensaje \texttt{m} cifrado.
+  \end{description}
+
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
     sage: L = GF(2^5)
@@ -148,6 +173,11 @@ El código desarrollado se encuentra en
     \item[c] Criptograma que se va a desencriptar.
   \end{description}
 
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Criptograma \texttt{c} descifrado.
+  \end{description}
+
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
     sage: L = GF(2^5)
@@ -166,13 +196,16 @@ El código desarrollado se encuentra en
 \section{Funciones auxiliares}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-  \item[get\_weight(c)]
-
-  Calcula el peso del vector \texttt{c}.
+  \item[get\_weight(c)] Calcula el peso del vector \texttt{c}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[c] Vector al que se le va a calcular su peso.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Peso del vector \texttt{c}.
   \end{description}
 
   \textsc{Ejemplos}

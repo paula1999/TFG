@@ -8,13 +8,10 @@ El código desarrollado se encuentra en
 \url{https://github.com/paula1999/TFG/tree/main/src}.
 \end{center}
 
-
 \section{Algoritmo genético GGA}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-  \item[GGA(G, N, pc, max\_reinit, min\_fitness)]
-
-  Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
+  \item[GGA(G, N, pc, max\_reinit, min\_fitness)] Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
@@ -23,6 +20,11 @@ El código desarrollado se encuentra en
     \item[pc] Probabilidad de cruce.
     \item[max\_reinit] Número máximo de evaluaciones de las soluciones que no producen mejora en el fitness de la mejor solución encontrada.
     \item[min\_fitness] Peso del vector error. 
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Tupla formada por una permutación el mínimo fitness que produce.
   \end{description}
 
   \textsc{Ejemplos}
@@ -49,9 +51,7 @@ El código desarrollado se encuentra en
 \section{Algoritmo genético CHC}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-  \item[CHC(G, N, tau, min\_fitness)]
-
-  Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
+  \item[CHC(G, N, tau, min\_fitness)] Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
@@ -59,6 +59,11 @@ El código desarrollado se encuentra en
     \item[N] Tamaño de la población.
     \item[tau] Tasa de actualización. $\tau \in [0,1]$.
     \item[min\_fitness] Peso del vector error. 
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Tupla formada por una permutación el mínimo fitness que produce.
   \end{description}
 
   \textsc{Ejemplos}
@@ -85,13 +90,16 @@ El código desarrollado se encuentra en
 \section{Funciones auxiliares}
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
-  \item[fitness\_vector(v)]
-
-  Calcula el fitness de un vector \texttt{v}.
+  \item[fitness\_vector(v)] Calcula el fitness de un vector \texttt{v}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[v] Vector binario al que se le va a calcular el fitness. 
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Fitness del vector binario \texttt{v}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -100,13 +108,16 @@ El código desarrollado se encuentra en
     > 3
   \end{lstlisting}
 
-  \item[fitness\_matrix(M)]
-
-  Calcula el fitness mínimo de las filas de la matriz \texttt{M}.
+  \item[fitness\_matrix(M)] Calcula el fitness mínimo de las filas de la matriz \texttt{M}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[M] Matriz binaria de la que queremos calcular su fitness mínimo.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Fitness mínimo de las filas de la matriz \texttt{M}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -116,12 +127,16 @@ El código desarrollado se encuentra en
     > 1
   \end{lstlisting}
 
-  \item[permutation\_matrix(x)]  
-  Calcula la matriz asociada a la permutación \texttt{x}.
+  \item[permutation\_matrix(x)] Calcula la matriz asociada a la permutación \texttt{x}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[x] Permutación que se le aplica a la matriz \texttt{M}.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] La matriz de permutaciones asociada a \texttt{x}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -133,14 +148,17 @@ El código desarrollado se encuentra en
       [1 0 0]
   \end{lstlisting}
 
-  \item[fitness\_permutation(M, x)]
-
-  Calcula el fitness mínimo de las filas de la forma escalonada de la matriz \texttt{M} permutada por la permutación \texttt{x}.
+  \item[fitness\_permutation(M, x)] Calcula el fitness mínimo de las filas de la forma escalonada reducida de la matriz \texttt{M} permutada por la permutación \texttt{x}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[M] Matriz binaria de la que queremos calcular su fitness mínimo.
     \item[x] Permutación que se le aplica a la matriz \texttt{M}.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Fitness mínimo de las filas de la forma escalonada reducida de la matriz \texttt{M} permutada por la permutación \texttt{x}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -151,13 +169,16 @@ El código desarrollado se encuentra en
     > 1
   \end{lstlisting}
 
-  \item[random\_sol(n)]
-
-  Calcula una solución aleatoria de tamaño \texttt{n}.
+  \item[random\_sol(n)] Calcula una solución aleatoria de tamaño \texttt{n}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[n] Tamaño de la solución.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Un vector aleatorio de tamaño \texttt{n}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -166,14 +187,17 @@ El código desarrollado se encuentra en
     > [1, 4, 5, 2, 3]
   \end{lstlisting}
 
-  \item[crossover(p1, p2)]
-
-  Operador cruce entre dos padres \texttt{p1} y \texttt{p2}.
+  \item[crossover(p1, p2)] Operador cruce entre dos padres \texttt{p1} y \texttt{p2}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
-    \item[p1] Primer padre que se va a cruzar.
-    \item[p2] Segundo padre que se va a cruzar. 
+    \item[p1] Vector de dimensión \texttt{n}.
+    \item[p2] Vector de dimensión \texttt{n}.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Un vector aleatorio de tamaño \texttt{n}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -182,29 +206,35 @@ El código desarrollado se encuentra en
     > ([3, 2, 1], [2, 1, 3])
   \end{lstlisting}
 
-  \item[mutation(p)]
-
-  Operador mutación de \texttt{p}.
+  \item[mutation(p)] Operador mutación de \texttt{p}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[p] Individuo que se va a mutar.
   \end{description}
 
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Un vector mutado.
+  \end{description}
+
   \textsc{Ejemplos}
   \begin{lstlisting}[gobble=4]
     sage: crossover([1, 3, 2], [3, 1, 2])
     > ([3, 2, 1], [2, 1, 3])
   \end{lstlisting}
 
-  \item[distance(x, y)]
-
-  Calcula la distancia de Hamming entre \texttt{x} e \texttt{y}.
+  \item[distance(x, y)] Calcula la distancia de Hamming entre \texttt{x} e \texttt{y}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[x] Vector de tamaño \texttt{n}.
     \item[y] Vector de tamaño \texttt{n}.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Distancia Hamming entre los vectores \texttt{x} e \texttt{y}.
   \end{description}
 
   \textsc{Ejemplos}
@@ -213,14 +243,17 @@ El código desarrollado se encuentra en
     > 2
   \end{lstlisting}
 
-  \item[actualizar(P, tau)]
-
-  Calcula el decremento del cruce como un porcentaje \texttt{tau} de la máxima distancia de Hamming entre los individuos de la población \texttt{P}.
+  \item[actualizar(P, tau)] Calcula el decremento del cruce como un porcentaje \texttt{tau} de la máxima distancia de Hamming entre los individuos de la población \texttt{P}.
 
   \textsc{Argumentos}
   \begin{description}[font=\normalfont\ttfamily]
     \item[P] Población.
     \item[tau] Tasa de actualización. $\tau \in [0,1]$.
+  \end{description}
+
+  \textsc{Salida}
+  \begin{description}[font=\normalfont\ttfamily]
+    \item[] Tupla formada por la distancia y el decremento del cruce.
   \end{description}
 
   \textsc{Ejemplos}
