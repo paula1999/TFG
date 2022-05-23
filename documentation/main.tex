@@ -24,7 +24,7 @@
 cleardoublepage=empty,abstractoff,BCOR=5mm,paper=a4,fontsize=12pt,main=spanish]{scrreprt}
 
 % Paquetes de latex que se cargan al inicio. Cubren la entrada de
-% texto, gráficos, código fuente y símbolofs.
+% texto, gráficos, código fuente y símbolos.
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{fixltx2e}
@@ -180,59 +180,34 @@ manychapters,pdfspacing]{classicthesis}
 \theoremstyle{plain}
 \newtheorem{problemth}{Problema}
 
+
 \begin{document}
+
 
 \ThisULCornerWallPaper{1}{figures/ugrA4.pdf}
 \maketitle
 
-% TODO: dedicatoria
-\input{add_ons/dedicatoria}
+\input{add_ons/agradecimientos}
 
 \onehalfspacing
 
 \input{add_ons/resumen}
-
-\newpage
-\null
-\thispagestyle{empty}
-
 \input{add_ons/summary}
-
-%\newpage
-%\null
-%\thispagestyle{empty}
 
 % Indice
 \tableofcontents
 
-% TODO: Introducción
 \input{add_ons/introduccion}
-
-\newpage
-\null
-\thispagestyle{empty}
-
 \input{chapters/chapter1}
 \input{chapters/chapter2}
 \input{chapters/chapter3}
 \input{chapters/chapter4}
 \input{chapters/chapter5}
-
-% TODO: Conclusión
-\newpage
-\null
-\thispagestyle{empty}
-
 \input{add_ons/conclusion}
-
-\newpage
-\null
-\thispagestyle{empty}
-
 \appendix
 \include{appendix/sage-Goppa}
 \include{appendix/sage-McEliece}
-\include{appendix/sage-Niederreiter}
+%\include{appendix/sage-Niederreiter}
 \include{appendix/sage-genetic-algorithms}
 
 % ----------------------- %
@@ -240,16 +215,16 @@ manychapters,pdfspacing]{classicthesis}
 % ----------------------- %
 
 % Estilo de cita.
-\bibliographystyle{unsrtnat}
-\renewcommand\bibname{Reference}
+\bibliographystyle{apa-good}
+%\renewcommand\bibname{Reference}
 
 %[citestyle=numeric]
 
-\renewcommand\bibname{Bibliografía}
-\bibliography{bib/library}
+%\renewcommand\bibname{Bibliografía}
+%
 
 % Añadimos la bibliografía al índice
 \phantomsection
 \addcontentsline{toc}{chapter}{Bibliografía}
-
+\bibliography{bib/library}
 \end{document}
