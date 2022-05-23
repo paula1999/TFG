@@ -1,7 +1,11 @@
+\newpage
+\null
+\thispagestyle{empty}
+
 \chapter[Implementación en SageMath de los códigos de Goppa]{Implementación en SageMath de los códigos de Goppa}
 \label{annex:sage-Goppa}
 
-En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que hereda de la clase \texttt{Encoder} y es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder}, que hereda de la clase \texttt{Decoder}, para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original.
+En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que hereda de la clase \texttt{Encoder} y es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder}, que hereda de la clase \texttt{Decoder}, para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original y en el mensaje original. También se describen las funciones auxiliares desarrolladas.
 
 El código desarrollado se encuentra en
 \begin{center}
