@@ -1,12 +1,13 @@
-\chapter*{Conclusión}
-\addcontentsline{toc}{chapter}{Conclusión} 
-
-% TODO: Poner conclusión
-
-\textcolor{red}{Añadir conclusión}
+\chapter*{Conclusión y vías futuras}
+\addcontentsline{toc}{chapter}{Conclusión y vías futuras} 
 
 \begin{comment}
     Las conclusiones deberán incluir todas aquellas de tipo profesional y académico.
     Además, se deberá indicar si los objetivos han sido alcanzados totalmente, parcialmente o no alcanzados.
     Si hubiese posibles vías claras de desarrollo posterior sería interesante destacarlas aquí, poniéndolas en valor en el contexto inicial del trabajo.
 \end{comment}
+
+
+El objetivo principal de este trabajo se ha alcanzado satisfactoriamente, esto es, se ha conseguido realizar un criptoanálisis al criptosistema de McEliece con algoritmos genéticos. Para ello, se han adquirido los conocimientos necesarios para lograr estudiar e implementar este sistema a partir de los códigos de Goppa, para el cual ha sido necesario realizar un desarrollo previo de los conceptos matemáticos e informáticos tales como los cuerpos finitos, los anillos de polinomios sobre cuerpos finitos y los códigos lineales. También se han adquirido los conocimientos necesarios para llevar a cabo el criptoanálisis, como el estudio que se ha realizado para la criptografía basada en códigos como modelo de criptografía post-cuántica y el estudio de algoritmos evolutivos para el cálculo de la distancia de un código lineal. Además, se ha logrado que las implementaciones en SageMath de los códigos de Goppa, del criptosistema de McEliece clásico y de los algoritmos genéticos funcionen correctamente.
+
+Como desarrollo posterior, sería interesante contribuir con las implementaciones de los códigos de Goppa y del criptosistema de McEliece a SageMath, pues solo dispone de los códigos de Goppa binarios. En cuanto a los algoritmos genéticos que hemos empleado, se ha conseguido romper el criptosistema de McEliece hasta una longitud igual a $n = 128$. Sin embargo, pienso que se podrían mejorar para conseguir romper una longitud mayor, ya sea modificando los operadores de cruce y/o mutación, o añadir más diversidad para que no se estanquen en mínimos locales, o incluso mejorar su eficiencia calculando menos números aleatorios y/o permutaciones de las matrices.
