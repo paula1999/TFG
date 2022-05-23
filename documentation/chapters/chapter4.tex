@@ -17,7 +17,7 @@ En este capítulo introduciremos las nociones básicas de la criptografía, junt
 
 \section{Introducción}
 
-En general, los métodos de cifrado consisten en encriptar un mensaje, llamado \emph{texto plano}, antes de ser transmitido, de esta forma obtenemos un \emph{texto cifrado} o \emph{criptograma}. Este texto cifrado se transmite al destinatario, quien lo \emph{desencripta} mediante una \emph{clave de descifrado}, la cual solo conocen el receptor y el emisor, que previamente ha sido intercambiada.
+En general, los métodos de cifrado consisten en encriptar un mensaje, llamado \emph{texto plano}, antes de ser transmitido, de esta forma obtenemos un \emph{texto cifrado} o \emph{criptograma}. Este texto cifrado se transmite al destinatario, quien lo \emph{descifra} mediante una \emph{clave de descifrado}, la cual solo conocen el receptor y el emisor, que previamente ha sido intercambiada.
 
 Formalmente, dado un conjunto de los mensajes $\mathcal{M}$, un conjunto de los criptogramas $\mathcal{C}$ y el espacio de claves $\mathcal{K}_p \times \mathcal{K}_s$, un \emph{criptosistema} viene definido por dos aplicaciones
 \[
@@ -42,7 +42,7 @@ La propiedad \ref{def:criptosistema} se transforma en
 \[
     D_{k_s} \left( E_{k_p}(m) \right) = m.
 \]
-Para encriptar y desencriptar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}) \cite[Sección 2.1]{Introduction_to_cryptography}.
+Para encriptar y descifrar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}) \cite[Sección 2.1]{Introduction_to_cryptography}.
 
 En 1976, Diffie y Hellman \cite{Diffie_Hellman_1976} introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, también llamada \emph{criptografía asimétrica}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (k_p, k_s)$, que consiste en dos partes: $k_p$ es la clave de cifrado y es pública, y $k_s$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $k_p$ del receptor. Así, el receptor poddrá descifrar el texto cifrado usando su clave privada $k_s$, que solo conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
 
@@ -71,7 +71,7 @@ En la criptografía de clave pública, necesitamos unas funciones $\left( E_{k_p
 
 En 1976, Diffie y Hellman \cite{Diffie_Hellman_1976} presentaron la idea de la criptografía de clave pública, es decir, introdujeron métodos de clave pública para el acuerdo de clave y, además, describieron cómo las firmas digitales funcionarían. El primer criptosistema de clave pública que podía servir como un mecanismo de acuerdo de clave y como una firma digital fue el criptosistema RSA, que actualmente es el más conocido y usado. Este criptosistema lleva el nombre de sus inventores: Rivest, Shamir y Adleman. El criptosistema RSA se basa en la dificultad de factorizar grandes números, lo que le permite construir funciones de una sola dirección con una trampilla. Otras funciones de una sola dirección se basan en la dificultad de extraer logaritmos discretos. Estos dos problemas de la teoría de números son los cimientos de los criptosistemas de clave pública más usados actualmente.
 
-Cada participante en un criptosistema de clave pública tiene una clave $k = (k_p, k_s)$, que consiste en una clave pública ($k_p$) y una clave privada o secreta ($k_s$). Para garantizar la seguridad del criptosistema, debería ser inviable obtener la clave privada $k_s$ a partir de la clave pública $k_p$. Un algoritmo eficiente debería ser el encargado de elegir aleatoriamente ambas claves en un gran espacio de parámetros. Así, cualquiera puede usar $k_p$ para encriptar mensajes, pero solo quien posea $k_s$ podrá desencriptarlos.
+Cada participante en un criptosistema de clave pública tiene una clave $k = (k_p, k_s)$, que consiste en una clave pública ($k_p$) y una clave privada o secreta ($k_s$). Para garantizar la seguridad del criptosistema, debería ser inviable obtener la clave privada $k_s$ a partir de la clave pública $k_p$. Un algoritmo eficiente debería ser el encargado de elegir aleatoriamente ambas claves en un gran espacio de parámetros. Así, cualquiera puede usar $k_p$ para encriptar mensajes, pero solo quien posea $k_s$ podrá descifrar.
 
 En cuanto a las firmas digitales, supongamos que tenemos una familia de funciones con trampilla $\left( E_{k_p} \right)_{k_p \in K_P}$ donde cada función $E_{k_p}$ es biyectiva. Sea $k_p$ la clave pública de Alice, quien es la única capaz de calcular la inversa $E_{k_p}^{-1}$ de $E_{k_p}$ pues para ello se necesita la clave privada $k_s$ de Alice. De esta forma, si Alice quiere firmar un mensaje $m$, tiene que calcular $E_{k_p}^{-1}(m)$, que será el valor de la firma $s$ de $m$. Todo el mundo puede verificar la firma de Alice $s$ pues cualquiera puede usar su clave pública $k_p$ y calcular $E_{k_p}(s)$. Si $E_{k_p} (s) = m$, entonces podemos asegurarnos de que Alice realmente firmó $m$ porque es la única que es capaz de calcular $E_{k_p}^{-1}(m)$.
 
@@ -385,7 +385,7 @@ A diferencia con el criptosistema de McEliece, el algoritmo de decodificación d
 Sin embargo, si un ataque es capaz de romper el criptosistema de McEliece, también puede romper el esquema Niederreiter y viceversa. Esto se debe a que los criptosistemas de McEliece y Niederreiter se basan en el uso de códigos lineales que son duales entre si y la matriz generadora se puede obtener eficientemente a partir de la matriz de paridad y viceversa.
 
 % TODO
-\textcolor{red}{Poner ejemplos usando la implementación de este criptosistema.}
+%\textcolor{red}{Poner ejemplos usando la implementación de este criptosistema.}
 
 
 \subsubsection{Firma digital}
