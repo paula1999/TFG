@@ -1,7 +1,9 @@
+\newpage
+\null
+\thispagestyle{empty}
+
 \chapter*{Summary}
 %\addcontentsline{toc}{chapter}{Summary} 
-
-%TODO: longitud mínima de 1500 palabras
 
 \begin{otherlanguage}{english}
 
@@ -23,7 +25,7 @@ In this chapter we will develop and implement a new class of linear error correc
 
 \spacedlowsmallcaps{Chapter 4}
 
-The fourth chapter contains the study of the goal of this project, the McEliece cryptosystem. Previously, we will introduce the concept and objectives of cryptography, as well as two main types of cryptosystems. Next, we will present the possibility of the existence of quantum computers and the threat that they present to the security of some existing cryptosystems, proposing some alternatives that are capable of resisting their attacks, such as the McEliece cryptosystem. This system is constructed from the Goppa codes studied in the previous chapter. We will study the generation of its keys (public and private), as well as the encryption and decryption processes. We will also analyze and implement a variant, the Niederreiter system, which is equivalent in security. For each system we will present examples using the implementation carried out to show its operation.
+The fourth chapter contains the study of the goal of this project, the McEliece cryptosystem. Previously, we will introduce the concept and objectives of cryptography, as well as two main types of cryptosystems. Next, we will present the possibility of the existence of quantum computers and the threat that they present to the security of some existing cryptosystems, proposing some alternatives that are capable of resisting their attacks, such as the McEliece cryptosystem. This system is constructed from the Goppa codes studied in the previous chapter. We will study the generation of its keys (public and private), as well as the encryption and decryption processes. We will also analyze a variant, the Niederreiter system, which is equivalent in security. We will present examples of the McEliece system using the implementation carried out to show its operation.
 
 \spacedlowsmallcaps{Chapter 5}
 
@@ -34,7 +36,6 @@ To carry out this project, the following has been implemented in SageMath.
 \begin{itemize}
     \item A class to define the Goppa codes, another class for your encoder, and another class for your decoder using Sugiyama's algorithm. The documentation of this class can be found in the annex \ref{annex:sage-Goppa}, along with the helpful functions used.
     \item A class to define the McEliece cryptosystem, whose documentation can be found in the annex \ref{annex:sage-McEliece}, along with the helpful functions used.
-    \item A class to define the Niederreiter cryptosystem, whose documentation can be found in the annex \ref{annex:sage-Niederreiter}, along with the helpful functions used.
     \item One function for the GGA genetic algorithm and another function for the CHC genetic algorithm. The documentation of these functions, along with other helpful functions used, can be found in the annex \ref{annex:sage-geneticos}.
 \end{itemize}
 
