@@ -3,10 +3,6 @@
 % Consiste en poner lo que ya sabías, porque lo has dado en el grado, y que te haga falta 
 % (por ejemplo, algebra lineal, cuerpos finitos, operaciones con polinomios, algoritmos genéticos, etc).
 
-\newpage
-\null
-\thispagestyle{empty}
-
 \chapter{Preliminares}
 
 En este capítulo se desarrollarán las herramientas necesarias para poder afrontar el criptosistema de McEliece que precisa este trabajo. Empezaremos abordando la idea de anillo y algunas de sus propiedades más importantes. A partir de este noción, podremos definir los cuerpos finitos y los conceptos relacionados con ellos, tales como los anillos de polinomios sobre cuerpos finitos y su utilidad para construir cuerpos finitos. También será de especial relevancia tratar los conceptos relacionados con la teoría de la complejidad para clasificar los problemas de acuerdo a su dificultad. Finalmente, estudiaremos las metaheurísticas basadas en poblaciones para introducir los algoritmos genéticos, que podrán ser de utilidad para realizar un ataque al criptosistema de McEliece.
@@ -15,7 +11,7 @@ En este capítulo se desarrollarán las herramientas necesarias para poder afron
 En esta sección introduciremos el concepto de anillo para poder definir el concepto de cuerpo, así como las principales propiedades de esta estructura algebraica.
 
 \begin{definition}
-    Un \emph{anillo} $(A, +, \cdot )$ es un conjunto $A$ junto con dos operaciones binarias $A \times A \rightarrow A$ denotadas por la suma (denotada por $+$) y producto (denotado por $\cdot$) que verifican los siguientes axiomas:
+    Un \emph{anillo} $(A, +, \cdot )$ es un conjunto $A$ junto con dos operaciones binarias $A \times A \rightarrow A$ denotadas por suma ($+$) y producto ($\cdot$) que verifican los siguientes axiomas:
 
     \begin{itemize}
         \item Propiedad asociativa de la suma: 
@@ -32,7 +28,7 @@ En esta sección introduciremos el concepto de anillo para poder definir el conc
         $$ a \cdot (b + c) = a \cdot b + a \cdot c, \quad (b + c) \cdot a = b \cdot a + c \cdot a \qquad \forall a,b,c \in A $$
     \end{itemize}
 
-    Un anillo de llama \emph{conmutativo o abeliano} si se verifica la propiedad conmutativa del producto 
+    Un anillo se llama \emph{conmutativo o abeliano} si se verifica la propiedad conmutativa del producto 
     \[ 
         ab = ba \qquad \forall a,b \in A 
     \]
@@ -378,6 +374,7 @@ El esquema de este procedimiento se muestra a continuación.
         $P_{t+1} \longleftarrow $ SeleccionarPoblación($P_t \cup P_t'$) \tcp{Selección de la nueva población}
         $t \longleftarrow t + 1$\;
     }
+    \caption{Esquema de una metaheurística basada en poblaciones.}
 \end{Ualgorithm}
 
 Vamos a estudiar en detalle este procedimiento concretando los conceptos en los que se basa.
@@ -385,7 +382,7 @@ Vamos a estudiar en detalle este procedimiento concretando los conceptos en los 
 \begin{enumerate}
     \item \textbf{Generación de la población inicial}. Las metaheurísticas basadas en poblaciones comienzan con una población inicial de soluciones. Este paso juega un papel fundamental en la efectividad del algoritmo y su eficiencia. El principal criterio para generar la población es que haya diversidad.
     \item \textbf{Generación de una nueva población}. En este paso, se genera una nueva población de soluciones. Se puede realizar de varias formas, sin embargo en este trabajo estudiaremos la que se basa en la evolución. En esta categoría, las soluciones que componen la población se seleccionan y se reproducen usando operadores de variación (por ejemplo, mutación o cruce) y actúan directamente sobre sus representaciones. Una nueva solución surge a partir de los diferentes atributos de las soluciones de la población actual.
-    \item \textbf{Selección de la nueva población}. Este último paso consiste en seleccionar las nuevas soluciones y reemplazar a la población actual. Este reemplazamiento se puede realizar de varias maneras, por ejemplo una estrategia se basa en seleccionar la nueva población generada como la población actual, otra estrategia se fundamenta en el escoger las dos mejores soluciones de la nueva población y reemplazarlas por las dos peores de la población actual, etc.
+    \item \textbf{Selección de la nueva población}. Este último paso consiste en seleccionar las nuevas soluciones y reemplazar a la población actual. Este reemplazamiento se puede realizar de varias maneras, por ejemplo una estrategia se basa en seleccionar la nueva población generada como la población actual, otra estrategia se fundamenta en escoger las dos mejores soluciones de la nueva población y reemplazarlas por las dos peores de la población actual, etc.
 \end{enumerate}
 
 El criterio de parada suele ser un número máximo de iteraciones (generaciones), un número máximo de evaluaciones de la función objetivo, etc.
@@ -423,6 +420,7 @@ El algoritmo \ref{alg:ev} ilustra este procedimiento.
         $P_{t+1} \longleftarrow$ Reemplazar($P_t, P_t'$)\;
         $t \longleftarrow t + 1$\;
     }
+    \caption{Esquema de un algoritmo evolutivo.}
 \end{Ualgorithm}
 
 \subsubsection{Algoritmos genéticos}
@@ -453,6 +451,7 @@ El algoritmo \ref{alg:gen} ilustra este procedimiento.
         $P_{t+1} \longleftarrow$ Reemplazar($P_t, P_t'$)\;
         $t \longleftarrow t + 1$\;
     }
+    \caption{Esquema de un algoritmo genético.}
 \end{Ualgorithm}
 
 El modelo puede ser elitista (conserva a los mejores individuos), lo que produce una convergencia rápida cuando se reemplazan los peores cromosomas de la población.

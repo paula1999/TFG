@@ -44,7 +44,7 @@ La propiedad \ref{def:criptosistema} se transforma en
 \]
 Para encriptar y descifrar existen \emph{algoritmos de cifrado} y \emph{de descifrado}, respectivamente, y cada uno usará una clave secreta. Si esta clave es la misma en ambos algoritmos, diremos que los métodos de encriptación son \emph{simétricos}. Algunos ejemplos importantes de estos métodos son DES (\emph{Data Encryption Standard}) y AES (\emph{Advanced Encryption Standard}) \cite[Sección 2.1]{Introduction_to_cryptography}.
 
-En 1976, Diffie y Hellman \cite{Diffie_Hellman_1976} introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, también llamada \emph{criptografía asimétrica}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (k_p, k_s)$, que consiste en dos partes: $k_p$ es la clave de cifrado y es pública, y $k_s$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $k_p$ del receptor. Así, el receptor poddrá descifrar el texto cifrado usando su clave privada $k_s$, que solo conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
+En 1976, Diffie y Hellman \cite{Diffie_Hellman_1976} introdujeron un concepto revolucionario, la \emph{criptografía de Clave Pública}, también llamada \emph{criptografía asimétrica}, que permitió dar una solución al antiguo problema del intercambio de claves e indicar el camino a la firma digital. Los métodos de cifrado de \emph{clave pública} son \emph{asimétricos}. Cada receptor tiene una clave personal $k = (k_p, k_s)$, que consiste en dos partes: $k_p$ es la clave de cifrado y es pública, y $k_s$ es la clave de descifrado, que es privada. De esta forma, si queremos enviar un mensaje, lo encriptaremos mediante la clave pública $k_p$ del receptor. Así, el receptor podrá descifrar el texto cifrado usando su clave privada $k_s$, que solo conoce él. Al ser la clave pública, cualquiera puede encriptar un mensaje usándola, sin embargo descifrarlo sin saber la clave privada será casi imposible.
 
 \section{Objetivos de la criptografía}
 
@@ -59,7 +59,7 @@ Además de proporcionar confidencialidad, la criptografía proporciona solucione
 
 Para garantizar la integridad de los datos, hay métodos simétricos y de clave pública. El mensaje $m$ es aumentado por un \emph{código de autenticación de mensaje} (MAC). Este código es generado por un algoritmo que depende de la clave secreta. Así, el mensaje aumentado $(m, MAC(k,m))$ está protegido contra modificaciones. El receptor ahora puede comprobar la integridad del mensaje $(m, \bar{m})$ verificando que $MAC(k, m) = \bar{m}$.
 
-Las firmas digitales requieren métodos de clave pública y proporcionan autenticación y no repudiablidad. Cualquier persona puede verificar si una firma digital es válida con la clave pública del firmante. Esto es, si firmamos con nuestra clave privada $k$, obtenemos la firma $Sign(k_s, m)$. El receptor recibe la firma $s$ del mensaje $m$ y comprueba con el algoritmo de verificación \emph{Verify} que se cumple que \emph{Verify}$(k_p, s, m) = ok$, siendo $k_p$ la clave pública del emisor.
+Las firmas digitales requieren métodos de clave pública y proporcionan autenticación y no repudiabilidad. Cualquier persona puede verificar si una firma digital es válida con la clave pública del firmante. Esto es, si firmamos con nuestra clave privada $k$, obtenemos la firma $s = Sign(k_s, m)$. El receptor recibe la firma $s$ del mensaje $m$ y comprueba con el algoritmo de verificación \emph{Verify} que se cumple que \emph{Verify}$(k_p, s, m) = ok$, siendo $k_p$ la clave pública del emisor.
 
 \section{Criptografía asimétrica}
 
@@ -152,7 +152,7 @@ El primer criptosistema desarrollado es un sistema de cifrado de clave pública 
 
 En 1978, R. J. McEliece propuso un criptosistema de clave pública \cite{McEliece_1978}. El criptosistema de McEliece se basa en códigos lineales de corrección de errores y hasta ahora es el criptosistema más exitoso basado en nociones de teoría de codificación.
 
-La construcción original en \cite{McEliece_1978} usa códigos de Goppa binarios para cifrar y descifrar mensajes. Sim embargo, han surgido otras variantes de este criptosistema que usan otros códigos lineales, pero la mayoría han resultado ser inseguros. A día de hoy, la construcción original de 1978 se considera segura con la correcta elección de parámetros.
+La construcción original en \cite{McEliece_1978} usa códigos de Goppa binarios para cifrar y descifrar mensajes. Sin embargo, han surgido otras variantes de este criptosistema que usan otros códigos lineales, pero la mayoría han resultado ser inseguros. A día de hoy, la construcción original de 1978 se considera segura con la correcta elección de parámetros.
 
 Por esta razón, el criptosistemade McEliece se pone a la altura del RSA. Existen algunas diferencias entre ambos criptosistemas, el de McEliece es capaz de cifrar y descifrar mensajes más rápido. Sin embargo, los tamaños de las claves son mayores que los del RSA, que es la razón por la que el criptosistema de McEliece apenas se usa. La principal razón por la que está creciendo el interés en el criptosistema de McEliece es porque es uno de los mejores candidatos para criptosistemas de clave pública seguros post-cuánticos. El esquema de Niederreiter \cite{Niederreiter_1986}, una variante del criptosistema de McEliece, también permite construir un esquema de firma digital segura \cite[Sección 4]{Niederreiter_signature_2001} \cite{Advances_cryptology}.
 
@@ -162,7 +162,7 @@ En esta sección presentaremos el criptosistema de McEliece incluyendo algunas d
 
 El criptosistema de McEliece usa códigos lineales de corrección de errores para cifrar mensajes. Este criptosistema posee una clave privada, que se elige al generar la clave y contiene la descripción del código lineal estructurado, y una clave pública que se basa en una versión suficientemente aleatorizada de ese mismo código. De esta forma, será difícil descifrar un mensaje sin conocer la estructura del código lineal (clave privada), pues es lo que proporciona un descifrado rápido.
 
-Los códigos que usa la construcción original son los códigos de Goppa binarios irreducibles. Estos códigos son muy adecuados pues poseen altas capacidades de corrección de erorres y matrices generadoras densas, que son difíciles de distinguir de matrices binarias aleatorias.
+Los códigos que usa la construcción original son los códigos de Goppa binarios irreducibles. Estos códigos son muy adecuados pues poseen altas capacidades de corrección de errores y matrices generadoras densas, que son difíciles de distinguir de matrices binarias aleatorias.
 
 \subsubsection{Generación de claves}
 
@@ -324,7 +324,7 @@ En el siguiente ejemplo vamos a usar el código descrito en el apéndice \ref{an
         > (1, 1, 0, 1, 1)
     \end{lstlisting}
 
-    Observamos que efectivamente el código anterior devuelve $(1, 1, 0, 1, 1)$, que efectivamente coincide con el mensaje original $\textbf{m}$.
+    Observamos que el código anterior devuelve $(1, 1, 0, 1, 1)$, que efectivamente coincide con el mensaje original $\textbf{m}$.
 \end{exampleth}
 
 \subsection{Criptosistema de Niederreiter}
@@ -382,10 +382,7 @@ Observemos que el mensaje en texto plano se representa como el error de la palab
 
 A diferencia con el criptosistema de McEliece, el algoritmo de decodificación del síndrome es más eficiente que el algoritmo de decodificación del criptosistema de McEliece. Además, tambien se puede usar para construir un esquema de firma digital.
 
-Sin embargo, si un ataque es capaz de romper el criptosistema de McEliece, también puede romper el esquema Niederreiter y viceversa. Esto se debe a que los criptosistemas de McEliece y Niederreiter se basan en el uso de códigos lineales que son duales entre si y la matriz generadora se puede obtener eficientemente a partir de la matriz de paridad y viceversa.
-
-% TODO
-%\textcolor{red}{Poner ejemplos usando la implementación de este criptosistema.}
+Sin embargo, si un ataque es capaz de romper el criptosistema de McEliece, también puede romper el esquema Niederreiter y viceversa. Esto se debe a que los criptosistemas de McEliece y Niederreiter se basan en el uso de códigos lineales que son duales entre sí y la matriz generadora se puede obtener eficientemente a partir de la matriz de paridad y viceversa.
 
 
 \subsubsection{Firma digital}

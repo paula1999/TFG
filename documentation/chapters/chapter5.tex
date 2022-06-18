@@ -2,10 +2,6 @@
 % El ataque está basado en el cálculo de la distancia de un código. 
 % Lo puedes encontrar en el archivo Cuellar_etal_2021.pdf (es un algoritmo genético muy sencillo). 
 % Implementación en Sagemath de un supuesto ataque, a ver hasta que longitud puedes cargártelo (como mucho 512, la verdad)
-\newpage
-\null
-\thispagestyle{empty}
-
 \chapter{Ataque usando algoritmos genéticos}
 
 En el capítulo \ref{cap:2} vimos que la capacidad de corrección de un código depende de la distancia de un código. Sin embargo, encontrar una palabra con distancia mínima de un código lineal no es una tarea fácil. Recordemos que el problema de decisión asociado al cálculo de la distancia mínima de un código lineal binario es NP-completo. 
@@ -80,7 +76,7 @@ El siguiente resultado nos proporciona un método para calcular la distancia mí
 
 Este teorema expone que encontrar la distancia mínima de un $[n, k]_q$-código lineal se reduce a encontrar el mínimo de la aplicación $\mathfrak d : \mathcal{S}_n \rightarrow \mathbb{N}$ definida por
 \[
-    \mathfrak d (x) = \min \left\{ \text{w}(b) \; : \; b \text{ es una fila de la matriz escalonada de } FP_x \right\}.
+    \mathfrak d (x) = \min \left\{ \text{w}(b) \; : \; b \text{ es una fila de la matriz escalonada de } FP_x \right\}
 \]
 para cualquier $x \in \mathcal{S}_n$, donde $G$ es la matriz generadora del código y $P_x$ representa la matriz asociada a la permutación $x$.
 
@@ -228,11 +224,11 @@ El algoritmo CHC es un algoritmo evolutivo cuya versión inicial fue propuesta p
 
 Para calcular la distancia entre dos soluciones de la población usaremos la distancia de Hamming (líneas 4-5 y 22-23 del algoritmo \ref{alg:CHC}). En cuanto al decremento $dec$ del cruce (líneas 5 y 21), se actualiza como un porcentaje $\tau$ de la máxima distancia de Hamming entre los individuos de la población, donde $\tau \in [0,1]$ es la tasa de actualización, un parámetro de entrada al algoritmo. Si se produce una solución no válida en el cruce, se le asignará un fitness igual a infinito para asegurarnos de que no se incluirá en la población de la siguiente generación.
 
-El algoritmo CHC comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y las evalúa en la iteración $t = 0$. Luego, se calcula la distancia media y la máxima entre todas las solcuiones. Así, la variable $d$ se inicializará a la distancia media y $dec$ se inicializará a la máxima distancia multiplicada por $\tau$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones.
+El algoritmo CHC comienza con la inicialización de la población $P(t)$ con $N$ soluciones aleatorias y las evalúa en la iteración $t = 0$. Luego, se calcula la distancia media y la máxima entre todas las soluciones. Así, la variable $d$ se inicializará a la distancia media y $dec$ se inicializará a la máxima distancia multiplicada por $\tau$. Luego, el principal bucle del algoritmo se ejecuta hasta que se cumpla la condición de parada, que en este caso será un número máximo de generaciones.
 
 El bucle principal empieza seleccionando $N$ padres aleatorios entre las soluciones de $P(t)$.
 
-Después, comienza la etapa de generación de una nueva población. De esta forma, se le aplica el operador de cruce a los padres que estén a una distancia menor que el umbral de distancia $d$. Este operador es análogo al operador de cruce del algoritmo GGA. Una vez generados todos los descendientes y se evaluarán. A continuaciónm, se formará la población de la siguiente iteración $P(t+1)$ que contendrá a las mejores $N$ soluciones de $P(t)$ y de las nuevas soluciones generadas por el cruce. Sin embargo, puede que $P(t+1)$ y $P(t)$ sean iguales, en este caso el umbral de distancia $d$ se decrementa en $dec$. Si este umbral $d$ alcanza un valor negativo o nulo, la población se reinicializará. Para ello, conservaremos la mejor solución de $P(t)$ en la siguiente población y el resto la reemplazaremos por $N-1$ soluciones aleatorias. Los valores $d$ y $dec$ se recalcularán para esta nueva población.
+Después, comienza la etapa de generación de una nueva población. De esta forma, se le aplica el operador de cruce a los padres que estén a una distancia menor que el umbral de distancia $d$. Este operador es análogo al operador de cruce del algoritmo GGA. Una vez generados todos los descendientes, se evaluarán. A continuación, se formará la población de la siguiente iteración $P(t+1)$ que contendrá a $N$ individuos, escogidos entre las mejores soluciones de $P(t)$ y las nuevas soluciones generadas por el cruce. Sin embargo, puede que $P(t+1)$ y $P(t)$ sean iguales, en este caso el umbral de distancia $d$ se decrementa en $dec$. Si este umbral $d$ alcanza un valor negativo o nulo, la población se reinicializará. Para ello, conservaremos la mejor solución de $P(t)$ en la siguiente población y el resto la reemplazaremos por $N-1$ soluciones aleatorias. Los valores $d$ y $dec$ se recalcularán para esta nueva población.
 
 En resumen, el Algoritmo CHC consiste en:
 
@@ -342,7 +338,7 @@ Cabe destacar que los algoritmos genéticos GGA y CHC han logrado romper el crip
     sage: p, f = GGA(G, 60, 0.8, 30, 8)
     \end{lstlisting}
 
-    Obtenemos una permutación $p$ que, tras aplicarla permutación, existirá una fila con fitness mínimo $f = 8$ a partir de la cual podremos obtener el error. Por tanto, primero debemos calcular la matriz $P$ asociada a la permutación $p$, aplicársela a la matriz generadora $G$ y obtener la matriz escalonada reducida del resultado $M$:
+    Obtenemos una permutación $p$ que, tras aplicarla, existirá una fila con fitness mínimo $f = 8$ a partir de la cual podremos obtener el error. Por tanto, primero debemos calcular la matriz $P$ asociada a la permutación $p$, aplicársela a la matriz generadora $G$ y obtener la matriz escalonada reducida del resultado $M$:
 
     \begin{lstlisting}[gobble=4]
     sage: P = permutation_matrix(p)

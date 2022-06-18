@@ -3,10 +3,6 @@
 % La decodificación  de estos códigos, es similar a la de los códigos BCH (capítulo 5) utilizando el algoritmo de Sugiyama. 
 % El artículo donde se definen y se decodifican es el de Goppa.pdf. 
 % Además, ahi se explica de forma elemental, sin utilizar geometría algebraica.
-\newpage
-\null
-\thispagestyle{empty}
-
 \chapter{Códigos de Goppa}
 
 En \cite{Goppa_codes_1973}, Goppa describió una nueva clase de códigos de corrección de errores lineales. Lo más importante es que algunos de estos códigos excedían el límite asintótico de Gilbert-Varshamov \cite{Varshamov-Gilbert_bound_1982}, una hazaña que muchos teóricos códigos pensaban que nunca podría lograrse. En este capítulo vamos a estudiar los códigos de Goppa \cite[Sección 13.2.2]{Huffman_Pless_2010} y sus propiedades más importantes, así como su codificación y decodificación \cite{Goppa_codes_1973}.
@@ -36,7 +32,7 @@ ya que, comparando numeradores, $1 \equiv - g(\gamma_i)^{-1} \left( g(x) - g(\ga
 Supongamos que $g(x) = \sum_{j=0}^w g_j x^j$ con $g_j \in \mathbb{F}_{q^t}$, donde $w = \gr(g(x))$. Entonces
 
 \[
-    \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} = g(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = g(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right)
+    \frac{g(x) - g(\gamma_i)}{x - \gamma_i} g(\gamma_i)^{-1} = g(\gamma_i)^{-1} \sum_{j=1}^w g_j \sum_{k=0}^{j-1} x^k \gamma_i^{j-1-k} = g(\gamma_i)^{-1} \sum_{k=0}^{w-1} x^k \left( \sum_{j=k+1}^w g_j \gamma_i^{j-1-k} \right).
 \]
 
 Por lo tanto, por \eqref{congruencia_goppa}, estableciendo los coeficientes de $x^k$ iguales a $0$, en el orden $k = w - 1, w - 2, ..., 0$, tenemos que $\textbf{c} \in \Gamma(L,g)$ si y solo si $Hc^T = 0$, donde 
@@ -432,7 +428,7 @@ por lo que $e_\gamma = \frac{\eta(\gamma)}{\sigma'(\gamma)}$. De esta forma, una
     0 &   \text{si}  & \sigma(\gamma) \neq 0 \\
     \\ \frac{\eta(\gamma)}{\sigma'(\gamma)} &  \text{si} & \sigma(\gamma) = 0
     \end{array}
-    \right.
+    \right. ,
 \]
 donde $\sigma'(x)$ es la derivada de $\sigma(x)$.
 
@@ -476,27 +472,27 @@ Si $\gr(G) = 2t$ y $\gr(\sigma^{(1)}) \leq t$, $\gr(\sigma^{(2)}) \leq t$, $\gr(
     \sigma^{(1)}(x) \eta^{(2)}(x) = \sigma^{(2)}(x) \eta^{(1)}(x).
 \end{equation}
 
-Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $G$ es $2t$, entonces \eqref{prop:key_equation} tiene una única solución cuando $\gr(\eta) < \gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
+Así, $\sigma^{(1)}$ divide a $\sigma^{(2)} \eta^{(1)}$, y como $\sigma^{(1)}$ y $\eta^{(1)}$ son primos relativos, $\sigma^{(1)}$ tiene que dividir a $\sigma^{(2)}$. Análogamente, $\sigma^{(2)}$ tiene que dividir a $\sigma^{(1)}$. Como ambos son mónicos, se tiene que $\sigma^{(1)} = \sigma^{(2)}$ y así, $\eta^{(1)} = \eta^{(2)}$. Con esto hemos probado que si el grado de $g$ es $2t$, entonces \eqref{prop:key_equation} tiene una única solución cuando $\gr(\eta) < \gr(\sigma) \leq t$, luego el correspondiente sistema de ecuaciones lineales donde las incógnitas son los coeficientes de $\sigma$ y $\eta$ tiene que ser no singular. En el siguiente teorema se concluye este resultado.
 
 \begin{theorem}
     Si $\gr(g(x)) = 2t$, entonces hay un algoritmo de decodificación algebraica de corrección de $t$ errores para el código q-ario de Goppa con el polinomio de Goppa $g(x)$.
 \end{theorem}
 
-Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $e_\gamma$ distintos de cero son iguales a 1, entonces \eqref{def:eta} y \eqref{def:localizaciones_derivada} coincidan. De esta forma, la ecuación \eqref{prop:key_equation_12} ahora pasa a ser
+Estudiemos ahora este resultado en el caso binario, primero observamos que ya que todos los $e_\gamma$ distintos de cero son iguales a 1, entonces \eqref{def:eta} y \eqref{def:localizaciones_derivada} coinciden. De esta forma, la ecuación \eqref{prop:key_equation_12} ahora pasa a ser
 \[
     \sigma^{(1)} \left( \sigma^{(2)} \right) ' \equiv \sigma^{(2)} \left( \sigma^{(1)} \right) ' \pmod{g(x)}
 \]
 Ahora, cuando $\sigma$ sea par escribiremos en su lugar $\hat{\sigma}$, mientras que cuando $\sigma$ sea impar escribiremos en su lugar $x \sigma '$. Así, tenemos que
 \begin{align*} 
-    \left( \hat{\sigma}^{(1)} + x \sigma^{(1)'} \right) \sigma^{(2)'} &\equiv \left( \hat{\sigma}^{(2)} + x \sigma^{(2)'} \right) \sigma^{(1)'}\\ 
+    \left( \hat{\sigma}^{(1)} + x \sigma^{(1)'} \right) \sigma^{(2)'} &\equiv \left( \hat{\sigma}^{(2)} + x \sigma^{(2)'} \right) \sigma^{(1)'},\\ 
     \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} &\equiv 0 \pmod{g(x)}.
 \end{align*}
 
 El lado izquierdo es un cuadrado perfecto, pues todos los polinomios de ese lado son pares. Esto implica que
 \[
-    \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} \equiv 0 \pmod{\bar{G}(x)}
+    \hat{\sigma}^{(1)} \sigma^{(2)'} + \hat{\sigma}^{(2)} \sigma^{(1)'} \equiv 0 \pmod{\bar{g}(x)}
 \]
-donde $\bar{G}(x)$ es múltiplo de $g(x)$ de menor grado ya que $\bar{G}$ es un cuadrado perfecto. Por lo que, si $\gr(\bar{G}) = 2t$, $\gr(\sigma^{(1)}) \leq t$ y $\gr(\sigma^{(2)}) \leq t$, entonces 
+donde $\bar{g}(x)$ es múltiplo de $g(x)$ de menor grado ya que $\bar{g}$ es un cuadrado perfecto. Por lo que, si $\gr(\bar{g}) = 2t$, $\gr(\sigma^{(1)}) \leq t$ y $\gr(\sigma^{(2)}) \leq t$, entonces 
 \[
     \hat{\sigma}^{(1)} \left( \sigma^{(2)} \right) ' = \hat{\sigma}^{(2)} \sigma^{(1)'}.
 \]
@@ -656,7 +652,7 @@ A continuación se describe el teorema fundamental para resolver la ecuación cl
         \label{th:sol-Goppa}
         \begin{split}
             \sigma_s(x) &= \delta U_k (x), \\
-            \eta_s(x) &= (-1)^k \delta r_k(x)
+            \eta_s(x) &= (-1)^k \delta r_k(x),
         \end{split}
     \end{equation}
 
@@ -722,10 +718,10 @@ En resumen, el algoritmo de Sugiyama consiste en:
         \begin{equation*}
             \begin{split}
                 \sigma_s(x) &= \delta U_k (x), \\
-                \eta_s(x) &= (-1)^k \delta r_k(x)
+                \eta_s(x) &= (-1)^k \delta r_k(x).
             \end{split}
         \end{equation*}  
-    \item[V.] Calcular las raíces de $\sigma(x)_s$.
+    \item[V.] Calcular las raíces de $\sigma_s(x)$.
     \item[VI.] Para cada raíz $P$, buscar la posición en la que se encuentra en el conjunto de definición y el error en esa posición tendrá el valor:
         $$\frac{\eta(P)}{\sigma'(P)}.$$
     \item[VII.] Restar a la palabra codificada el error para obtener el mensaje original codificado.

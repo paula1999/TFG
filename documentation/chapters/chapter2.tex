@@ -3,20 +3,16 @@
 % Necesario sólo es el capítulo 1 y el 3 (no todo del 3). 
 % Y, aunque no los utilicemos, puedes leerte el capítulo de códigos cíclicos. 
 % Es importante centrarse en lo que es la distancia, y que es un problema NP-completo (archivo VARDY.pdf)) ya que es lo que le da seguridad a los criptosistemas.
-\newpage
-\null
-\thispagestyle{empty}
-
 \chapter{Introducción a la teoría de códigos lineales}
 \label{cap:2}
 
-En este capítulo introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definiendo básica de código para estudiar posteriormente la idea de código lineal y algunas de sus propiedades más relevantes, junto con otras nociones relacionadas. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular la distancia de un código lineal, muy importante en la teoría de códigos. 
+En este capítulo introduciremos los conceptos y resultados fundamentales sobre la teoría de códigos lineales. Empezaremos con la definición básica de código para estudiar posteriormente la idea de código lineal y algunas de sus propiedades más relevantes, junto con otras nociones relacionadas. Finalmente, introduciremos el algoritmo de Brouwer-Zimmermann, que permite calcular la distancia de un código lineal, muy importante en la teoría de códigos. 
 
 El desarrollo de este capítulo se ha basado, principalmente, en \cite[Capítulo 1]{Huffman_Pless_2010}.
 
 \section{Códigos lineales}
 
-Sea $F_q$ el cuerpo finito con $q$ elementos, denotamos por $\mathbb{F}_q^n$ el espacio vectorial de las n-tuplas sobre el cuerpo finito $\mathbb{F}_q$. Generalmente los vectores $(a_1, ..., a_n)$ de $\mathbb{F}_q^n$ se denotarán por $a_1 \cdots a_n$.
+Sea $\mathbb{F}_q$ el cuerpo finito con $q$ elementos, denotamos por $\mathbb{F}_q^n$ el espacio vectorial de las n-tuplas sobre el cuerpo finito $\mathbb{F}_q$. Generalmente los vectores $(a_1, ..., a_n)$ de $\mathbb{F}_q^n$ se denotarán por $a_1 \cdots a_n$.
 
 \begin{definition}
     Un $(n, M)$ \emph{código} $\mathcal{C}$ sobre $\mathbb{F}_q$ es un subconjunto de 
@@ -282,13 +278,13 @@ El problema \ref{pr:min-dist} es un problema NP-completo. Veamos un esquema de l
 
     Antes de reducir este problema, vamos a codificar el conjunto $U$ de $3$-tuplas en una matriz de incidencia binaria $\vert U \vert \times 3 \vert T \vert$, en la que cada fila corresponde a una de las $3$-tuplas y tiene peso $3$, y cada $1$ corresponde a una componente de la $3$-tupla. En términos de esta matriz, una solución al problema de Emparejamiento Tridimensional es la existencia de $\vert T \vert$ filas cuya suma módulo $2$ es $111\cdots111$.
 
-    Supongamos entonces que tenemos un algoritmo en tiempo polinómial para el problema de Decodificación de Máxima Verosimilitud. Ahora, dado un conjunto $U \subset T \times T \times T$ para el problema de Emparejamiento Tridimensional, sea $A$ la matriz de incidencia $\vert U \vert \times 3 \vert T \vert$ descrita anteriormente. Entonces, ejecutando el algoritmo para la Decodificación de Máxima Verosimilitud con las entradas $A$, $y = (111\cdots111)$, $w = \vert T \vert$, obtendríamos, en tiempo polinomial, si existen las coincidencias. Esto es, un algoritmo en tiempo polinomial para la Decodificación de Máxima Verosimilitud implica un algoritmo en tiempo polinomial para el Emparejamiento Tridimensional, que a su vez implica un algoritmo en tiempo polinomial para cualquier NP-problema. Esto demuestra que el problema que el problema de Decodificación de Máxima Verosimilitud es NP-completo.
+    Supongamos entonces que tenemos un algoritmo en tiempo polinómial para el problema de Decodificación de Máxima Verosimilitud. Ahora, dado un conjunto $U \subset T \times T \times T$ para el problema de Emparejamiento Tridimensional, sea $A$ la matriz de incidencia $\vert U \vert \times 3 \vert T \vert$ descrita anteriormente. Entonces, ejecutando el algoritmo para la Decodificación de Máxima Verosimilitud con las entradas $A$, $y = (111\cdots111)$, $w = \vert T \vert$, obtendríamos, en tiempo polinomial, si existen las coincidencias. Esto es, un algoritmo en tiempo polinomial para la Decodificación de Máxima Verosimilitud implica un algoritmo en tiempo polinomial para el Emparejamiento Tridimensional, que a su vez implica un algoritmo en tiempo polinomial para cualquier NP-problema. Esto demuestra que el problema de Decodificación de Máxima Verosimilitud es NP-completo.
 \end{proof}
 
 El problema \ref{th:dmv} es NP-completo y sigue siendo NP-completo bajo ciertas restricciones, luego reformularemos este problema como la versión para cuerpos finitos de Suma de Subconjuntos, un problema NP-completo conocido. Además, calcular la distancia mínima para la clase de códigos lineales sobre un cuerpo de característica 2 es NP-duro, y el problema de decisión correspondiente Distancia Mínima sobre $GF(2^m)$, abreviado $MD_{2^m}$, es NP-completo. Luego esta prueba se basa en una transformación polinomial de Decodificación de Máxima Verosimilitud a $MD_{2^m}$. Sin embargo, esto no prueba que Distancia Mínima sea NP-completo, ya que el posible conjunto de entradas a Distancia Mínima es un pequeño subconjunto del conjunto de posibles entradas a $MD_{2^m}$. Para ello, se construye una aplicación del código $\mathcal{C}$ definido por la matriz de paridad $H$ sobre $GF(2^m)$ a un código binario $\mathbb{C}$, de tal forma que la distancia mínima de $\mathcal{C}$ puede determinarse a partir de la distancia mínima de $\mathbb{C}$. Dado que la longitud de $\mathbb{C}$ está acotada por la longitud de un polinomio de $\mathcal{C}$, y la aplicación en sí se puede lograr en tiempo polinomial, esto completa la prueba de la NP-completitud de Distancia Mínima.
 
 \begin{definition}
-    Sea $A_i$, también denotada por $A_i(\mathcal{C})$, el número de palabras código con peso $i$ en $\mathcal{C}$. Se dice que la lista $A_i$ para $0 \leq i \leq n$ es la distribución del peso o espectro del peso de $\mathcal{C}$.
+    Sea $A_i$, también denotada por $A_i(\mathcal{C})$, el número de palabras código con peso $i$ en $\mathcal{C}$. Se dice que la lista $A_i$ para $0 \leq i \leq n$ es la \emph{distribución del peso} o \emph{espectro del peso} de $\mathcal{C}$.
 \end{definition}
 
 \section{Clasificación por isometría}
