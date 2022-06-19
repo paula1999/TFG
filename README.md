@@ -23,7 +23,7 @@ El contenido de este trabajo comienza con un capítulo dedicado a describir y de
 
 ## :book: Memoria
 
-Para generar la memoria se debe descargar el repositorio y usar la herramienta `make` dentro de la carpeta [`documentation`](./documentation).
+Para generar la memoria se debe descargar el repositorio y usar la herramienta `make` dentro de la carpeta [`documentation`](./documentation). También se puede descargar directamente desde [aquí](https://github.com/paula1999/TFG/raw/main/documentation/main.pdf).
 
 ## :computer: Código
 
