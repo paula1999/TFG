@@ -2,9 +2,7 @@
 
 > Trabajo de Fin de Grado. Doble Grado en Ingeniería Informática y Matemáticas. Universidad de Granada
 
-Autora: Paula Villanueva Núñez.
-
-Tutor: Gabriel Navarro Garulo.
+> Realizado por Paula Villanueva Núñez y tutorizado por Gabriel Navarro Garulo.
 
 ## :clipboard: Descripción
 

@@ -3,6 +3,12 @@
 
 En este anexo describimos la documentación de las clases desarrolladas para implementar en SageMath los códigos de Goppa. Para ello, primero se ha implementado la clase \texttt{Goppa} que hereda de la clase \texttt{AbstractLinearCode} de SageMath, que permite representar los aspectos básicos de los códigos de Goppa, tales como la matriz de paridad y la matriz generadora. Para representar la codificación de los códigos de Goppa ha sido necesario crear la clase \texttt{GoppaEncoder}, que hereda de la clase \texttt{Encoder} y es capaz de proporcionar una palabra código a partir de un mensaje. Finalmente, se ha implementado la clase \texttt{GoppaDecoder}, que hereda de la clase \texttt{Decoder}, para simular la decodificación de los códigos de Goppa, esto es, se han desarrollado métodos para calcular el síndrome de una palabra codificada y el algoritmo de Sugiyama para transformar una palabra codificada con posibles errores en la palabra código original y en el mensaje original. También se describen las funciones auxiliares desarrolladas.
 
+Para usar las clases que acabamos de describir, es necesario cargar el fichero con la orden \texttt{load()} tal y como se indica a continuación:
+
+\begin{lstlisting}[gobble=4]
+    sage: load(Goppa.sage)
+\end{lstlisting}
+
 El código desarrollado se encuentra en
 \begin{center}
     \url{https://github.com/paula1999/TFG/tree/main/src}.
@@ -186,7 +192,7 @@ Representación de un código de Goppa como un código lineal.
 
 \section{Codificador para códigos de Goppa}
 
-En esta sección presentaremos la implementación del codificador para los códigos de Goppa.
+En esta sección presentaremos la implementación del codificador para los códigos de Goppa. Proporciona un método para codificar un mensaje.
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
 \item[class GoppaEncoder(self, code)]
@@ -441,6 +447,8 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
 \end{description}
 
 \section{Funciones auxiliares}
+
+En esta sección presentaremos las funciones auxiliares que han sido de ayuda para poder desarrollar las clases anteriores.
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
   \item[get\_defining\_set(n, pol, field)] Obtiene un conjunto de definición a partir del polinomio \texttt{pol} con longitud \texttt{n} y pertenece al cuerpo finito \texttt{field}.

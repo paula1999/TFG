@@ -3,12 +3,20 @@
 
 En este anexo describimos la documentación de las funciones desarrolladas para implementar en SageMath los algoritmos genéticos GGA y CHC. También se describen las funciones auxiliares desarrolladas. 
 
+Para usar las funciones que acabamos de describir, es necesario cargar el fichero con la orden \texttt{load()} tal y como se indica a continuación:
+
+\begin{lstlisting}[gobble=4]
+    sage: load(Genetic_algorithms.sage)
+\end{lstlisting}
+
 El código desarrollado se encuentra en
 \begin{center}
 \url{https://github.com/paula1999/TFG/tree/main/src}.
 \end{center}
 
 \section{Algoritmo genético GGA}
+
+En esta sección presentaremos las función desarrollada para poder implementar el algoritmo genético GGA.
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
   \item[GGA(G, N, pc, max\_reinit, min\_fitness)] Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
@@ -50,6 +58,8 @@ El código desarrollado se encuentra en
 
 \section{Algoritmo genético CHC}
 
+En esta sección presentaremos las función desarrollada para poder implementar el algoritmo genético CHC.
+
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
   \item[CHC(G, N, tau, min\_fitness)] Obtiene una permutación de la matriz \texttt{G} cuya matriz escalonada tiene una fila con peso \texttt{min\_fitness}.
 
@@ -88,6 +98,8 @@ El código desarrollado se encuentra en
 \end{description}
 
 \section{Funciones auxiliares}
+
+En esta sección presentaremos las funciones auxiliares que han sido de ayuda para poder desarrollar las funciones anteriores.
 
 \begin{description}[leftmargin=1em, font=\normalfont\ttfamily, style=nextline]
   \item[fitness\_vector(v)] Calcula el fitness de un vector \texttt{v}.
