@@ -42,8 +42,7 @@ Representación de un código de Goppa como un código lineal.
     sage: g = x^3 + a*x^2 + 1
     sage: n = 10
     sage: defining_set = get_defining_set(n, g, L)
-    sage: C = Goppa(defining_set, g, F)
-    sage: C
+    sage: Goppa(defining_set, g, F)
     > [10, 4] Goppa code
   \end{lstlisting}
 
@@ -89,7 +88,8 @@ Representación de un código de Goppa como un código lineal.
     sage: defining_set = get_defining_set(n, g, L)
     sage: C = Goppa(defining_set, g, F)
     sage: C.get_defining_set()
-    > [z4^3 + z4^2, 0, z4^2 + 1, z4^2 + z4 + 1, z4 + 1, z4^3 + z4 + 1, z4^2 + z4, z4^3 + z4^2 + 1, z4^3 + z4^2 + z4 + 1, z4^3 + z4]
+    > [z4^3 + z4^2, 0, z4^2 + 1, z4^2 + z4 + 1, z4 + 1, z4^3 + z4 + 1, z4^2 
+      + z4, z4^3 + z4^2 + 1, z4^3 + z4^2 + z4 + 1, z4^3 + z4]
   \end{lstlisting}
 
   \item[get\_parity\_pol(self)] Calcula el polinomio de paridad del código.
@@ -111,7 +111,13 @@ Representación de un código de Goppa como un código lineal.
     sage: defining_set = get_defining_set(n, g, L)
     sage: C = Goppa(defining_set, g, F)
     sage: C.get_parity_pol()
-    > [(z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4)*x + 1, x^2 + z4*x, z4^3*x^2 + (z4^3 + z4^2 + 1)*x + z4^3 + z4^2, (z4^3 + z4)*x^2 + z4^2*x + z4^3 + z4^2 + z4 + 1, (z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4^2 + 1)*x + z4^2, (z4^3 + z4)*x^2 + (z4^2 + 1)*x + 1, (z4 + 1)*x^2 + (z4^3 + z4^2)*x + z4^3 + z4^2 + z4, (z4^3 + z4^2 + 1)*x^2 + (z4^2 + z4 + 1)*x + z4^2 + 1, (z4^3 + z4^2)*x^2 + (z4 + 1)*x + z4, z4^2*x^2 + (z4^2 + z4)*x + z4^3 + 1]
+    > [(z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4)*x + 1, x^2 + z4*x, z4^3*x^2 + 
+      (z4^3 + z4^2 + 1)*x + z4^3 + z4^2, (z4^3 + z4)*x^2 + z4^2*x + z4^3 
+      + z4^2 + z4 + 1, (z4^3 + z4^2 + 1)*x^2 + (z4^3 + z4^2 + 1)*x + z4^2, 
+      (z4^3 + z4)*x^2 + (z4^2 + 1)*x + 1, (z4 + 1)*x^2 + (z4^3 + z4^2)*x
+      + z4^3 + z4^2 + z4, (z4^3 + z4^2 + 1)*x^2 + (z4^2 + z4 + 1)*x + z4^2
+      + 1, (z4^3 + z4^2)*x^2 + (z4 + 1)*x + z4, z4^2*x^2 + (z4^2 + z4)*x
+      + z4^3 + 1]
   \end{lstlisting}
 
   \item[get\_parity\_check\_matrix(self)] Calcula la matriz de paridad del código.
@@ -272,10 +278,11 @@ Representación de un codificador para un código de Goppa usando su matriz gene
       sage: defining_set = get_defining_set(n, g, L)
       sage: C = Goppa(defining_set, g, F)
       sage: E = GoppaEncoder(C)
-      sage: word = vector(F, (0, 1, 0, 0, b, b + 1, b, 0, 0, b, 0, b, b + 1, 1, b + 1))
-      sage: x = E.encode(word)
-      sage: x
-      > (0, 1, 0, 0, z2, z2 + 1, z2, 0, 0, z2, 0, z2, z2 + 1, 1, z2 + 1, z2 + 1, 0, z2 + 1, 0, z2, z2, 1, 0, z2, z2, z2 + 1, z2, 0, z2 + 1, 1)
+      sage: word = vector(F, (0, 1, 0, 0, b, b + 1, b, 0, 0, b, 0, b, b 
+            + 1, 1, b + 1))
+      sage: E.encode(word)
+      > (0, 1, 0, 0, z2, z2 + 1, z2, 0, 0, z2, 0, z2, z2 + 1, 1, z2 + 1, z2 
+        + 1, 0, z2 + 1, 0, z2, z2, 1, 0, z2, z2, z2 + 1, z2, 0, z2 + 1, 1)
     \end{lstlisting}
   \end{description}
 \end{description}
@@ -339,8 +346,7 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
     sage: E = GoppaEncoder(C)
     sage: D = GoppaDecoder(C)
     sage: word = random_word(G.nrows(), F)
-    sage: x = E.encode(word); x
-    > (1, 0, z2, z2, z2, 0, 0, z2, 1, 0)
+    sage: x = E.encode(word)
     sage: num_errors = floor(g.degree()/2)
     sage: e = random_error(len(x), num_errors, F)
     sage: y = x + e
@@ -435,8 +441,7 @@ Representación de un decodificador para un código de Goppa usando el algoritmo
     sage: D = GoppaDecoder(C)
     sage: word = random_word(G.nrows(), F); word
     > (z2 + 1, 0, 0, 0)
-    sage: x = E.encode(word); x
-    > (z2 + 1, 0, 0, 0, z2, 1, z2, z2 + 1, z2, z2 + 1)
+    sage: x = E.encode(word)
     sage: num_errors = floor(g.degree()/2)
     sage: e = random_error(len(x), num_errors, F)
     sage: y = x + e
@@ -473,7 +478,8 @@ En esta sección presentaremos las funciones auxiliares que han sido de ayuda pa
     sage: g = x^5 + a*x^2 + 1
     sage: n = 5
     sage: get_defining_set(n, g, L)
-    > [z6^5 + z6^3 + z6^2 + z6, z6^4 + z6^3 + 1, z6^5 + z6^4 + z6^3 + z6 + 1, z6^5 + z6^2, z6 + 1]
+    > [z6^5 + z6^3 + z6^2 + z6, z6^4 + z6^3 + 1, z6^5 + z6^4 + z6^3 + z6 + 1, 
+      z6^5 + z6^2, z6 + 1]
   \end{lstlisting}
 
   \item[random\_word(n, field)] Obtiene un vector aleatorio de tamaño \texttt{n} que pertenece al cuerpo finito \texttt{field}.

@@ -195,7 +195,8 @@ Esta clase simula el comportamiento básico del criptosistema de McEliece, es de
     sage: g = x^3 + (a^4 + a^3 + 1)*x^2 + (a^4 + 1)*x + a^4 + a^2 + a + 1
     sage: n = 20
     sage: McEliece(n, q, g)
-    sage: encrypted_message = vector(GF(2), (1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0))
+    sage: encrypted_message = vector(GF(2), (1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 
+          0, 1, 1, 1, 0, 1, 1, 0, 1, 0))
     sage: ME.decrypt(encrypted_message)
     > (1, 1, 0, 0, 0)
   \end{lstlisting}
